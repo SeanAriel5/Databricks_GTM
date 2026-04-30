@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Databricks GTM — Accenture</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:       #A100FF;
+      --primary-dark:  #7500C0;
+      --primary-deep:  #460073;
+      --primary-light: #C2A3FF;
+      --primary-pale:  #F0E8FF;
+      --primary-tint:  #FAF5FF;
+      --black:  #080810;
+      --white:  #FFFFFF;
+      --surf:   #F6F3FB;
+      --card:   #FFFFFF;
+      --border: #EDE7F5;
+      --border2:#D5CAEC;
+      --t1: #0D0D14;
+      --t2: #524F6A;
+      --t3: #9894B0;
+      --font: 'Graphik','Helvetica Neue',Arial,sans-serif;
+      --r-sm: 8px; --r-md: 14px; --r-lg: 24px;
+      --sh-s: 0 1px 4px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+      --sh-m: 0 4px 20px rgba(0,0,0,.09),0 2px 6px rgba(0,0,0,.04);
+      --sh-p: 0 4px 22px rgba(161,0,255,.2);
+      --ease: cubic-bezier(.4,0,.2,1);
+      --t: .2s;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--surf); color: var(--t1); min-height: 100vh; }
+
+    /* ── NAVBAR ── */
+    .nav {
+      background: rgba(255,255,255,.93);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 200;
+      height: 68px; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 1px 16px rgba(0,0,0,.07);
+    }
+    .nav-left  { display: flex; align-items: center; gap: 14px; }
+    .nav-sep   { width: 1px; height: 28px; background: var(--border2); flex-shrink: 0; }
+    .nav-logo-acc { height: 26px; width: auto; }
+    .nav-logo-dbr { height: 21px; width: auto; opacity: .85; }
+    .nav-title-wrap { display: flex; flex-direction: column; }
+    .nav-title { font-size: 14px; font-weight: 700; letter-spacing: -.015em; color: var(--t1); }
+    .nav-sub   { font-size: 10.5px; color: var(--t3); margin-top: 1px; }
+    .nav-badge {
+      background: var(--primary-pale); color: var(--primary);
+      font-size: 10px; font-weight: 700; padding: 3px 10px;
+      border-radius: 20px; letter-spacing: .07em; text-transform: uppercase;
+    }
+    .nav-right { font-size: 11.5px; color: var(--t3); }
+
+    /* ── TABS ── */
+    .tab-bar {
+      background: #080810; padding: 0 40px; display: flex; gap: 0;
+      overflow-x: auto; scrollbar-width: none;
+      position: sticky; top: 68px; z-index: 100;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,.35);
+      font-family: var(--font); font-size: 12.5px; font-weight: 500;
+      padding: 14px 20px; white-space: nowrap;
+      position: relative;
+      transition: color var(--t) var(--ease);
+      letter-spacing: .01em;
+    }
+    .tab-btn::after {
+      content: ''; position: absolute; bottom: 0; left: 20px; right: 20px;
+      height: 2px; background: var(--primary);
+      transform: scaleX(0); transition: transform .25s var(--ease);
+      border-radius: 2px 2px 0 0;
+    }
+    .tab-btn:hover  { color: rgba(255,255,255,.75); }
+    .tab-btn.active { color: #fff; font-weight: 600; }
+    .tab-btn.active::after { transform: scaleX(1); }
+
+    /* ── LAYOUT ── */
+    .main { max-width: 1200px; margin: 0 auto; padding: 28px 40px 72px; }
+
+    /* ── IMAGE BANNER ── */
+    .img-banner {
+      width: 100%; margin-bottom: 24px;
+      border-radius: var(--r-md); overflow: hidden;
+      background: #fff; box-shadow: var(--sh-m);
+      border: 1px solid var(--border);
+      max-height: 420px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .img-banner img { width: 100%; max-height: 420px; object-fit: contain; }
+
+    /* ── STATS ── */
+    .stats-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 20px; }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: 20px 24px;
+      box-shadow: var(--sh-s);
+      transition: box-shadow var(--t) var(--ease), transform var(--t) var(--ease);
+    }
+    .stat-card:hover { box-shadow: var(--sh-m); transform: translateY(-2px); }
+    .stat-num {
+      font-size: 36px; font-weight: 700; line-height: 1; letter-spacing: -.03em;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; display: block;
+    }
+    .stat-label { font-size: 11px; color: var(--t3); margin-top: 6px; display: block; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--r-md); padding: 16px 20px; margin-bottom: 20px;
+      box-shadow: var(--sh-s); display: flex; flex-direction: column; gap: 14px;
+    }
+    .search-wrap {
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surf); border: 1.5px solid var(--border2);
+      border-radius: 50px; padding: 9px 16px; max-width: 380px;
+      transition: border-color var(--t) var(--ease), box-shadow var(--t) var(--ease);
+    }
+    .search-wrap:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(161,0,255,.1); }
+    .search-wrap input {
+      border: none; background: none; outline: none;
+      font-family: var(--font); font-size: 13px; color: var(--t1); width: 100%;
+    }
+    .search-icon { color: var(--t3); display: flex; flex-shrink: 0; }
+
+    /* ── PILLS ── */
+    .pills { display: flex; flex-wrap: wrap; gap: 7px; }
+    .pill {
+      border: 1.5px solid var(--border2); background: var(--card); color: var(--t2);
+      font-family: var(--font); font-size: 11.5px; font-weight: 500;
+      padding: 5px 13px; cursor: pointer; border-radius: 50px;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: all var(--t) var(--ease);
+    }
+    .pill:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-tint); }
+    .pill.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: var(--sh-p); }
+    .pill-cnt { font-size: 10px; padding: 1px 5px; border-radius: 20px; background: rgba(0,0,0,.08); }
+    .pill.active .pill-cnt { background: rgba(255,255,255,.22); }
+
+    /* ── TABLE CONTAINER ── */
+    .table-wrap {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--r-md); overflow: hidden; box-shadow: var(--sh-s);
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--black); }
+    thead th {
+      text-align: left; padding: 13px 20px;
+      font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: rgba(255,255,255,.45); white-space: nowrap;
+    }
+
+    /* expand hint */
+    .expand-hint {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 20px; border-bottom: 1px solid var(--border);
+      background: linear-gradient(90deg, var(--primary-tint), var(--card));
+      font-size: 12px; color: var(--primary); font-weight: 500; font-style: italic;
+    }
+
+    /* data rows */
+    tbody tr.data-row {
+      border-bottom: 1px solid var(--border); cursor: pointer;
+      transition: background-color var(--t) var(--ease);
+    }
+    tbody tr.data-row:last-of-type { border-bottom: none; }
+    tbody tr.data-row:hover   { background: var(--primary-tint); }
+    tbody tr.data-row.exp-row { background: var(--primary-pale); }
+    tbody tr.data-row:hover td:first-child,
+    tbody tr.data-row.exp-row td:first-child { box-shadow: inset 4px 0 0 var(--primary); }
+
+    td { padding: 14px 20px; font-size: 13px; color: var(--t1); vertical-align: middle; }
+    .td-cat {
+      font-size: 10px; font-weight: 700; color: var(--primary);
+      text-transform: uppercase; letter-spacing: .08em; white-space: nowrap;
+    }
+    .cell-main  { display: flex; flex-direction: column; gap: 4px; }
+    .cell-name-text { font-weight: 600; font-size: 13.5px; }
+    .cell-preview {
+      font-size: 12px; color: var(--t3); line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .td-date { color: var(--t3); font-size: 12px; white-space: nowrap; }
+    .td-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag {
+      background: var(--surf); color: var(--t3); font-size: 10.5px;
+      padding: 2px 8px; border-radius: 6px; white-space: nowrap;
+      border: 1px solid var(--border);
+    }
+
+    /* expand pill button */
+    .exp-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--surf); color: var(--t2);
+      font-family: var(--font); font-size: 11px; font-weight: 600;
+      padding: 6px 14px; border: 1.5px solid var(--border2);
+      border-radius: 50px; cursor: pointer;
+      transition: all var(--t) var(--ease); white-space: nowrap;
+    }
+    .exp-btn:hover   { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: var(--sh-p); }
+    .exp-row .exp-btn{ background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: var(--sh-p); }
+    .chev { display: inline-block; transition: transform .25s var(--ease); }
+    .chev.open { transform: rotate(180deg); }
+
+    /* ── EXPANDED PANEL ── */
+    .exp-panel-row td { padding: 0; border: none; border-bottom: 1px solid var(--border); }
+    .exp-panel {
+      padding: 24px 32px 24px 40px;
+      border-left: 4px solid var(--primary);
+      background: linear-gradient(160deg, var(--primary-tint) 0%, var(--card) 60%);
+      animation: fadeSlide .22s var(--ease) forwards;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(-6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 48px; margin-bottom: 20px; }
+    .exp-full  { grid-column: 1 / -1; }
+    .f-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--t3); margin-bottom: 5px; }
+    .f-val { font-size: 13.5px; color: var(--t1); line-height: 1.7; }
+    .f-val.desc { font-size: 15px; color: #180F24; line-height: 1.75; }
+
+    .btn-nlm {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--primary); color: #fff;
+      font-family: var(--font); font-size: 12.5px; font-weight: 600;
+      padding: 10px 22px; text-decoration: none; border: none; cursor: pointer;
+      border-radius: 50px; box-shadow: var(--sh-p);
+      transition: all var(--t) var(--ease);
+    }
+    .btn-nlm:hover { background: var(--primary-dark); box-shadow: 0 6px 30px rgba(161,0,255,.35); transform: translateY(-1px); }
+
+    /* ── USE CASES ── */
+    .uc-section { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .uc-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--t3); margin-bottom: 10px; }
+    .uc-cards { display: flex; gap: 10px; flex-wrap: wrap; }
+    .uc-card {
+      border: 1.5px solid var(--border); padding: 12px 16px;
+      flex: 1; min-width: 180px; max-width: 280px; border-radius: var(--r-sm);
+      background: #fff; transition: all var(--t) var(--ease); cursor: pointer;
+    }
+    .uc-card:hover { border-color: var(--primary); box-shadow: var(--sh-p); transform: translateY(-2px); }
+    .uc-cat  { font-size: 9.5px; font-weight: 700; text-transform: uppercase; color: var(--primary); letter-spacing: .08em; }
+    .uc-name { font-size: 12.5px; font-weight: 500; margin-top: 3px; }
+    .uc-badge {
+      display: inline-flex; align-items: center;
+      background: var(--primary-pale); color: var(--primary);
+      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-left: 8px;
+    }
+
+    /* ── SOURCES ── */
+    .source-item {
+      display: grid; grid-template-columns: 40px 1fr auto; align-items: center; gap: 16px;
+      padding: 13px 20px; border-bottom: 1px solid var(--border);
+      transition: background-color var(--t) var(--ease);
+    }
+    .source-item:last-child { border-bottom: none; }
+    .source-item:hover { background: var(--primary-tint); }
+    .source-num   { font-size: 11px; color: var(--t3); font-weight: 600; }
+    .source-title { font-size: 13px; font-weight: 500; }
+    .source-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      color: var(--primary); font-size: 11.5px; font-weight: 600;
+      text-decoration: none; padding: 4px 12px;
+      border: 1.5px solid var(--primary); border-radius: 50px;
+      transition: all var(--t) var(--ease); white-space: nowrap;
+    }
+    .source-link:hover { background: var(--primary); color: #fff; box-shadow: var(--sh-p); }
+
+    /* ── EMPTY ── */
+    .empty-state { text-align: center; padding: 64px 40px; }
+    .empty-title { font-size: 16px; font-weight: 600; color: var(--t1); margin-bottom: 6px; }
+    .empty-body  { font-size: 13px; color: var(--t3); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .main { padding: 20px 16px 48px; }
+      .nav, .tab-bar { padding-left: 16px; padding-right: 16px; }
+      .stats-strip { grid-template-columns: 1fr 1fr; }
+      .exp-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .stats-strip { grid-template-columns: 1fr; }
+    }
+
+    :root {
+      --primary:          #A100FF;
+      --primary-dark:     #7500C0;
+      --primary-darkest:  #460073;
+      --primary-light:    #C2A3FF;
+      --primary-lightest: #E6DCFF;
+      --black:  #000000;
+      --white:  #FFFFFF;
+      --gray-50:  #F1F1EF;
+      --gray-100: #E8E8E6;
+      --gray-300: #CFCFCF;
+      --gray-500: #818180;
+      --font: 'Graphik', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--gray-50); color: var(--black); min-height: 100vh; }
+
+    /* ── NAVBAR ── */
+    .nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-300);
+      position: sticky; top: 0; z-index: 200;
+      height: 64px; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-left  { display: flex; align-items: center; gap: 20px; }
+    .nav-logo  { height: 30px; width: auto; }
+    .nav-sep   { width: 1px; height: 24px; background: var(--gray-300); }
+    .nav-title { font-size: 15px; font-weight: 600; }
+    .nav-sub   { font-size: 11px; color: var(--gray-500); margin-top: 2px; }
+    .nav-date  { font-size: 12px; color: var(--gray-500); }
+
+    /* ── TABS ── */
+    .tab-bar {
+      background: var(--black);
+      padding: 0 40px;
+      display: flex; gap: 0;
+      overflow-x: auto; scrollbar-width: none;
+      position: sticky; top: 64px; z-index: 100;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,0.45);
+      font-family: var(--font); font-size: 13px; font-weight: 500;
+      padding: 15px 22px; white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 150ms ease, border-color 150ms ease;
+    }
+    .tab-btn:hover  { color: rgba(255,255,255,0.80); }
+    .tab-btn.active { color: var(--white); border-bottom-color: var(--primary); }
+
+    /* ── LAYOUT ── */
+    .main { max-width: 1200px; margin: 0 auto; padding: 28px 40px 60px; }
+
+    /* ── IMAGE BANNER ── */
+    .img-banner {
+      width: 100%; margin-bottom: 20px;
+      background: var(--white); border: 1px solid var(--gray-300);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; max-height: 260px;
+    }
+    .img-banner img { width: 100%; max-height: 260px; object-fit: contain; }
+
+    /* ── STATS STRIP ── */
+    .stats-strip {
+      display: flex; background: var(--white);
+      border: 1px solid var(--gray-300); margin-bottom: 16px;
+    }
+    .stat-item {
+      flex: 1; padding: 14px 24px;
+      border-right: 1px solid var(--gray-300);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num   { font-size: 26px; font-weight: 600; color: var(--primary); display: block; line-height: 1; }
+    .stat-label { font-size: 11px; color: var(--gray-500); margin-top: 3px; display: block; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background: var(--white); border: 1px solid var(--gray-300);
+      padding: 14px 20px; margin-bottom: 16px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .search-wrap {
+      display: flex; align-items: center; gap: 8px;
+      border: 1px solid var(--gray-300); padding: 7px 12px;
+      background: var(--gray-50); max-width: 380px;
+    }
+    .search-wrap input {
+      border: none; background: none; outline: none;
+      font-family: var(--font); font-size: 13px; color: var(--black); width: 100%;
+    }
+    .search-icon { color: var(--gray-500); flex-shrink: 0; display: flex; }
+
+    /* ── PILLS ── */
+    .pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pill {
+      border: 1px solid var(--gray-300); background: var(--white); color: var(--black);
+      font-family: var(--font); font-size: 11px; font-weight: 500;
+      padding: 4px 12px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 5px;
+      transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+    }
+    .pill:hover           { border-color: var(--primary); color: var(--primary); }
+    .pill.active          { background: var(--primary); border-color: var(--primary); color: var(--white); }
+    .pill-cnt             { font-size: 10px; background: var(--gray-100); color: var(--gray-500); padding: 1px 5px; }
+    .pill.active .pill-cnt{ background: rgba(255,255,255,0.25); color: var(--white); }
+
+    /* ── TABLE ── */
+    .table-wrap { background: var(--white); border: 1px solid var(--gray-300); overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: var(--black); }
+    thead th {
+      text-align: left; padding: 11px 16px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--white); white-space: nowrap;
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--gray-100); cursor: pointer;
+      transition: background-color 150ms ease;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover      { background: #faf5ff; }
+    tbody tr.exp-row    { background: var(--primary-lightest); }
+    td { padding: 11px 16px; font-size: 13px; color: var(--black); vertical-align: middle; }
+    .td-cat {
+      font-size: 10px; font-weight: 700; color: var(--primary);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .td-name  { font-weight: 500; font-size: 13px; }
+    .td-date  { color: var(--gray-500); font-size: 12px; white-space: nowrap; }
+    .td-tags  { display: flex; flex-wrap: wrap; gap: 4px; }
+    .tag {
+      background: var(--gray-100); color: var(--gray-500);
+      font-size: 10px; padding: 2px 7px; white-space: nowrap;
+    }
+    .chevron-cell { text-align: center; width: 36px; }
+    .chevron { display: inline-block; transition: transform 200ms ease; color: var(--gray-500); }
+    .chevron.open { transform: rotate(180deg); }
+
+    /* ── EXPANDED PANEL ── */
+    .exp-panel {
+      padding: 22px 32px 22px 44px;
+      border-left: 3px solid var(--primary);
+      background: var(--white);
+    }
+    .exp-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px 40px; margin-bottom: 18px;
+    }
+    .exp-grid .full-col { grid-column: 1 / -1; }
+    .field-lbl {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--gray-500); margin-bottom: 4px;
+    }
+    .field-val { font-size: 13px; color: var(--black); line-height: 1.6; }
+    .field-val.desc { font-size: 14px; color: #222; }
+
+    .btn-open {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--primary); color: var(--white);
+      font-family: var(--font); font-size: 12px; font-weight: 600;
+      padding: 8px 18px; text-decoration: none; border: none; cursor: pointer;
+      transition: background-color 150ms ease;
+    }
+    .btn-open:hover { background: var(--primary-dark); }
+
+    /* ── USE CASES IN CAPABILITIES ── */
+    .uc-section { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--gray-300); }
+    .uc-lbl     { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-500); margin-bottom: 10px; }
+    .uc-cards   { display: flex; gap: 10px; flex-wrap: wrap; }
+    .uc-card    {
+      border: 1px solid var(--gray-300); padding: 10px 14px;
+      flex: 1; min-width: 180px; max-width: 280px;
+      transition: border-color 150ms ease;
+    }
+    .uc-card:hover { border-color: var(--primary); }
+    .uc-card-cat  { font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--primary); }
+    .uc-card-name { font-size: 12px; font-weight: 500; margin-top: 2px; }
+    .uc-badge {
+      display: inline-flex; align-items: center; gap: 3px;
+      background: var(--primary-lightest); color: var(--primary);
+      font-size: 10px; font-weight: 700; padding: 2px 7px; margin-left: 8px;
+    }
+
+    /* ── SOURCES LIST ── */
+    .source-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 13px 20px; border-bottom: 1px solid var(--gray-100);
+      transition: background-color 150ms ease;
+    }
+    .source-item:last-child { border-bottom: none; }
+    .source-item:hover  { background: #faf5ff; }
+    .source-num  { font-size: 11px; color: var(--gray-500); font-weight: 600; min-width: 22px; }
+    .source-title{ font-size: 13px; font-weight: 500; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state { text-align: center; padding: 56px 40px; color: var(--gray-500); }
+    .empty-title { font-size: 16px; font-weight: 600; color: var(--black); margin-bottom: 6px; }
+    .empty-body  { font-size: 13px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .main { padding: 20px 16px 40px; }
+      .nav, .tab-bar { padding-left: 16px; padding-right: 16px; }
+      .exp-grid { grid-template-columns: 1fr; }
+      .stat-num  { font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+
+    /* ═══════════════════════════════════════════════════════════════
+       DATA — Edit this section to add/update entries
+       Each section maps directly to the Databricks_GTM.xlsx tabs
+    ═══════════════════════════════════════════════════════════════ */
+    const DATA = {
+
+      // ── SOURCES  { id, title }
+      sources: [
+        { id:1,   title:"Vibe coding' and other ways AI is changing who can build apps and how - Source" },
+        { id:2,   title:"10 Databricks Use Cases in Financial Services - Data Intellect" },
+        { id:3,   title:"100 Data Modelling Interview Questions To Prepare For In 2025 - ProjectPro" },
+        { id:4,   title:"2026 State of AI Agents: Enterprise Insights on Building AI - Databricks" },
+        { id:5,   title:"2026 State of AI Agents: Enterprise Insights on Building AI - Databricks" },
+        { id:6,   title:"2026 State of AI Agents: Enterprise Insights on Building AI | Databricks" },
+        { id:7,   title:"8 AI and data trends shaping financial services in 2026 | Databricks" },
+        { id:8,   title:"A Comprehensive Guide To Databricks Data Engineer Associate Certification - Dumpsgate" },
+        { id:9,   title:"AI and machine learning | SAP Databricks" },
+        { id:10,  title:"AI/works™ | Thoughtworks Agentic Development Platform" },
+        { id:11,  title:"AWS vs. Azure and Google Cloud (GCP), The Executive Guide for 2026" },
+        { id:12,  title:"About Databricks: The data and AI company | Databricks" },
+        { id:13,  title:"Accenture + Databricks" },
+        { id:14,  title:"Accenture and Databricks Accelerate Enterprise Adoption of AI" },
+        { id:15,  title:"Accenture and Databricks Partner to Accelerate Enterprise Adoption of AI Applications and Agents at Scale" },
+        { id:16,  title:"Accenture, Databricks Expand Partnership With New Business Group to Scale Enterprise AI" },
+        { id:17,  title:"Agent Bricks in Databricks: Chat with Your Data and Gain Insights - NextLytics AG" },
+        { id:18,  title:"Agent Bricks in Databricks: Chat with Your Data and Gain Insights - NextLytics AG" },
+        { id:19,  title:"Agent Bricks | Databricks" },
+        { id:20,  title:"Agent Bricks: The Governed Enterprise Agent Platform | Databricks Blog" },
+        { id:21,  title:"Agent Tracing & AI Observability Tools | Managed MLflow - Databricks" },
+        { id:22,  title:"Agent system design patterns | Databricks on Google Cloud" },
+        { id:23,  title:"Agentic AI Meets PL/I: Modernizing Mainframes with AWS Transform" },
+        { id:24,  title:"Agentic AI Use by Businesses Soars 327% in Four Months, Says Report - Automation Today" },
+        { id:25,  title:"Agentic Shift: Databricks Report Reveals 327% Surge in Enterprise AI Systems" },
+        { id:26,  title:"An AI-First Approach to Data Engineering with Lakeflow and Agent" },
+        { id:27,  title:"Announcing the 2026 Built-On Databricks Startup Challenge" },
+        { id:28,  title:"Announcing the General Availability of Serverless Compute for Notebooks, Workflows and Delta Live Tables - Databricks" },
+        { id:29,  title:"April 2026 platform release notes | SAP Databricks" },
+        { id:30,  title:"April 2026 | Databricks on AWS" },
+        { id:31,  title:"Architecting Autonomous Agentic AI with Databricks Mosaic AI - Modak" },
+        { id:32,  title:"Authors' Copyright Suit Against Databricks Will Continue" },
+        { id:33,  title:"Azure Databricks Lakebase is now generally available | Microsoft Community Hub" },
+        { id:34,  title:"Azure Databricks | Microsoft Azure Blog" },
+        { id:35,  title:"Azure updates - Microsoft Azure" },
+        { id:36,  title:"Bridging Data Science and Marketing: Databricks Unveils Delta Sharing Integration for Adobe Experience Platform and Agentic Marketing Workflows" },
+        { id:37,  title:"Build and deploy quality AI agent systems - Databricks" },
+        { id:38,  title:"Build and deploy quality AI agent systems - Databricks" },
+        { id:39,  title:"Building the Future: Your Guide to Multimodal AI Data Infrastructure - Pixeltable Blog" },
+        { id:40,  title:"Certifications and Badges Offered By Databricks That Are Worth Knowing - Dumpsgate" },
+        { id:41,  title:"Cloud Partners | Databricks" },
+        { id:42,  title:"Data & AI Sales Capture for Databricks and Snowflake - Accenture" },
+        { id:43,  title:"Data Modeler Job Support - AR IT Technologies" },
+        { id:44,  title:"Data governance with Unity Catalog | SAP Databricks" },
+        { id:45,  title:"Data modeling techniques - Hackolade" },
+        { id:46,  title:"Databricks & Accenture Partnership" },
+        { id:47,  title:"Databricks - 2026 Company Profile, Team, Funding & Competitors - Tracxn" },
+        { id:48,  title:"Databricks - Wikipedia" },
+        { id:49,  title:"Databricks - Wikipedia" },
+        { id:50,  title:"Databricks 2026 Report: Multi-Agent AI Architectures Surge 327% - Reddit" },
+        { id:51,  title:"Databricks AI Capabilities, ML & GenAI Features - Addepto" },
+        { id:52,  title:"Databricks Acquires Generative AI Platform MosaicML for $1.3B - Orrick" },
+        { id:53,  title:"Databricks Announces $850M UK Investment to Accelerate Enterprise Data + AI Adoption" },
+        { id:54,  title:"Databricks Announces 2021 North America Partner Awards" },
+        { id:55,  title:"Databricks Community - Announcements" },
+        { id:56,  title:"Databricks Completes Acquisition of MosaicML" },
+        { id:57,  title:"Databricks Consulting Services - Analytics8" },
+        { id:58,  title:"Databricks Executive Leadership Team - Innovators in Cloud Data and AI - Exa" },
+        { id:59,  title:"Databricks Founders - Company Overview" },
+        { id:60,  title:"Databricks Generative AI Engineer Associate Dumps by Dumpsgate" },
+        { id:61,  title:"Databricks Grows >55% YoY, Surpasses $4.8B Revenue Run-Rate" },
+        { id:62,  title:"Databricks IPO 2026: Valuation, Date & Investor Guide - Allied Venture Partners" },
+        { id:63,  title:"Databricks IPO: Investment Opportunities & Pre-IPO Valuations - Forge Global" },
+        { id:64,  title:"Databricks IQ: AI-Driven Analytics for Faster Data Insights" },
+        { id:65,  title:"Databricks Introduces Lakebase, a PostgreSQL Database for AI Workloads - InfoQ" },
+        { id:66,  title:"Databricks Is a Glassdoor Best-Led Company in 2024" },
+        { id:67,  title:"Databricks Lakebase OLTP Database Guide | PDF | PostgreSQL - Scribd" },
+        { id:68,  title:"Databricks Lakebase is now Generally Available" },
+        { id:69,  title:"Databricks Lakebase is now Generally Available" },
+        { id:70,  title:"Databricks Launches Agent Bricks: A New Approach to Building AI Agents - PR Newswire" },
+        { id:71,  title:"Databricks Raises $1.8 Billion in Debt Ahead of 2026 IPO - MLQ.ai" },
+        { id:72,  title:"Databricks Recognized as One of Glassdoor's Best Places to Work in 2025" },
+        { id:73,  title:"Databricks Signs Definitive Agreement to Acquire MosaicML, a Leading Generative AI Platform" },
+        { id:74,  title:"Databricks Success Story | Founders | Business Model - StartupTalky" },
+        { id:75,  title:"Databricks Unity Catalog | Specs, reviews and EoL info - InvGate" },
+        { id:76,  title:"Databricks Ventures - IVC Data & Insights" },
+        { id:77,  title:"Databricks and Microsoft Extend Strategic Partnership for Azure" },
+        { id:78,  title:"Databricks and Snowflake A Comprehensive Comparison for 2025" },
+        { id:79,  title:"Databricks and dbt Partnership: What It Means for Your Data Stack - Analytics8" },
+        { id:80,  title:"Databricks clouds and regions" },
+        { id:81,  title:"Databricks for Data Engineering: Building Scalable Data Pipelines - Lucent Innovation" },
+        { id:82,  title:"Databricks generative AI capabilities" },
+        { id:83,  title:"Databricks on Azure vs. AWS vs. GCP: What Actually Differs - Dawiso" },
+        { id:84,  title:"Databricks vs Snowflake: The Ultimate 2025 Data Platform Comparison - GEM Corporation" },
+        { id:85,  title:"Databricks, Accenture Launch Joint Business Venture Focused On Spurring AI Development" },
+        { id:86,  title:"Diversity and Inclusion | Databricks" },
+        { id:87,  title:"Diversity at Databricks | Comparably" },
+        { id:88,  title:"ETL processes, data modeling, database design, data analysis - SKP Smart Learning" },
+        { id:89,  title:"From Data Warehousing to Data Intelligence: How Data Took Over | Databricks Blog" },
+        { id:90,  title:"GenWizard - Accenture" },
+        { id:91,  title:"Granulate Optimizes Intel IT Databricks Platform | Connected Social Media" },
+        { id:92,  title:"History and evolution of data lakes | Databricks" },
+        { id:93,  title:"Inside Databricks's $5.4 billion plan to power the agent era - Fast Company" },
+        { id:94,  title:"Insights: Databricks VS Snowflake - Forge" },
+        { id:95,  title:"Kinaxis Partners With Databricks to Accelerate AI-Powered Supply Chain Orchestration | Business Wire" },
+        { id:96,  title:"Kinaxis partners with Databricks to enhance AI-driven supply chain" },
+        { id:97,  title:"Lakebase - Databricks" },
+        { id:98,  title:"Lakebase Postgres | Databricks on AWS" },
+        { id:99,  title:"Lakeflow: Unified Data Engineering | Databricks" },
+        { id:100, title:"Lakehouse Storage | Databricks" },
+        { id:101, title:"List of Investments by Databricks (Jan, 2026) - Tracxn" },
+        { id:102, title:"MLflow 3 for GenAI - Azure Databricks | Microsoft Learn" },
+        { id:103, title:"MLflow on Databricks" },
+        { id:104, title:"Mainframe Modernization Through AWS Transform Composability: Partner Design Collaboration with Agentic AI" },
+        { id:105, title:"Mainframe Services | Cloud - Accenture" },
+        { id:106, title:"MicroVentures' Portfolio Company: Databricks' History and Milestones" },
+        { id:107, title:"MicroVentures' Portfolio Company: Databricks' History and Milestones" },
+        { id:108, title:"Model Hub solution architecture - Hackolade" },
+        { id:109, title:"Mosaic AI Agent Framework" },
+        { id:110, title:"Mosaic AI Gateway: Secure, Responsible LLM Access - Databricks" },
+        { id:111, title:"Open source vs. managed MLflow on Databricks" },
+        { id:112, title:"PDF: IT@Intel: Modernizing Enterprise Data Analytics Using Databricks in the Cloud White Paper" },
+        { id:113, title:"Partners | Databricks" },
+        { id:114, title:"Pasted text (Markdown containing 36 combined reference titles)" },
+        { id:115, title:"Pasted text (Duplicate Markdown containing 36 combined reference titles)" },
+        { id:116, title:"Principal Solutions Engineer: Role Blueprint, Responsibilities, Skills, KPIs, and Career Path" },
+        { id:117, title:"Senior Cloud Engineer - Newton | Built In" },
+        { id:118, title:"Ship quality enterprise AI agents to business users with Agent Bricks and Databricks Apps" },
+        { id:119, title:"Six key insights for C-suite executives to maximize the ROI of agentic AI - Accenture" },
+        { id:120, title:"Snowflake and Databricks in 2025: A Comparative Analysis for Data Engineering - DHS" },
+        { id:121, title:"Solution Architect - EVERSANA - Built In" },
+        { id:122, title:"Solution Architect at EVERSANA in Bengaluru" },
+        { id:123, title:"State of AI Agents 2026: Lessons on Governance, Evaluation and" },
+        { id:124, title:"The Agentic Pivot: A Strategic Roadmap for Enterprise Reinvention with Databricks and Accenture" },
+        { id:125, title:"The Agile Path to Autonomous Agents - Databricks Community" },
+        { id:126, title:"The Architectural Supremacy and Strategic Evolution of Databricks: A Comprehensive Analysis of the Data Intelligence Era" },
+        { id:127, title:"The Paradigmatic Shift in Enterprise Data Intelligence: A Comprehensive Analysis of the Databricks Ecosystem and the Rise of Agentic AI" },
+        { id:128, title:"The Top Strategic Priorities Guiding Data and AI Leaders in 2026 - Pacific Data Integrators" },
+        { id:129, title:"The Top Strategic Priorities Guiding Data and AI Leaders in 2026 | Databricks Blog" },
+        { id:130, title:"The Ultimate Decision Framework: Snowflake vs. Databricks vs. BigQuery (2025 Guide)" },
+        { id:131, title:"Ultimate Guide to Databricks Certifications (2026): Paths, Exams" },
+        { id:132, title:"Unified Security for Data and AI - Databricks" },
+        { id:133, title:"Unity Catalog Governance In Databricks | Prolifics" },
+        { id:134, title:"Unity Catalog | Databricks" },
+        { id:135, title:"Use Genie Code for pipeline development | Databricks on AWS" },
+        { id:136, title:"Vibe coding - Wikipedia" },
+        { id:137, title:"What Is the Mosaic AI Agent Framework on Databricks" },
+        { id:138, title:"What Is the Mosaic AI Agent Framework on Databricks - Lucent Innovation" },
+        { id:139, title:"What are Data Pipelines? - Databricks" },
+        { id:140, title:"What is Databricks - Dtyped" },
+        { id:141, title:"What is Delta Lake in Databricks?" },
+        { id:142, title:"What is Lakebase Provisioned? | Databricks on AWS" },
+        { id:143, title:"What is Unity Catalog? | Databricks on AWS" },
+        { id:144, title:"What is Vibe Coding? | IBM" },
+        { id:145, title:"Working at Databricks (Employee Experiences 2026) - Taro" },
+        { id:146, title:"Working at Databricks: Employee Reviews | Indeed.com" },
+      ],
+
+      // ── BACKGROUND  { id, category, name, sources, description, link, tags, lastUpdate }
+      background: [
+        { id:1, category:"Journey", name:"Overview", sources:"", description:`Comprehensive profile of Databricks, a prominent American software firm known for pioneering the data lakehouse architecture. Origins at UC Berkeley, subsequent financial growth to a $134 billion valuation; strategic expansion through major AI-focused acquisitions like MosaicML.`, link:"https://notebooklm.google.com/notebook/0b8f3602-a7f0-416f-be1f-2cb6728cb61c/artifact/016bfaf2-70cd-433c-8e2c-5445b98beec6?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_", tags:"", lastUpdate:"4/28/2026" },
+        { id:2, category:"Roadmap",     name:"Overview",                         sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:3, category:"Comparisons", name:"Core Capabilities",                sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:4, category:"Comparisons", name:"Partnerships",                     sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:5, category:"Comparisons", name:"Certifications",                   sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:6, category:"Comparisons", name:"Client Use Cases & Success Stories",sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+      ],
+
+      // ── CORE CAPABILITIES  { id, category, name, sources, description, link, tags, lastUpdate, linkedUseCases }
+      coreCapabilities: [
+        { id:1,  category:"Data Medallion Architecture", name:"Overview",         sources:"", description:`The Medallion architecture organizes data into three distinct layers: Bronze (raw ingestion), Silver (cleaned and transformed), and Gold (curated, business-ready). This structured approach logically organizes data within a lakehouse, incrementally improving data quality and structure as it flows through each layer.`, link:"https://notebooklm.google.com/notebook/0b8f3602-a7f0-416f-be1f-2cb6728cb61c/artifact/bead052f-9344-42d1-b25f-aafce2c5533f", tags:"", lastUpdate:"4/28/2026", linkedUseCases:[] },
+        { id:2,  category:"Data Medallion Architecture", name:"Delta Lake",       sources:"", description:"", link:"", tags:"", lastUpdate:"", linkedUseCases:[] },
+        { id:3,  category:"Data Medallion Architecture", name:"Unity Catalogue",  sources:"", description:"", link:"", tags:"", lastUpdate:"", linkedUseCases:[] },
+        { id:4,  category:"Data Medallion Architecture", name:"Photon",           sources:"", description:"", link:"", tags:"", lastUpdate:"", linkedUseCases:[] },
+        { id:5,  category:"Data Medallion Architecture", name:"Lakeflow",         sources:"", description:"", link:"", tags:"", lastUpdate:"", linkedUseCases:[] },
+        { id:6,  category:"Data Medallion Architecture", name:"Lakebase",         sources:"", description:"", link:"", tags:"", lastUpdate:"", linkedUseCases:[] },
+        { id:7,  category:"Agent Bricks",           name:"",                      sources:"", description:"", link:"", tags:"", lastUpdate:"", linkedUseCases:[] },
+        { id:8,  category:"Genia",                  name:"",                      sources:"", description:"", link:"", tags:"", lastUpdate:"", linkedUseCases:[] },
+        { id:9,  category:"Mosaic Agent Framework", name:"",                      sources:"", description:"", link:"", tags:"", lastUpdate:"", linkedUseCases:[] },
+        { id:10, category:"DBRX",                   name:"",                      sources:"", description:"", link:"", tags:"", lastUpdate:"", linkedUseCases:[] },
+      ],
+
+      // ── PARTNERSHIP ECOSYSTEM  { id, category, name, sources, description, link, tags, lastUpdate }
+      partnershipEcosystem: [
+        { id:1,  category:"HyperScaler / Multi-Cloud Strategy", name:"Overview",                sources:"", description:`Databricks maintains deep and strategic partnerships with all major cloud providers: AWS, Azure, and Google Cloud, reinforcing its position as a multi-cloud analytics layer. This allows enterprises to deploy Databricks on their preferred cloud, accelerating time to value while optimizing cost, resilience, and governance.`, link:"https://notebooklm.google.com/notebook/0b8f3602-a7f0-416f-be1f-2cb6728cb61c/artifact/3c82c626-98a7-4faf-95e2-097b55e250e7?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_", tags:"", lastUpdate:"4/28/2026" },
+        { id:2,  category:"HyperScaler / Multi-Cloud Strategy", name:"Microsoft Azure",         sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:3,  category:"HyperScaler / Multi-Cloud Strategy", name:"AWS",                     sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:4,  category:"HyperScaler / Multi-Cloud Strategy", name:"Google Cloud Platform",   sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:5,  category:"Complementary Technology Partners",  name:"DBT",                     sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:6,  category:"Complementary Technology Partners",  name:"Snowflake",               sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:7,  category:"Complementary Technology Partners",  name:"Tableau",                 sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:8,  category:"Complementary Technology Partners",  name:"Kinaxis",                 sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:9,  category:"Dedicated Business Groups",          name:"Accenture",               sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:10, category:"Dedicated Business Groups",          name:"Tenplus",                 sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:11, category:"Dedicated Business Groups",          name:"Credencys",               sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:12, category:"Dedicated Business Groups",          name:"Qubika",                  sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:13, category:"Dedicated Business Groups",          name:"GEM Corporation",         sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:14, category:"Dedicated Business Groups",          name:"LumenData",               sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:15, category:"Dedicated Business Groups",          name:"Analytics8",              sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+      ],
+
+      // ── CERTIFICATIONS  { id, category, name, sources, description, link, tags, lastUpdate }
+      certifications: [
+        { id:1, category:"Certifications & Accreditations", name:"Overview",                        sources:"", description:"Databricks categorizes its official credentials into Certifications (paid, proctored, time-bound, requiring recertification) and Accreditations (often free, non-proctored, foundational).", link:"https://notebooklm.google.com/notebook/0b8f3602-a7f0-416f-be1f-2cb6728cb61c/artifact/ff7a89b4-83b6-4591-a5a0-82b774a2f940?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_", tags:"", lastUpdate:"4/28/2026" },
+        { id:2, category:"Certifications",                  name:"Data Professionals",              sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:3, category:"Certifications",                  name:"Data Engineering Professional",   sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:4, category:"Certifications",                  name:"Machine Learning Associate",      sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:5, category:"Certifications",                  name:"Generative AI Engineering Associate", sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:6, category:"Certifications",                  name:"Associate Developer Apache Spark",sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:7, category:"Accreditations",                  name:"Lakehouse Platform Fundamentals", sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:8, category:"Accreditations",                  name:"Platform Administrator",          sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:9, category:"Accreditations",                  name:"Cloud Platform Architect",        sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+      ],
+
+      // ── CLIENT USE CASES & STORIES  { id, category, name, sources, description, link, tags, lastUpdate }
+      clientUseCases: [
+        { id:1,  category:"Agentic Reinvention", name:"Albertsons",       sources:"", description:`Albertsons Companies is partnering with Accenture and Databricks to implement an agentic AI solution that reimagines pricing intelligence and merchandising. Leveraging the Databricks Data Intelligence Platform, this solution empowers merchants with a "merchant twin" capability to optimize promotional calendars and pricing strategies for improved margins.`, link:"https://notebooklm.google.com/notebook/0b8f3602-a7f0-416f-be1f-2cb6728cb61c/artifact/2586f080-c8ab-4dc4-a902-7f25525d7c89?utm_source=nlm_web_share&utm_medium=google_oo&utm_campaign=art_share_1&utm_content=&utm_smc=nlm_web_share_google_oo_art_share_1_", tags:"Agentic,pricing", lastUpdate:"4/28/2026" },
+        { id:2,  category:"Agentic Reinvention", name:"Adidas",           sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:3,  category:"Agentic Reinvention", name:"Arize",            sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:4,  category:"Agentic Reinvention", name:"7-Eleven",         sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:5,  category:"Agentic Reinvention", name:"Providence Health", sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:6,  category:"Agentic Reinvention", name:"Prada Group",      sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:7,  category:"Agentic Reinvention", name:"Mastercard",       sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:8,  category:"Agentic Reinvention", name:"Experian",         sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:9,  category:"Agentic Reinvention", name:"Moody's",          sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:10, category:"Agentic Reinvention", name:"Conagra",          sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+        { id:11, category:"Agentic Reinvention", name:"Boeing",           sources:"", description:"", link:"", tags:"", lastUpdate:"" },
+      ],
+
+      // ── GTM PIPELINE  { id, name, affiliation, role, area, contactMethod, approachAngle, lastUpdate }
+      gtmPipeline: [
+        { id:1,  name:"Jigyasa Singh",                                  affiliation:"Accenture",                                          role:"Managing Director – Databricks Global Lead",                              area:"Partnership & Core Capabilities",          contactMethod:"LinkedIn",                        approachAngle:`Congratulate her on the launch of the new Accenture Databricks Business Group and discuss strategies for mobilizing 25,000 Databricks-trained professionals to scale agentic AI solutions.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                lastUpdate:"4/28/2026" },
+        { id:2,  name:"Rebecca Bucnis",                                 affiliation:"Accenture",                                          role:"Managing Director – Data and AI",                                         area:"Partnership & Core Capabilities",          contactMethod:"LinkedIn",                        approachAngle:`Discuss Accenture's forward-engineering methodologies and leveraging Databricks' Mosaic AI to transition enterprise clients from AI experimentation to full-scale production.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                        lastUpdate:"4/28/2026" },
+        { id:3,  name:"Saurabh Mathur",                                 affiliation:"Accenture",                                          role:"Managing Director – Data Led Transformation",                             area:"Partnership & Core Capabilities",          contactMethod:"LinkedIn",                        approachAngle:`Connect regarding data estate modernization, specifically utilizing Unity Catalog and Delta Lake to break down legacy data silos.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                lastUpdate:"4/28/2026" },
+        { id:4,  name:"Jeff Emerson & Nischal Kapoor",                  affiliation:"Accenture",                                          role:"Global Mainframe Services Lead and Go-to-Market Lead (Americas)",         area:"Subject Matter Experts (Mainframe)",        contactMethod:"LinkedIn",                        approachAngle:`Engage on mainframe modernization and how Databricks' cloud-native architecture and agentic AI accelerate legacy workload migration.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            lastUpdate:"4/28/2026" },
+        { id:5,  name:"Prakash Trivedi",                                affiliation:"Accenture",                                          role:"Global Partner Champion, Bangalore Innovation Hub",                       area:"Partnership & Ecosystem",                  contactMethod:"LinkedIn or Corporate Email",     approachAngle:`Congratulate him on his Global Partner Champion recognition and discuss specialized Databricks solutions for telecommunications and financial services.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                        lastUpdate:"4/28/2026" },
+        { id:6,  name:"Hannah Unkefer",                                 affiliation:"Accenture",                                          role:"Accenture PR",                                                           area:"Partnership (Media/Communications)",        contactMethod:"Phone (+1 206 839 2172) or Email",approachAngle:`Coordinate joint PR initiatives or case study publications highlighting recent client wins like Albertsons or BASF.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              lastUpdate:"4/28/2026" },
+        { id:7,  name:"Alan Grogan, Atish Ray, Jai Malhotra & Nathan Buesgens", affiliation:"Accenture",                                 role:"Leads and Partner Champions for Accenture/Avanade",                      area:"Partnership & Subject Matter Experts",     contactMethod:"LinkedIn",                        approachAngle:`Discuss their work on Accenture's Industrialized Machine Learning platform and executing multi-cloud engagements.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             lastUpdate:"4/28/2026" },
+        { id:8,  name:"Alican Polat",                                   affiliation:"BASF (Client)",                                      role:"Divisional AI Lead",                                                     area:"Client Story",                             contactMethod:"LinkedIn",                        approachAngle:`Reference the "FOX" digital assistant built with Accenture and Databricks, and ask about his future roadmap for proactive financial insights.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   lastUpdate:"4/28/2026" },
+        { id:9,  name:"Sudeep Gupta",                                   affiliation:"Kyowa Kirin International (Client)",                 role:"Director of Data",                                                       area:"Client Story",                             contactMethod:"LinkedIn",                        approachAngle:`Discuss KKI's journey to becoming a data-led organization using Databricks Lakehouse to improve patient outcomes.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                lastUpdate:"4/28/2026" },
+        { id:10, name:"Dennis Michon",                                  affiliation:"easyJet (Client)",                                   role:"Head of Data Product",                                                   area:"Client Story",                             contactMethod:"LinkedIn",                        approachAngle:`Commend his team for reducing development cycles from 9 to 4 months by replacing legacy SQL servers with Databricks Lakebase and Apps.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          lastUpdate:"4/28/2026" },
+        { id:11, name:"Edward Goo",                                     affiliation:"YipitData (Client)",                                 role:"Head of Data Engineering",                                               area:"Client Story",                             contactMethod:"LinkedIn",                        approachAngle:`Ask about his experience using Agent Bricks to productionize domain-specific AI agents for customer support insights.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           lastUpdate:"4/28/2026" },
+        { id:12, name:"Ben Tallman",                                    affiliation:"M Science (Client)",                                 role:"Chief Technology Officer",                                               area:"Client Story",                             contactMethod:"LinkedIn",                        approachAngle:`Connect over his team's use of Delta Lake UniForm to write a single queryable copy of data to reduce costs and accelerate time to value.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       lastUpdate:"4/28/2026" },
+        { id:13, name:"Kento Izumi",                                    affiliation:"Toyota (Client)",                                    role:"General Manager, Digital Transformation Promotion Division",             area:"Client Story",                             contactMethod:"LinkedIn",                        approachAngle:`Discuss Toyota's use of Zerobus Ingest for real-time factory data to detect overheating and support carbon-neutrality.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       lastUpdate:"4/28/2026" },
+        { id:14, name:"Marvin Al-Khafaji",                              affiliation:"United Vein and Vascular Centers (Client)",          role:"CIO",                                                                    area:"Client Story",                             contactMethod:"LinkedIn",                        approachAngle:`Reach out about implementing an Enterprise Data Warehouse using Databricks to automate manual processes in healthcare.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        lastUpdate:"4/28/2026" },
+        { id:15, name:"Judson Althoff",                                 affiliation:"Microsoft (Partner)",                                role:"EVP and Chief Commercial Officer",                                       area:"Partnership Ecosystem",                    contactMethod:"LinkedIn",                        approachAngle:`Discuss the multi-year extension of the Databricks/Microsoft partnership, focusing on Azure AI Foundry integrations.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         lastUpdate:"4/28/2026" },
+        { id:16, name:"Shiv Trisal",                                    affiliation:"Databricks (Partner)",                               role:"Global Manufacturing, Transportation & Energy GTM Leader",               area:"Partnership Ecosystem",                    contactMethod:"LinkedIn",                        approachAngle:`Engage on the Databricks and Kinaxis partnership to explore how centralizing supply chain data aids real-time, intelligent actions.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            lastUpdate:"4/28/2026" },
+        { id:17, name:"Dave Mathew",                                    affiliation:"Dumpsgate (Partner)",                                role:"IT Certification Specialist & Technical Writer",                         area:"Certification & Training",                 contactMethod:"LinkedIn or Dumpsgate platform",  approachAngle:`Discuss his comprehensive guides on Databricks Certifications and explore potential content collaborations for upskilling data teams.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                               lastUpdate:"4/28/2026" },
+        { id:18, name:"Simon Collis",                                   affiliation:"Analytics8 (Partner)",                               role:"Managing Consultant",                                                    area:"Subject Matter Expert & Partnership",      contactMethod:"LinkedIn",                        approachAngle:`Connect over his thought leadership on the synergies between dbt and Databricks for speeding up pipeline deployment.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         lastUpdate:"4/28/2026" },
+        { id:19, name:"Apostolos",                                      affiliation:"NextLytics AG (Partner)",                            role:"Data Engineering Consultant",                                            area:"Subject Matter Expert",                    contactMethod:"LinkedIn or blog inquiry",        approachAngle:`Reference his walkthrough on building a Consultant Matchmaker Agent and discuss future architectures for integrating SAP BW with agentic AI.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                               lastUpdate:"4/28/2026" },
+        { id:20, name:"Sudhir Gajre",                                   affiliation:"Lovelytics (Partner)",                               role:"Author/Consultant",                                                      area:"Subject Matter Expert",                    contactMethod:"LinkedIn",                        approachAngle:`Discuss his analysis of the "State of AI Agents 2026" report and utilizing Unity Catalog to move clients into production.`,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    lastUpdate:"4/28/2026" },
+        { id:21, name:"Karyna Naminas",                                 affiliation:"CEO of Label Your Data",                             role:"",                                                                       area:"Subject Matter Expert (Data Annotation)",  contactMethod:"LinkedIn",                        approachAngle:`"Dear Karyna, I read your article '10 Best Databricks Competitors & Alternatives', and found your insights on Databricks' gap in human-in-the-loop data annotation very compelling. Your company, Label Your Data, offers solutions that directly address this by providing dedicated annotators, QA workflows, and scalable annotation operations. I'm exploring strategies for ensuring high-quality training data for ML pipelines and would be keen to understand more about how your services complement Databricks environments and contribute to audit-ready datasets."`,                                                           lastUpdate:"4/28/2026" },
+        { id:22, name:"Edwin Lisowski",                                 affiliation:"CGO & Co-founder, Addepto",                          role:"",                                                                       area:"Subject Matter Expert (Scalable Document AI)",contactMethod:"LinkedIn",                       approachAngle:`"Dear Edwin, your quote in the '10 Best Databricks Competitors & Alternatives' article regarding linking data, labeling, and pipelines for scalable document AI caught my attention. Your emphasis on critical dimensions like dataset versioning, lineage, access control, and unified DevEx for scalable document AI is highly relevant. I'm exploring foundational requirements for robust AI solutions and would appreciate any further thoughts Addepto has on meeting and exceeding Databricks' expectations in this area."`,         lastUpdate:"4/28/2026" },
+        { id:23, name:"Orrin Klopper",                                  affiliation:"CEO, Netsurit",                                      role:"",                                                                       area:"Subject Matter Expert (Microsoft Stack)",  contactMethod:"LinkedIn",                        approachAngle:`"Dear Orrin, your perspective in the Databricks competitors article, highlighting the importance of a platform seamlessly integrating with an existing Microsoft stack, was very insightful. Your point about fixing label issues early by surfacing agreement rates, drift, and data lineage directly in dashboards is particularly practical. I'm interested in strategies for optimizing ML platform integration within Microsoft environments and would value any further insights from Netsurit's experience on achieving these crucial improvements."`,lastUpdate:"4/28/2026" },
+        { id:24, name:"Jens Hagel",                                     affiliation:"CEO, hagel IT-Services GmbH",                        role:"",                                                                       area:"Subject Matter Expert (MLOps & Governance)",contactMethod:"LinkedIn",                        approachAngle:`"Dear Jens, your comment on evaluating Azure Databricks competitors, emphasizing how well a platform integrates with existing governance, identity, and security controls, resonated with me. The need for smoother end-to-end MLOps workflows with automated compliance and unified access management is a critical challenge. I'm keen to learn more about how hagel IT-Services approaches reducing friction between data scientists and security teams in large-scale enterprise environments."`,                                          lastUpdate:"4/28/2026" },
+        { id:25, name:"Andrew Bell",                                    affiliation:"Chief Product Officer at Kinaxis",                   role:"",                                                                       area:"Partnership (Kinaxis x Databricks)",        contactMethod:"LinkedIn",                        approachAngle:`"Dear Andrew, I noted the partnership between Kinaxis and Databricks to enhance AI-driven supply chain decision-making. Your comments on unifying fragmented data to act quickly and consistently and leveraging Databricks infrastructure for enterprise-grade data controls and scalability were particularly striking. I'm interested in understanding how Kinaxis Maestro, powered by Databricks, is transforming supply chain agility and enabling real-time, intelligent actions, especially through the use of Delta Sharing technology."`,lastUpdate:"4/28/2026" },
+        { id:26, name:"Julie Sweet",                                    affiliation:"Chair and CEO, Accenture",                           role:"",                                                                       area:"Partnership (Accenture x Databricks)",     contactMethod:"LinkedIn",                        approachAngle:`"Dear Julie, I learned about the Accenture Databricks Business Group and your shared commitment to accelerating enterprise adoption of AI applications and agents at scale. Your focus on helping clients modernize their data foundation to build, scale, and govern AI applications with confidence, and your goal to shift from experimentation to production, is highly relevant. I'm exploring strategies for secure and responsible AI deployment and would appreciate insights into how Accenture's reinvention expertise leverages the Databricks platform for multi-agent systems and industry-specific solutions."`,                  lastUpdate:"4/28/2026" },
+        { id:27, name:"Ali Ghodsi",                                     affiliation:"CEO and Co-Founder, Databricks",                     role:"",                                                                       area:"Databricks Leadership",                    contactMethod:"LinkedIn",                        approachAngle:`"Dear Ali, as CEO and Co-Founder of Databricks, your vision for an intelligent, data-driven future through the Agentic Revolution is truly inspiring. Databricks' innovations like Lakebase, Genie, and Agent Bricks for enabling AI at scale and the cost-efficiency of DBRX are remarkable. Your strategic partnerships with Microsoft and Google Cloud to make Gemini models available natively solidify Databricks as an operational backbone for AI-driven organizations. I'm keen to understand how these capabilities translate into tangible business outcomes across diverse industries."`,                                             lastUpdate:"4/28/2026" },
+        { id:28, name:"Judson Althoff",                                 affiliation:"EVP and Chief Commercial Officer, Microsoft",        role:"",                                                                       area:"Partnership (Microsoft x Databricks)",     contactMethod:"LinkedIn",                        approachAngle:`"Dear Judson, I learned about the extended strategic partnership between Microsoft and Databricks, and your commitment to democratizing data and AI through tighter integration across the Azure ecosystem. Your emphasis on enabling integration from Azure AI Foundry and Power Platform to SAP is particularly interesting for accelerating AI transformation. I'm exploring ways to empower customers to build the next generation of autonomous systems within Azure environments and would value any further insights into how this enhanced interoperability is being realized."`,                                                                lastUpdate:"4/28/2026" },
+        { id:29, name:"Thomas Kurian",                                  affiliation:"CEO, Google Cloud",                                  role:"",                                                                       area:"Partnership (Google Cloud x Databricks)",  contactMethod:"LinkedIn",                        approachAngle:`"Dear Thomas, the strategic product partnership between Google Cloud and Databricks, making Gemini models available natively within the Databricks Data Intelligence Platform, is a significant development for building and scaling AI agents. Your statement on accelerating innovation at scale by enabling customers to build sophisticated AI agents and automate complex data workflows directly on their data is compelling. I'm interested in how this partnership leverages Gemini's advanced capabilities to empower enterprises and eliminate data duplication."`,                                                                          lastUpdate:"4/28/2026" },
+        { id:30, name:"Pradeep Baluvaneralu",                           affiliation:"Intel IT",                                           role:"Cloud Data Warehouse Architect",                                         area:"Client Story",                             contactMethod:"LinkedIn",                        approachAngle:`"Dear Pradeep, I reviewed the IT@Intel: Modernizing Enterprise Data Analytics Using Databricks white paper, and your role as Cloud Data Warehouse Architect is central to its insights. I'm particularly interested in Intel IT's experience with the medallion architecture and the 65% reduction in ETL process time and 50% fewer user issues achieved. Your methodology for infrastructure setup, data migration, and governance implementation offers invaluable practical lessons for cloud migration strategies."`,                     lastUpdate:"4/28/2026" },
+        { id:31, name:"Eric Messenger",                                 affiliation:"Intel IT",                                           role:"IT Director, Data and Analytics",                                        area:"Client Story",                             contactMethod:"LinkedIn",                        approachAngle:`"Dear Eric, your leadership as IT Director for Data and Analytics at Intel IT, detailed in the Modernizing Enterprise Data Analytics white paper, is highly impressive. I'm especially interested in the business value derived from migrating to Databricks, such as the increased operational efficiency and faster turnaround of business requests. I'd appreciate any further insights into Intel IT's blueprint for accelerating transformation across other BUs and leveraging GenAI with the Databricks architecture."`,                    lastUpdate:"4/28/2026" },
+        { id:32, name:"Jason Cauthen",                                  affiliation:"Intel IT (Sales & Marketing Group)",                 role:"Data Science Director",                                                  area:"Client Story",                             contactMethod:"LinkedIn",                        approachAngle:`"Dear Jason, your testimonial in the Intel IT white paper regarding the transition to Databricks for the Sales & Marketing Group was very compelling. The ability to reduce data engineering overhead and focus on driving value through analytics, along with the straightforward porting of models and codebase, highlights significant benefits. I'm researching practical experiences in leveraging Databricks for sales and marketing analytics and would be grateful for any additional perspectives you might share."`,                        lastUpdate:"4/28/2026" },
+        { id:33, name:"Simon Collis",                                   affiliation:"Analytics8 (Partner)",                               role:"Managing Consultant",                                                    area:"Partnership (dbt x Databricks)",           contactMethod:"LinkedIn",                        approachAngle:`"Dear Simon, I read your article on the Databricks and dbt partnership and your insights on enabling analytics engineering. Your expertise on how the combined strengths of Databricks and dbt unify architecture and accelerate time to value through SQL is highly relevant. I'm exploring ways to streamline data engineering pipelines within a lakehouse architecture and would appreciate your perspective on assessing if this combined stack is the right fit for organizations."`,                                                           lastUpdate:"4/28/2026" },
+        { id:34, name:"Andreas Fast",                                   affiliation:"Qubika (Gold Tier Databricks Partner)",              role:"",                                                                       area:"Partnership (Qubika x Databricks)",         contactMethod:"LinkedIn",                        approachAngle:`"Dear Andreas, I noted Qubika's role as a Gold Tier Databricks partner and your work in transforming financial institutions with AI and machine learning, particularly your participation at Finovate showcasing solutions for digital banking, risk prediction, and fraud detection. As Qubika helps businesses evolve from Digital-Native to AI-Native, I'm keen to understand how your Agentic Factory approach to AI agent development leverages Databricks for industry-specific financial challenges."`,                                 lastUpdate:"4/28/2026" },
+        { id:35, name:"Anil Kumar Moka",                                affiliation:"Leading U.S. Bank",                                  role:"Polyglot Data Software Engineer",                                        area:"Subject Matter Expert (Data Governance)",  contactMethod:"LinkedIn",                        approachAngle:`"Dear Anil, I read your insightful article on Unlocking Data Governance at Scale with Databricks Unity Catalog. Your practical insights on using Unity Catalog for fine-grained access control, auditing, and lineage tracking at a leading U.S. bank are highly relevant. I'm particularly interested in your experiences with best practices for Unity Catalog implementation, especially regarding legacy data integration and managing RBAC complexity, and how these contribute to achieving regulatory requirements like GDPR and CCPA."`,      lastUpdate:"4/28/2026" },
+        { id:36, name:"Manish Shewaramani",                             affiliation:"Credencys (Certified Databricks Partner)",           role:"VP - Sales",                                                             area:"Partnership (Credencys x Databricks)",     contactMethod:"LinkedIn",                        approachAngle:`"Dear Manish, I noted Credencys's role as a certified Databricks consulting partner specializing in optimizing supply chains with AI. Your insights on AI reshaping supply chains from reactive to proactive decision-making and the high-impact use cases like demand forecasting and logistics optimization powered by Databricks are very relevant. I'm interested in how Credencys helps enterprises build and scale AI solutions for real impact."`,                                                                                         lastUpdate:"4/28/2026" },
+        { id:37, name:"Shiv Trisal",                                    affiliation:"Databricks",                                         role:"Global Manufacturing, Transportation & Energy GTM Leader",               area:"Databricks Leadership",                    contactMethod:"LinkedIn",                        approachAngle:`"Dear Shiv, your role as Databricks' Global Manufacturing, Transportation and Energy GTM Leader highlights your deep understanding of how Databricks supports critical industry sectors. I noted your comments on the Kinaxis partnership emphasizing that supply chain data is complex but critical for data intelligence, and how Databricks helps companies shift from fragmented insights to real-time, intelligent actions. I'm keen to understand more about Databricks' strategic approach to empowering enterprises with AI in manufacturing, transportation, and energy sectors."`,lastUpdate:"4/28/2026" },
+      ],
+    };
+
+    /* ═══════════════════════════════════════════════
+       TAB CONFIGURATION
+    ═══════════════════════════════════════════════ */
+    const TABS = [
+      { id:"sources",             label:"Sources",                       image:null },
+      { id:"background",          label:"Background",                    image:"images/Magic_Quadrant.png" },
+      { id:"coreCapabilities",    label:"Core Capabilities",             image:"images/Medallion.png" },
+      { id:"partnershipEcosystem",label:"Partnership Ecosystem",         image:"images/Ecosystem.png" },
+      { id:"certifications",      label:"Certifications",                image:"images/Certification.png" },
+      { id:"clientUseCases",      label:"Client Use Cases & Stories",    image:"images/Client_Story.png" },
+      { id:"gtmPipeline",         label:"GTM Pipeline",                  image:null },
+    ];
+
+    /* ═══════════════════════════════════════════════
+       UTILITIES
+    ═══════════════════════════════════════════════ */
+    const uniq    = (rows, key) => [...new Set(rows.map(r => r[key]).filter(Boolean))];
+    const toTags  = s => s ? s.split(',').map(t => t.trim()).filter(Boolean) : [];
+    const allTags = rows => new Set(rows.flatMap(r => toTags(r.tags || '')));
+    const matchQ  = (row, q) => JSON.stringify(row).toLowerCase().includes(q.toLowerCase());
+    const preview = (str, n=90) => str ? (str.length > n ? str.slice(0, n) + '…' : str) : '';
+
+    /* ═══════════════════════════════════════════════
+       SVG ICONS
+    ═══════════════════════════════════════════════ */
+    const IcoChevron = ({ open }) => (
+      <svg className={`chev${open?' open':''}`} width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M3 5L7 9L11 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    );
+
+    const IcoExternal = () => (
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M4.5 2H2.5C1.948 2 1.5 2.448 1.5 3V9.5C1.5 10.052 1.948 10.5 2.5 10.5H9C9.552 10.5 10 10.052 10 9.5V7.5M7 1.5H10.5M10.5 1.5V5M10.5 1.5L5.5 6.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    );
+
+    const IcoSearch = () => (
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="6" cy="6" r="4"/>
+        <path d="M9 9L12.5 12.5" strokeLinecap="round"/>
+      </svg>
+    );
+
+    const IcoInfo = () => (
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="6.5" cy="6.5" r="5.5"/>
+        <path d="M6.5 6v3.5M6.5 4h.01" strokeLinecap="round"/>
+      </svg>
+    );
+
+    const IcoLink = () => (
+      <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <path d="M4.5 6a2.5 2.5 0 003.5-.5l1-1a2.5 2.5 0 00-3.5-3.5L4.5 2" strokeLinecap="round"/>
+        <path d="M6.5 5a2.5 2.5 0 00-3.5.5l-1 1a2.5 2.5 0 003.5 3.5l1-1" strokeLinecap="round"/>
+      </svg>
+    );
+
+    const IcoNotebook = () => (
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="2" y="1.5" width="9" height="10" rx="1"/>
+        <path d="M4 4.5h5M4 6.5h5M4 8.5h3" strokeLinecap="round"/>
+      </svg>
+    );
+
+    /* ═══════════════════════════════════════════════
+       PILLS
+    ═══════════════════════════════════════════════ */
+    const Pills = ({ categories, active, counts, onChange }) => (
+      <div className="pills">
+        <button className={`pill${active==='All'?' active':''}`} onClick={() => onChange('All')}>
+          All <span className="pill-cnt">{counts.__total}</span>
+        </button>
+        {categories.map(cat => (
+          <button key={cat} className={`pill${active===cat?' active':''}`} onClick={() => onChange(cat)}>
+            {cat.includes('·') ? cat.split('·').pop().trim() : cat}
+            <span className="pill-cnt">{counts[cat]||0}</span>
+          </button>
+        ))}
+      </div>
+    );
+
+    /* ═══════════════════════════════════════════════
+       EXPANDED: STANDARD ROW
+    ═══════════════════════════════════════════════ */
+    const ExpandedStandard = ({ row, allUseCases }) => {
+      const linked = (row.linkedUseCases||[]).map(id => allUseCases.find(u => u.id===id)).filter(Boolean);
+      return (
+        <div className="exp-panel">
+          <div className="exp-grid">
+            <div className="exp-full">
+              <div className="f-lbl">Description</div>
+              <div className="f-val desc">{row.description || '—'}</div>
+            </div>
+            {row.sources && (
+              <div>
+                <div className="f-lbl">Sources</div>
+                <div className="f-val">{row.sources}</div>
+              </div>
+            )}
+            {row.lastUpdate && (
+              <div>
+                <div className="f-lbl">Last updated</div>
+                <div className="f-val">{row.lastUpdate}</div>
+              </div>
+            )}
+            {row.tags && (
+              <div className="exp-full">
+                <div className="f-lbl">Tags</div>
+                <div className="td-tags" style={{marginTop:5}}>
+                  {toTags(row.tags).map(t => <span key={t} className="tag">{t}</span>)}
+                </div>
+              </div>
+            )}
+          </div>
+          <div style={{display:'flex',gap:10,flexWrap:'wrap',alignItems:'center'}}>
+            {row.link && (
+              <a href={row.link} target="_blank" rel="noopener noreferrer" className="btn-nlm">
+                Open resource&nbsp;<IcoExternal />
+              </a>
+            )}
+            {row.notebookLM && (
+              <a href={row.notebookLM} target="_blank" rel="noopener noreferrer" className="btn-nlm" style={{background:'var(--primary-dark)'}}>
+                <IcoNotebook />&nbsp;Open in NotebookLM
+              </a>
+            )}
+          </div>
+          {linked.length > 0 && (
+            <div className="uc-section">
+              <div className="uc-lbl">Related client use cases ({linked.length})</div>
+              <div className="uc-cards">
+                {linked.map(uc => (
+                  <div key={uc.id} className="uc-card">
+                    <div className="uc-cat">{uc.category}</div>
+                    <div className="uc-name">{uc.name}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    /* ═══════════════════════════════════════════════
+       EXPANDED: GTM ROW
+    ═══════════════════════════════════════════════ */
+    const ExpandedGTM = ({ row }) => (
+      <div className="exp-panel">
+        <div className="exp-grid">
+          <div className="exp-full">
+            <div className="f-lbl">Approach angle</div>
+            <div className="f-val desc">{row.approachAngle||'—'}</div>
+          </div>
+          <div><div className="f-lbl">Affiliation</div><div className="f-val">{row.affiliation||'—'}</div></div>
+          <div><div className="f-lbl">Role</div><div className="f-val">{row.role||'—'}</div></div>
+          <div><div className="f-lbl">Area</div><div className="f-val">{row.area||'—'}</div></div>
+          <div><div className="f-lbl">Contact method</div><div className="f-val">{row.contactMethod||'—'}</div></div>
+          {row.lastUpdate && <div><div className="f-lbl">Last updated</div><div className="f-val">{row.lastUpdate}</div></div>}
+        </div>
+      </div>
+    );
+
+    /* ═══════════════════════════════════════════════
+       STANDARD TABLE
+    ═══════════════════════════════════════════════ */
+    const StandardTable = ({ rows, expandedId, onToggle, allUseCases }) => {
+      if (!rows.length) return (
+        <div className="empty-state">
+          <div className="empty-title">No entries yet</div>
+          <div className="empty-body">Add data in Databricks_GTM.xlsx to populate this view.</div>
+        </div>
+      );
+      return (
+        <table>
+          <thead>
+            <tr>
+              <th style={{width:180}}>Category</th>
+              <th>Name &amp; Description</th>
+              <th style={{width:180}}>Tags</th>
+              <th style={{width:100}}>Updated</th>
+              <th style={{width:120}}></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colSpan="5" style={{padding:0,border:'none'}}>
+                <div className="expand-hint">
+                  <IcoInfo />&nbsp; Click any row — or press <strong>Expand</strong> — to read the full description
+                </div>
+              </td>
+            </tr>
+            {rows.map(row => (
+              <React.Fragment key={row.id}>
+                <tr className={`data-row${expandedId===row.id?' exp-row':''}`} onClick={() => onToggle(row.id)}>
+                  <td className="td-cat">{row.category||'—'}</td>
+                  <td>
+                    <div className="cell-main">
+                      <span className="cell-name-text">
+                        {row.name}
+                        {(row.linkedUseCases||[]).length > 0 && (
+                          <span className="uc-badge" style={{marginLeft:8}}>
+                            {row.linkedUseCases.length} use case{row.linkedUseCases.length>1?'s':''}
+                          </span>
+                        )}
+                      </span>
+                      {row.description && <span className="cell-preview">{preview(row.description)}</span>}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="td-tags">
+                      {toTags(row.tags).slice(0,3).map(t => <span key={t} className="tag">{t}</span>)}
+                      {toTags(row.tags).length>3 && <span className="tag">+{toTags(row.tags).length-3}</span>}
+                    </div>
+                  </td>
+                  <td className="td-date">{row.lastUpdate||'—'}</td>
+                  <td style={{textAlign:'right',paddingRight:16}}>
+                    <button className="exp-btn" onClick={e => { e.stopPropagation(); onToggle(row.id); }}>
+                      {expandedId===row.id ? 'Collapse' : 'Expand'}
+                      <IcoChevron open={expandedId===row.id} />
+                    </button>
+                  </td>
+                </tr>
+                {expandedId===row.id && (
+                  <tr className="exp-panel-row">
+                    <td colSpan="5">
+                      <ExpandedStandard row={row} allUseCases={allUseCases} />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      );
+    };
+
+    /* ═══════════════════════════════════════════════
+       GTM PIPELINE TABLE
+    ═══════════════════════════════════════════════ */
+    const GTMTable = ({ rows, expandedId, onToggle }) => {
+      if (!rows.length) return (
+        <div className="empty-state">
+          <div className="empty-title">Pipeline is empty</div>
+          <div className="empty-body">Add contacts to the GTM Pipeline tab in Databricks_GTM.xlsx.</div>
+        </div>
+      );
+      return (
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Affiliation</th>
+              <th style={{width:140}}>Area</th>
+              <th style={{width:100}}>Updated</th>
+              <th style={{width:120}}></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colSpan="5" style={{padding:0,border:'none'}}>
+                <div className="expand-hint">
+                  <IcoInfo />&nbsp; Click any row — or press <strong>Expand</strong> — to read the full approach angle
+                </div>
+              </td>
+            </tr>
+            {rows.map(row => (
+              <React.Fragment key={row.id}>
+                <tr className={`data-row${expandedId===row.id?' exp-row':''}`} onClick={() => onToggle(row.id)}>
+                  <td>
+                    <div className="cell-main">
+                      <span className="cell-name-text">{row.name}</span>
+                      {row.role && <span className="cell-preview">{row.role}</span>}
+                    </div>
+                  </td>
+                  <td style={{fontWeight:500,fontSize:13}}>{row.affiliation}</td>
+                  <td>
+                    <span className="tag" style={{background:'var(--primary-pale)',color:'var(--primary)',fontWeight:600,border:'none'}}>
+                      {row.area}
+                    </span>
+                  </td>
+                  <td className="td-date">{row.lastUpdate||'—'}</td>
+                  <td style={{textAlign:'right',paddingRight:16}}>
+                    <button className="exp-btn" onClick={e => { e.stopPropagation(); onToggle(row.id); }}>
+                      {expandedId===row.id ? 'Collapse' : 'Expand'}
+                      <IcoChevron open={expandedId===row.id} />
+                    </button>
+                  </td>
+                </tr>
+                {expandedId===row.id && (
+                  <tr className="exp-panel-row">
+                    <td colSpan="5">
+                      <ExpandedGTM row={row} />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      );
+    };
+
+    /* ═══════════════════════════════════════════════
+       SOURCES VIEW
+    ═══════════════════════════════════════════════ */
+    const SourcesView = ({ rows, notebookLMLink }) => {
+      if (!rows.length) return (
+        <div className="empty-state">
+          <div className="empty-title">No sources yet</div>
+          <div className="empty-body">Add entries to the Sources tab in Databricks_GTM.xlsx.</div>
+        </div>
+      );
+      return (
+        <div>
+          {notebookLMLink && (
+            <div style={{padding:'14px 20px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:14,background:'var(--primary-tint)'}}>
+              <span style={{fontSize:13,color:'var(--t2)',fontWeight:500,flex:1}}>
+                All {rows.length} sources are indexed in NotebookLM for AI-powered research
+              </span>
+              <a href={notebookLMLink} target="_blank" rel="noopener noreferrer" className="btn-nlm" style={{fontSize:11.5,padding:'7px 16px'}}>
+                <IcoNotebook />&nbsp;Open NotebookLM
+              </a>
+            </div>
+          )}
+          {rows.map((row, i) => (
+            <div key={row.id} className="source-item">
+              <span className="source-num">{String(i+1).padStart(2,'0')}</span>
+              <span className="source-title">{row.title}</span>
+              {row.link && (
+                <a href={row.link} target="_blank" rel="noopener noreferrer" className="source-link">
+                  <IcoLink />&nbsp;Visit
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    /* ═══════════════════════════════════════════════
+       TAB CONTENT (orchestrator)
+    ═══════════════════════════════════════════════ */
+    const TabContent = ({ tab, rows, allUseCases }) => {
+      const [expanded,   setExpanded]   = useState(null);
+      const [search,     setSearch]     = useState('');
+      const [activeCat,  setActiveCat]  = useState('All');
+
+      const toggle = id => setExpanded(p => p===id ? null : id);
+
+      const categories = uniq(rows, 'category');
+
+      const counts = useMemo(() => {
+        const c = { __total: rows.length };
+        categories.forEach(cat => { c[cat] = rows.filter(r => r.category===cat).length; });
+        return c;
+      }, [rows, categories]);
+
+      const filtered = useMemo(() => {
+        let r = rows;
+        if (activeCat !== 'All') r = r.filter(row => row.category === activeCat);
+        if (search.trim()) r = r.filter(row => matchQ(row, search));
+        return r;
+      }, [rows, activeCat, search]);
+
+      const isStandard = !['sources','gtmPipeline'].includes(tab.id);
+      const isGTM      = tab.id === 'gtmPipeline';
+      const isSources  = tab.id === 'sources';
+
+      const stats = isSources ? [] : isGTM
+        ? [
+            { num: rows.length,                                           lbl: 'Total contacts' },
+            { num: uniq(rows,'area').filter(Boolean).length,              lbl: 'Areas covered' },
+            { num: uniq(rows,'affiliation').filter(a=>a&&a!=='—').length, lbl: 'Organisations' },
+          ]
+        : [
+            { num: rows.length,        lbl: 'Total entries' },
+            { num: categories.length,  lbl: 'Categories' },
+            { num: allTags(rows).size, lbl: 'Unique tags' },
+          ];
+
+      return (
+        <div>
+          {/* Infographic banner */}
+          {tab.image && (
+            <div className="img-banner">
+              <img src={tab.image} alt={tab.label} />
+            </div>
+          )}
+
+          {/* Stats */}
+          {stats.length > 0 && (
+            <div className="stats-strip">
+              {stats.map((s,i) => (
+                <div key={i} className="stat-card">
+                  <span className="stat-num">{s.num}</span>
+                  <span className="stat-label">{s.lbl}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Filter bar */}
+          {(isStandard || isGTM) && rows.length > 0 && (
+            <div className="filter-bar">
+              <div className="search-wrap">
+                <span className="search-icon"><IcoSearch /></span>
+                <input
+                  type="text" placeholder="Search…"
+                  value={search} onChange={e => setSearch(e.target.value)}
+                />
+              </div>
+              {isStandard && categories.length > 1 && (
+                <Pills categories={categories} active={activeCat} counts={counts} onChange={setActiveCat} />
+              )}
+            </div>
+          )}
+
+          {/* Table / list */}
+          <div className="table-wrap">
+            {isSources  && <SourcesView rows={search ? filtered : rows} notebookLMLink={null} />}
+            {isGTM      && <GTMTable rows={filtered} expandedId={expanded} onToggle={toggle} />}
+            {isStandard && <StandardTable rows={filtered} expandedId={expanded} onToggle={toggle} allUseCases={allUseCases} />}
+          </div>
+        </div>
+      );
+    };
+
+    /* ═══════════════════════════════════════════════
+       APP
+    ═══════════════════════════════════════════════ */
+    const App = () => {
+      const [activeTab, setActiveTab] = useState('background');
+      const tab = TABS.find(t => t.id === activeTab);
+
+      const tabRows = {
+        sources:              DATA.sources,
+        background:           DATA.background,
+        coreCapabilities:     DATA.coreCapabilities,
+        partnershipEcosystem: DATA.partnershipEcosystem,
+        certifications:       DATA.certifications,
+        clientUseCases:       DATA.clientUseCases,
+        gtmPipeline:          DATA.gtmPipeline,
+      };
+
+      const today = new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+
+      return (
+        <div>
+          {/* Navbar */}
+          <nav className="nav">
+            <div className="nav-left">
+              <img src="images/logo.png" alt="Accenture" className="nav-logo-acc" />
+              <span className="nav-sep" />
+              <img src="images/databricks-logo.png" alt="Databricks" className="nav-logo-dbr" />
+              <span className="nav-sep" />
+              <div className="nav-title-wrap">
+                <span className="nav-title">Databricks GTM</span>
+                <span className="nav-sub">Strategic Intelligence Repository</span>
+              </div>
+              <span className="nav-badge">Internal</span>
+            </div>
+            <div className="nav-right">Updated {today}</div>
+          </nav>
+
+          {/* Tab bar */}
+          <div className="tab-bar" role="tablist">
+            {TABS.map(t => (
+              <button
+                key={t.id}
+                role="tab"
+                aria-selected={activeTab===t.id}
+                className={`tab-btn${activeTab===t.id?' active':''}`}
+                onClick={() => setActiveTab(t.id)}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Content */}
+          <main className="main">
+            <TabContent
+              key={activeTab}
+              tab={tab}
+              rows={tabRows[activeTab]}
+              allUseCases={DATA.clientUseCases}
+            />
+          </main>
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

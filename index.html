@@ -287,6 +287,101 @@
     .empty-title { font-size: 16px; font-weight: 600; color: var(--t1); margin-bottom: 6px; }
     .empty-body  { font-size: 13px; color: var(--t3); }
 
+    /* ── SOURCE REPO ── */
+    .src-toolbar {
+      padding: 18px 20px 0; background: var(--card);
+      border-bottom: 1px solid var(--border);
+    }
+    .src-toolbar-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px;
+    }
+    .src-count { font-size: 12px; color: var(--t3); font-weight: 500; white-space: nowrap; }
+    .view-toggle {
+      display: inline-flex; border: 1.5px solid var(--border2); border-radius: 50px; overflow: hidden; flex-shrink: 0;
+    }
+    .view-toggle-btn {
+      background: none; border: none; cursor: pointer; font-family: var(--font);
+      font-size: 11.5px; font-weight: 600; color: var(--t3); padding: 6px 18px;
+      transition: all var(--t) var(--ease);
+    }
+    .view-toggle-btn.active { background: var(--primary); color: #fff; }
+    .src-filters { display: flex; flex-direction: column; gap: 10px; padding-bottom: 16px; }
+    .filter-row  { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+    .filter-row-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--t3); padding: 5px 0; white-space: nowrap; min-width: 40px; flex-shrink: 0;
+    }
+
+    /* source cards */
+    .src-card-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px; padding: 24px;
+    }
+    .src-card {
+      background: var(--card); border: 1.5px solid var(--border); border-radius: var(--r-md);
+      padding: 18px 20px; cursor: pointer; display: flex; flex-direction: column; gap: 11px;
+      position: relative; overflow: hidden;
+      transition: all var(--t) var(--ease);
+    }
+    .src-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--primary); transform: scaleX(0); transform-origin: left;
+      transition: transform .25s var(--ease);
+    }
+    .src-card:hover { border-color: var(--primary-light); box-shadow: var(--sh-m); transform: translateY(-2px); }
+    .src-card:hover::before { transform: scaleX(1); }
+    .src-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .src-type-badge {
+      font-size: 9.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+      background: var(--primary-pale); color: var(--primary); border: 1px solid var(--primary-light);
+    }
+    .src-card-num { font-size: 10.5px; color: var(--t3); font-weight: 600; }
+    .src-card-title {
+      font-size: 13.5px; font-weight: 600; color: var(--t1); line-height: 1.5;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .src-publisher { font-size: 11px; color: var(--t3); font-weight: 500; }
+    .src-card-topics { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
+
+    /* modal */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(13,13,20,.55);
+      z-index: 900; display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      animation: fadeIn .18s var(--ease);
+    }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    .modal-box {
+      background: var(--card); border-radius: var(--r-lg);
+      max-width: 660px; width: calc(100% - 40px); max-height: 82vh;
+      overflow-y: auto; box-shadow: 0 24px 80px rgba(0,0,0,.36);
+      animation: slideUp .22s var(--ease);
+    }
+    @keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    .modal-header {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+      padding: 26px 28px 20px; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: var(--card); z-index: 2;
+    }
+    .modal-title { font-size: 16px; font-weight: 700; color: var(--t1); line-height: 1.45; flex: 1; }
+    .modal-close {
+      background: var(--surf); border: 1.5px solid var(--border2); border-radius: 50%;
+      width: 32px; height: 32px; flex-shrink: 0; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: var(--t2);
+      transition: all var(--t) var(--ease);
+    }
+    .modal-close:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .modal-body { padding: 22px 28px 28px; display: flex; flex-direction: column; gap: 20px; }
+    .modal-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .modal-sec-lbl {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--t3); margin-bottom: 7px;
+    }
+    .modal-text  { font-size: 14px; color: var(--t1); line-height: 1.75; }
+    .modal-empty { font-size: 13px; color: var(--t3); font-style: italic; }
+    .modal-footer { padding: 0 28px 26px; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .main { padding: 20px 16px 48px; }
@@ -1087,38 +1182,276 @@
     };
 
     /* ═══════════════════════════════════════════════
-       SOURCES VIEW
+       SOURCE REPO — HELPERS
+    ═══════════════════════════════════════════════ */
+    const inferType = title => {
+      const t = title.toLowerCase();
+      if (/e-?book|ebook/.test(t))                                              return 'E-book';
+      if (/\breport\b|state of\b|survey|annual\b|index\b/.test(t))             return 'Report';
+      if (/\bpaper\b|research\b|whitepaper/.test(t))                           return 'Paper';
+      if (/\bguide\b|how.?to|tutorial|questions to prepare|comprehensive|cheat sheet/.test(t)) return 'Guide';
+      if (/\bblog\b/.test(t))                                                   return 'Blog';
+      if (/\bdoc(umentation)?\b/.test(t))                                       return 'Docs';
+      if (/podcast|webinar|video/.test(t))                                      return 'Media';
+      return 'Article';
+    };
+
+    const inferTopics = title => {
+      const t = title.toLowerCase();
+      const topics = [];
+      if (/\bai\b|artificial intell|machine learn|llm\b|gpt|genai|generative|agentic|agent\b/.test(t)) topics.push('AI & ML');
+      if (/data engineer|medallion|delta lake|lakehouse|etl\b|pipeline|apache spark|unity catalog/.test(t)) topics.push('Data Engineering');
+      if (/analytic|bi\b|business intelligence|visualization|reporting/.test(t)) topics.push('Analytics');
+      if (/cloud|aws\b|azure|google cloud|gcp\b/.test(t))                      topics.push('Cloud');
+      if (/partner|ecosystem|alliance|isv\b/.test(t))                          topics.push('Partnership');
+      if (/certif/.test(t))                                                     topics.push('Certification');
+      if (/financial|banking|insurance|fintech|capital market/.test(t))        topics.push('Financial Services');
+      if (/securi|governance|compliance|privacy|regulat/.test(t))              topics.push('Governance');
+      if (/accenture/.test(t))                                                  topics.push('Accenture');
+      if (!topics.length) topics.push('General');
+      return [...new Set(topics)];
+    };
+
+    const parsePublisher = title => {
+      const match = title.match(/\s+[-|]\s+([^-|]+)$/);
+      return match ? match[1].trim() : '';
+    };
+
+    const parseCleanTitle = title => {
+      return title.replace(/\s+[-|]\s+[^-|]+$/, '').trim() || title;
+    };
+
+    /* ═══════════════════════════════════════════════
+       SOURCE MODAL
+    ═══════════════════════════════════════════════ */
+    const SourceModal = ({ source, index, onClose }) => {
+      const type       = inferType(source.title);
+      const topics     = inferTopics(source.title);
+      const publisher  = parsePublisher(source.title);
+      const cleanTitle = parseCleanTitle(source.title);
+
+      React.useEffect(() => {
+        const fn = e => { if (e.key === 'Escape') onClose(); };
+        window.addEventListener('keydown', fn);
+        return () => window.removeEventListener('keydown', fn);
+      }, []);
+
+      return (
+        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+          <div className="modal-box" role="dialog" aria-modal="true">
+            <div className="modal-header">
+              <div className="modal-title">{cleanTitle}</div>
+              <button className="modal-close" onClick={onClose} aria-label="Close">
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M1 1L10 10M10 1L1 10" strokeLinecap="round"/>
+                </svg>
+              </button>
+            </div>
+            <div className="modal-body">
+              {/* Meta row */}
+              <div className="modal-meta">
+                <span className="src-type-badge">{type}</span>
+                {publisher && <span style={{fontSize:12,color:'var(--t2)',fontWeight:500}}>{publisher}</span>}
+                <span style={{fontSize:11,color:'var(--t3)'}}>#{String(index+1).padStart(2,'0')}</span>
+              </div>
+              {/* Topics */}
+              <div className="td-tags">
+                {topics.map(tp => (
+                  <span key={tp} className="tag" style={{background:'var(--primary-pale)',color:'var(--primary)',border:'none'}}>{tp}</span>
+                ))}
+              </div>
+              {/* Description */}
+              <div>
+                <div className="modal-sec-lbl">Description</div>
+                {source.description
+                  ? <div className="modal-text">{source.description}</div>
+                  : <div className="modal-empty">No description yet — add one in the Sources tab of Databricks_GTM.xlsx.</div>
+                }
+              </div>
+              {/* Relevance */}
+              <div>
+                <div className="modal-sec-lbl">Relevance to Databricks GTM</div>
+                {source.relevance
+                  ? <div className="modal-text">{source.relevance}</div>
+                  : <div className="modal-empty">No relevance note yet.</div>
+                }
+              </div>
+            </div>
+            {source.link && (
+              <div className="modal-footer">
+                <a href={source.link} target="_blank" rel="noopener noreferrer" className="btn-nlm">
+                  Visit source&nbsp;<IcoExternal />
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    };
+
+    /* ═══════════════════════════════════════════════
+       SOURCES VIEW — academic repository
     ═══════════════════════════════════════════════ */
     const SourcesView = ({ rows, notebookLMLink }) => {
+      const [view,        setView]        = useState('cards');
+      const [typeFilter,  setTypeFilter]  = useState('All');
+      const [topicFilter, setTopicFilter] = useState('All');
+      const [search,      setSearch]      = useState('');
+      const [modal,       setModal]       = useState(null);
+
+      const annotated = useMemo(() => rows.map(r => ({
+        ...r,
+        _type:       inferType(r.title),
+        _topics:     inferTopics(r.title),
+        _publisher:  parsePublisher(r.title),
+        _cleanTitle: parseCleanTitle(r.title),
+      })), [rows]);
+
+      const presentTypes  = useMemo(() => [...new Set(annotated.map(r => r._type))].sort(),               [annotated]);
+      const presentTopics = useMemo(() => [...new Set(annotated.flatMap(r => r._topics))].sort(),          [annotated]);
+
+      const filtered = useMemo(() => {
+        let r = annotated;
+        if (typeFilter  !== 'All') r = r.filter(row => row._type === typeFilter);
+        if (topicFilter !== 'All') r = r.filter(row => row._topics.includes(topicFilter));
+        if (search.trim()) r = r.filter(row => row.title.toLowerCase().includes(search.toLowerCase()));
+        return r;
+      }, [annotated, typeFilter, topicFilter, search]);
+
       if (!rows.length) return (
         <div className="empty-state">
           <div className="empty-title">No sources yet</div>
           <div className="empty-body">Add entries to the Sources tab in Databricks_GTM.xlsx.</div>
         </div>
       );
+
       return (
         <div>
+          {/* ── Toolbar ── */}
+          <div className="src-toolbar">
+            <div className="src-toolbar-top">
+              <div style={{display:'flex',alignItems:'center',gap:12,flex:1,minWidth:0}}>
+                <div className="search-wrap" style={{maxWidth:340}}>
+                  <span className="search-icon"><IcoSearch /></span>
+                  <input
+                    type="text" placeholder="Search sources…"
+                    value={search} onChange={e => setSearch(e.target.value)}
+                  />
+                </div>
+                <span className="src-count">{filtered.length} of {rows.length} sources</span>
+              </div>
+              <div className="view-toggle">
+                <button className={`view-toggle-btn${view==='cards'?' active':''}`} onClick={() => setView('cards')}>Cards</button>
+                <button className={`view-toggle-btn${view==='table'?' active':''}`} onClick={() => setView('table')}>Table</button>
+              </div>
+            </div>
+
+            {/* Filters */}
+            <div className="src-filters">
+              <div className="filter-row">
+                <span className="filter-row-label">Type</span>
+                <div className="pills">
+                  <button className={`pill${typeFilter==='All'?' active':''}`} onClick={() => setTypeFilter('All')}>
+                    All <span className="pill-cnt">{annotated.length}</span>
+                  </button>
+                  {presentTypes.map(tp => (
+                    <button key={tp} className={`pill${typeFilter===tp?' active':''}`} onClick={() => setTypeFilter(tp)}>
+                      {tp} <span className="pill-cnt">{annotated.filter(r=>r._type===tp).length}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="filter-row">
+                <span className="filter-row-label">Topic</span>
+                <div className="pills">
+                  <button className={`pill${topicFilter==='All'?' active':''}`} onClick={() => setTopicFilter('All')}>
+                    All
+                  </button>
+                  {presentTopics.map(tp => (
+                    <button key={tp} className={`pill${topicFilter===tp?' active':''}`} onClick={() => setTopicFilter(tp)}>
+                      {tp} <span className="pill-cnt">{annotated.filter(r=>r._topics.includes(tp)).length}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* NotebookLM banner */}
           {notebookLMLink && (
-            <div style={{padding:'14px 20px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:14,background:'var(--primary-tint)'}}>
+            <div style={{padding:'12px 20px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:14,background:'var(--primary-tint)'}}>
               <span style={{fontSize:13,color:'var(--t2)',fontWeight:500,flex:1}}>
-                All {rows.length} sources are indexed in NotebookLM for AI-powered research
+                All {rows.length} sources indexed in NotebookLM for AI-powered research
               </span>
               <a href={notebookLMLink} target="_blank" rel="noopener noreferrer" className="btn-nlm" style={{fontSize:11.5,padding:'7px 16px'}}>
                 <IcoNotebook />&nbsp;Open NotebookLM
               </a>
             </div>
           )}
-          {rows.map((row, i) => (
-            <div key={row.id} className="source-item">
-              <span className="source-num">{String(i+1).padStart(2,'0')}</span>
-              <span className="source-title">{row.title}</span>
-              {row.link && (
-                <a href={row.link} target="_blank" rel="noopener noreferrer" className="source-link">
-                  <IcoLink />&nbsp;Visit
-                </a>
-              )}
+
+          {/* No results */}
+          {filtered.length === 0 && (
+            <div className="empty-state">
+              <div className="empty-title">No matches</div>
+              <div className="empty-body">Try adjusting your filters or search term.</div>
             </div>
-          ))}
+          )}
+
+          {/* ── CARD VIEW ── */}
+          {view === 'cards' && filtered.length > 0 && (
+            <div className="src-card-grid">
+              {filtered.map((row, i) => (
+                <div key={row.id} className="src-card" onClick={() => setModal({ source: row, index: i })}>
+                  <div className="src-card-top">
+                    <span className="src-type-badge">{row._type}</span>
+                    <span className="src-card-num">#{String(i+1).padStart(2,'0')}</span>
+                  </div>
+                  <div className="src-card-title">{row._cleanTitle}</div>
+                  {row._publisher && <div className="src-publisher">{row._publisher}</div>}
+                  <div className="src-card-topics">
+                    {row._topics.map(tp => (
+                      <span key={tp} className="tag" style={{background:'var(--primary-pale)',color:'var(--primary)',border:'none',fontSize:10}}>{tp}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* ── TABLE VIEW ── */}
+          {view === 'table' && filtered.length > 0 && (
+            <div>
+              {filtered.map((row, i) => (
+                <div
+                  key={row.id} className="source-item"
+                  style={{cursor:'pointer'}}
+                  onClick={() => setModal({ source: row, index: i })}
+                >
+                  <span className="source-num">{String(i+1).padStart(2,'0')}</span>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontWeight:600,fontSize:13,color:'var(--t1)'}}>{row._cleanTitle}</div>
+                    {row._publisher && <div style={{fontSize:11,color:'var(--t3)',marginTop:2}}>{row._publisher}</div>}
+                  </div>
+                  <div style={{display:'flex',gap:5,flexShrink:0,alignItems:'center'}}>
+                    <span className="src-type-badge">{row._type}</span>
+                    {row._topics.slice(0,1).map(tp => (
+                      <span key={tp} className="tag" style={{background:'var(--primary-pale)',color:'var(--primary)',border:'none'}}>{tp}</span>
+                    ))}
+                  </div>
+                  {row.link && (
+                    <a href={row.link} target="_blank" rel="noopener noreferrer" className="source-link" onClick={e => e.stopPropagation()}>
+                      <IcoLink />&nbsp;Visit
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Modal */}
+          {modal && (
+            <SourceModal source={modal.source} index={modal.index} onClose={() => setModal(null)} />
+          )}
         </div>
       );
     };
@@ -1203,7 +1536,7 @@
 
           {/* Table / list */}
           <div className="table-wrap">
-            {isSources  && <SourcesView rows={search ? filtered : rows} notebookLMLink={null} />}
+            {isSources  && <SourcesView rows={rows} notebookLMLink={null} />}
             {isGTM      && <GTMTable rows={filtered} expandedId={expanded} onToggle={toggle} />}
             {isStandard && <StandardTable rows={filtered} expandedId={expanded} onToggle={toggle} allUseCases={allUseCases} />}
           </div>
@@ -1215,7 +1548,7 @@
        APP
     ═══════════════════════════════════════════════ */
     const App = () => {
-      const [activeTab, setActiveTab] = useState('background');
+      const [activeTab, setActiveTab] = useState('sources');
       const tab = TABS.find(t => t.id === activeTab);
 
       const tabRows = {

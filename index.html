@@ -95,10 +95,10 @@
     .img-banner {
       width: 100%; margin-bottom: 24px;
       border-radius: var(--r-lg); overflow: hidden;
-      max-height: 600px;
+      max-height: 300px;
       display: flex; align-items: center; justify-content: center;
     }
-    .img-banner img { width: 100%; max-height: 600px; object-fit: contain; border-radius: var(--r-lg); }
+    .img-banner img { width: 100%; max-height: 300px; object-fit: contain; border-radius: var(--r-lg); }
 
     /* ── STATS ── */
     .stats-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 20px; }
@@ -873,7 +873,7 @@
       { id:"partnershipEcosystem",label:"Partnership Ecosystem",         image:"images/Ecosystem.png" },
       { id:"certifications",      label:"Certifications",                image:"images/Certification.png" },
       { id:"clientUseCases",      label:"Client Use Cases & Stories",    image:"images/Client_Story.png" },
-      { id:"gtmPipeline",         label:"GTM Pipeline",                  image:null },
+      { id:"gtmPipeline",         label:"GTM Pipeline",                  image:"images/gtm.png" },
     ];
 
     /* ═══════════════════════════════════════════════
@@ -1464,32 +1464,26 @@
 
       const toggle = id => setExpanded(p => p===id ? null : id);
 
-      const categories = uniq(rows, 'category');
+      const isStandard = !['sources','gtmPipeline'].includes(tab.id);
+      const isGTM      = tab.id === 'gtmPipeline';
+      const isSources  = tab.id === 'sources';
+
+      // GTM filters by "area"; all standard tabs filter by "category"
+      const filterKey  = isGTM ? 'area' : 'category';
+      const categories = uniq(rows, filterKey);
 
       const counts = useMemo(() => {
         const c = { __total: rows.length };
-        categories.forEach(cat => { c[cat] = rows.filter(r => r.category===cat).length; });
+        categories.forEach(cat => { c[cat] = rows.filter(r => r[filterKey]===cat).length; });
         return c;
       }, [rows, categories]);
 
       const filtered = useMemo(() => {
         let r = rows;
-        if (activeCat !== 'All') r = r.filter(row => row.category === activeCat);
+        if (activeCat !== 'All') r = r.filter(row => row[filterKey] === activeCat);
         if (search.trim()) r = r.filter(row => matchQ(row, search));
         return r;
       }, [rows, activeCat, search]);
-
-      const isStandard = !['sources','gtmPipeline'].includes(tab.id);
-      const isGTM      = tab.id === 'gtmPipeline';
-      const isSources  = tab.id === 'sources';
-
-      const stats = isGTM
-        ? [
-            { num: rows.length,                                           lbl: 'Total contacts' },
-            { num: uniq(rows,'area').filter(Boolean).length,              lbl: 'Areas covered' },
-            { num: uniq(rows,'affiliation').filter(a=>a&&a!=='—').length, lbl: 'Organisations' },
-          ]
-        : [];
 
       return (
         <div>
@@ -1500,19 +1494,7 @@
             </div>
           )}
 
-          {/* Stats */}
-          {stats.length > 0 && (
-            <div className="stats-strip">
-              {stats.map((s,i) => (
-                <div key={i} className="stat-card">
-                  <span className="stat-num">{s.num}</span>
-                  <span className="stat-label">{s.lbl}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Filter bar */}
+          {/* Filter bar — search + pills for all non-sources tabs */}
           {(isStandard || isGTM) && rows.length > 0 && (
             <div className="filter-bar">
               <div className="search-wrap">
@@ -1522,7 +1504,7 @@
                   value={search} onChange={e => setSearch(e.target.value)}
                 />
               </div>
-              {isStandard && categories.length > 1 && (
+              {categories.length > 0 && (
                 <Pills categories={categories} active={activeCat} counts={counts} onChange={setActiveCat} />
               )}
             </div>

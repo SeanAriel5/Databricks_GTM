@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -342,7 +342,15 @@
       display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
     }
     .src-publisher { font-size: 11px; color: var(--t3); font-weight: 500; }
-    .src-card-topics { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; }
+    .src-card-topics { display: flex; flex-wrap: wrap; gap: 5px; }
+    .src-card-visit {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600; color: var(--t3);
+      text-decoration: none; margin-top: auto; padding-top: 4px;
+      transition: color var(--t) var(--ease);
+      border-bottom: 1px solid transparent;
+    }
+    .src-card-visit:hover { color: var(--primary); border-bottom-color: var(--primary); }
 
     /* modal */
     .modal-overlay {
@@ -615,154 +623,81 @@
     ═══════════════════════════════════════════════════════════════ */
     const DATA = {
 
-      // ── SOURCES  { id, title }
+      // ── SOURCES  { id, title, author, keyTakeaway, relevance, link }
       sources: [
-        { id:1,   title:"Vibe coding' and other ways AI is changing who can build apps and how - Source" },
-        { id:2,   title:"10 Databricks Use Cases in Financial Services - Data Intellect" },
-        { id:3,   title:"100 Data Modelling Interview Questions To Prepare For In 2025 - ProjectPro" },
-        { id:4,   title:"2026 State of AI Agents: Enterprise Insights on Building AI - Databricks" },
-        { id:5,   title:"2026 State of AI Agents: Enterprise Insights on Building AI - Databricks" },
-        { id:6,   title:"2026 State of AI Agents: Enterprise Insights on Building AI | Databricks" },
-        { id:7,   title:"8 AI and data trends shaping financial services in 2026 | Databricks" },
-        { id:8,   title:"A Comprehensive Guide To Databricks Data Engineer Associate Certification - Dumpsgate" },
-        { id:9,   title:"AI and machine learning | SAP Databricks" },
-        { id:10,  title:"AI/works™ | Thoughtworks Agentic Development Platform" },
-        { id:11,  title:"AWS vs. Azure and Google Cloud (GCP), The Executive Guide for 2026" },
-        { id:12,  title:"About Databricks: The data and AI company | Databricks" },
-        { id:13,  title:"Accenture + Databricks" },
-        { id:14,  title:"Accenture and Databricks Accelerate Enterprise Adoption of AI" },
-        { id:15,  title:"Accenture and Databricks Partner to Accelerate Enterprise Adoption of AI Applications and Agents at Scale" },
-        { id:16,  title:"Accenture, Databricks Expand Partnership With New Business Group to Scale Enterprise AI" },
-        { id:17,  title:"Agent Bricks in Databricks: Chat with Your Data and Gain Insights - NextLytics AG" },
-        { id:18,  title:"Agent Bricks in Databricks: Chat with Your Data and Gain Insights - NextLytics AG" },
-        { id:19,  title:"Agent Bricks | Databricks" },
-        { id:20,  title:"Agent Bricks: The Governed Enterprise Agent Platform | Databricks Blog" },
-        { id:21,  title:"Agent Tracing & AI Observability Tools | Managed MLflow - Databricks" },
-        { id:22,  title:"Agent system design patterns | Databricks on Google Cloud" },
-        { id:23,  title:"Agentic AI Meets PL/I: Modernizing Mainframes with AWS Transform" },
-        { id:24,  title:"Agentic AI Use by Businesses Soars 327% in Four Months, Says Report - Automation Today" },
-        { id:25,  title:"Agentic Shift: Databricks Report Reveals 327% Surge in Enterprise AI Systems" },
-        { id:26,  title:"An AI-First Approach to Data Engineering with Lakeflow and Agent" },
-        { id:27,  title:"Announcing the 2026 Built-On Databricks Startup Challenge" },
-        { id:28,  title:"Announcing the General Availability of Serverless Compute for Notebooks, Workflows and Delta Live Tables - Databricks" },
-        { id:29,  title:"April 2026 platform release notes | SAP Databricks" },
-        { id:30,  title:"April 2026 | Databricks on AWS" },
-        { id:31,  title:"Architecting Autonomous Agentic AI with Databricks Mosaic AI - Modak" },
-        { id:32,  title:"Authors' Copyright Suit Against Databricks Will Continue" },
-        { id:33,  title:"Azure Databricks Lakebase is now generally available | Microsoft Community Hub" },
-        { id:34,  title:"Azure Databricks | Microsoft Azure Blog" },
-        { id:35,  title:"Azure updates - Microsoft Azure" },
-        { id:36,  title:"Bridging Data Science and Marketing: Databricks Unveils Delta Sharing Integration for Adobe Experience Platform and Agentic Marketing Workflows" },
-        { id:37,  title:"Build and deploy quality AI agent systems - Databricks" },
-        { id:38,  title:"Build and deploy quality AI agent systems - Databricks" },
-        { id:39,  title:"Building the Future: Your Guide to Multimodal AI Data Infrastructure - Pixeltable Blog" },
-        { id:40,  title:"Certifications and Badges Offered By Databricks That Are Worth Knowing - Dumpsgate" },
-        { id:41,  title:"Cloud Partners | Databricks" },
-        { id:42,  title:"Data & AI Sales Capture for Databricks and Snowflake - Accenture" },
-        { id:43,  title:"Data Modeler Job Support - AR IT Technologies" },
-        { id:44,  title:"Data governance with Unity Catalog | SAP Databricks" },
-        { id:45,  title:"Data modeling techniques - Hackolade" },
-        { id:46,  title:"Databricks & Accenture Partnership" },
-        { id:47,  title:"Databricks - 2026 Company Profile, Team, Funding & Competitors - Tracxn" },
-        { id:48,  title:"Databricks - Wikipedia" },
-        { id:49,  title:"Databricks - Wikipedia" },
-        { id:50,  title:"Databricks 2026 Report: Multi-Agent AI Architectures Surge 327% - Reddit" },
-        { id:51,  title:"Databricks AI Capabilities, ML & GenAI Features - Addepto" },
-        { id:52,  title:"Databricks Acquires Generative AI Platform MosaicML for $1.3B - Orrick" },
-        { id:53,  title:"Databricks Announces $850M UK Investment to Accelerate Enterprise Data + AI Adoption" },
-        { id:54,  title:"Databricks Announces 2021 North America Partner Awards" },
-        { id:55,  title:"Databricks Community - Announcements" },
-        { id:56,  title:"Databricks Completes Acquisition of MosaicML" },
-        { id:57,  title:"Databricks Consulting Services - Analytics8" },
-        { id:58,  title:"Databricks Executive Leadership Team - Innovators in Cloud Data and AI - Exa" },
-        { id:59,  title:"Databricks Founders - Company Overview" },
-        { id:60,  title:"Databricks Generative AI Engineer Associate Dumps by Dumpsgate" },
-        { id:61,  title:"Databricks Grows >55% YoY, Surpasses $4.8B Revenue Run-Rate" },
-        { id:62,  title:"Databricks IPO 2026: Valuation, Date & Investor Guide - Allied Venture Partners" },
-        { id:63,  title:"Databricks IPO: Investment Opportunities & Pre-IPO Valuations - Forge Global" },
-        { id:64,  title:"Databricks IQ: AI-Driven Analytics for Faster Data Insights" },
-        { id:65,  title:"Databricks Introduces Lakebase, a PostgreSQL Database for AI Workloads - InfoQ" },
-        { id:66,  title:"Databricks Is a Glassdoor Best-Led Company in 2024" },
-        { id:67,  title:"Databricks Lakebase OLTP Database Guide | PDF | PostgreSQL - Scribd" },
-        { id:68,  title:"Databricks Lakebase is now Generally Available" },
-        { id:69,  title:"Databricks Lakebase is now Generally Available" },
-        { id:70,  title:"Databricks Launches Agent Bricks: A New Approach to Building AI Agents - PR Newswire" },
-        { id:71,  title:"Databricks Raises $1.8 Billion in Debt Ahead of 2026 IPO - MLQ.ai" },
-        { id:72,  title:"Databricks Recognized as One of Glassdoor's Best Places to Work in 2025" },
-        { id:73,  title:"Databricks Signs Definitive Agreement to Acquire MosaicML, a Leading Generative AI Platform" },
-        { id:74,  title:"Databricks Success Story | Founders | Business Model - StartupTalky" },
-        { id:75,  title:"Databricks Unity Catalog | Specs, reviews and EoL info - InvGate" },
-        { id:76,  title:"Databricks Ventures - IVC Data & Insights" },
-        { id:77,  title:"Databricks and Microsoft Extend Strategic Partnership for Azure" },
-        { id:78,  title:"Databricks and Snowflake A Comprehensive Comparison for 2025" },
-        { id:79,  title:"Databricks and dbt Partnership: What It Means for Your Data Stack - Analytics8" },
-        { id:80,  title:"Databricks clouds and regions" },
-        { id:81,  title:"Databricks for Data Engineering: Building Scalable Data Pipelines - Lucent Innovation" },
-        { id:82,  title:"Databricks generative AI capabilities" },
-        { id:83,  title:"Databricks on Azure vs. AWS vs. GCP: What Actually Differs - Dawiso" },
-        { id:84,  title:"Databricks vs Snowflake: The Ultimate 2025 Data Platform Comparison - GEM Corporation" },
-        { id:85,  title:"Databricks, Accenture Launch Joint Business Venture Focused On Spurring AI Development" },
-        { id:86,  title:"Diversity and Inclusion | Databricks" },
-        { id:87,  title:"Diversity at Databricks | Comparably" },
-        { id:88,  title:"ETL processes, data modeling, database design, data analysis - SKP Smart Learning" },
-        { id:89,  title:"From Data Warehousing to Data Intelligence: How Data Took Over | Databricks Blog" },
-        { id:90,  title:"GenWizard - Accenture" },
-        { id:91,  title:"Granulate Optimizes Intel IT Databricks Platform | Connected Social Media" },
-        { id:92,  title:"History and evolution of data lakes | Databricks" },
-        { id:93,  title:"Inside Databricks's $5.4 billion plan to power the agent era - Fast Company" },
-        { id:94,  title:"Insights: Databricks VS Snowflake - Forge" },
-        { id:95,  title:"Kinaxis Partners With Databricks to Accelerate AI-Powered Supply Chain Orchestration | Business Wire" },
-        { id:96,  title:"Kinaxis partners with Databricks to enhance AI-driven supply chain" },
-        { id:97,  title:"Lakebase - Databricks" },
-        { id:98,  title:"Lakebase Postgres | Databricks on AWS" },
-        { id:99,  title:"Lakeflow: Unified Data Engineering | Databricks" },
-        { id:100, title:"Lakehouse Storage | Databricks" },
-        { id:101, title:"List of Investments by Databricks (Jan, 2026) - Tracxn" },
-        { id:102, title:"MLflow 3 for GenAI - Azure Databricks | Microsoft Learn" },
-        { id:103, title:"MLflow on Databricks" },
-        { id:104, title:"Mainframe Modernization Through AWS Transform Composability: Partner Design Collaboration with Agentic AI" },
-        { id:105, title:"Mainframe Services | Cloud - Accenture" },
-        { id:106, title:"MicroVentures' Portfolio Company: Databricks' History and Milestones" },
-        { id:107, title:"MicroVentures' Portfolio Company: Databricks' History and Milestones" },
-        { id:108, title:"Model Hub solution architecture - Hackolade" },
-        { id:109, title:"Mosaic AI Agent Framework" },
-        { id:110, title:"Mosaic AI Gateway: Secure, Responsible LLM Access - Databricks" },
-        { id:111, title:"Open source vs. managed MLflow on Databricks" },
-        { id:112, title:"PDF: IT@Intel: Modernizing Enterprise Data Analytics Using Databricks in the Cloud White Paper" },
-        { id:113, title:"Partners | Databricks" },
-        { id:114, title:"Pasted text (Markdown containing 36 combined reference titles)" },
-        { id:115, title:"Pasted text (Duplicate Markdown containing 36 combined reference titles)" },
-        { id:116, title:"Principal Solutions Engineer: Role Blueprint, Responsibilities, Skills, KPIs, and Career Path" },
-        { id:117, title:"Senior Cloud Engineer - Newton | Built In" },
-        { id:118, title:"Ship quality enterprise AI agents to business users with Agent Bricks and Databricks Apps" },
-        { id:119, title:"Six key insights for C-suite executives to maximize the ROI of agentic AI - Accenture" },
-        { id:120, title:"Snowflake and Databricks in 2025: A Comparative Analysis for Data Engineering - DHS" },
-        { id:121, title:"Solution Architect - EVERSANA - Built In" },
-        { id:122, title:"Solution Architect at EVERSANA in Bengaluru" },
-        { id:123, title:"State of AI Agents 2026: Lessons on Governance, Evaluation and" },
-        { id:124, title:"The Agentic Pivot: A Strategic Roadmap for Enterprise Reinvention with Databricks and Accenture" },
-        { id:125, title:"The Agile Path to Autonomous Agents - Databricks Community" },
-        { id:126, title:"The Architectural Supremacy and Strategic Evolution of Databricks: A Comprehensive Analysis of the Data Intelligence Era" },
-        { id:127, title:"The Paradigmatic Shift in Enterprise Data Intelligence: A Comprehensive Analysis of the Databricks Ecosystem and the Rise of Agentic AI" },
-        { id:128, title:"The Top Strategic Priorities Guiding Data and AI Leaders in 2026 - Pacific Data Integrators" },
-        { id:129, title:"The Top Strategic Priorities Guiding Data and AI Leaders in 2026 | Databricks Blog" },
-        { id:130, title:"The Ultimate Decision Framework: Snowflake vs. Databricks vs. BigQuery (2025 Guide)" },
-        { id:131, title:"Ultimate Guide to Databricks Certifications (2026): Paths, Exams" },
-        { id:132, title:"Unified Security for Data and AI - Databricks" },
-        { id:133, title:"Unity Catalog Governance In Databricks | Prolifics" },
-        { id:134, title:"Unity Catalog | Databricks" },
-        { id:135, title:"Use Genie Code for pipeline development | Databricks on AWS" },
-        { id:136, title:"Vibe coding - Wikipedia" },
-        { id:137, title:"What Is the Mosaic AI Agent Framework on Databricks" },
-        { id:138, title:"What Is the Mosaic AI Agent Framework on Databricks - Lucent Innovation" },
-        { id:139, title:"What are Data Pipelines? - Databricks" },
-        { id:140, title:"What is Databricks - Dtyped" },
-        { id:141, title:"What is Delta Lake in Databricks?" },
-        { id:142, title:"What is Lakebase Provisioned? | Databricks on AWS" },
-        { id:143, title:"What is Unity Catalog? | Databricks on AWS" },
-        { id:144, title:"What is Vibe Coding? | IBM" },
-        { id:145, title:"Working at Databricks (Employee Experiences 2026) - Taro" },
-        { id:146, title:"Working at Databricks: Employee Reviews | Indeed.com" },
+        { id:1, title:"Vibe coding' and other ways AI is changing who can build apps and how", author:"Microsoft (Not specified)", keyTakeaway:"AI is fundamentally shifting app development via \"vibe coding,\" empowering non-technical users to build software.", relevance:"Validates Ali Ghodsi’s vision on AI-driven coding; positions Databricks AI as an enabler for developers of all skill levels.", link:"https://news.microsoft.com/source/features/ai/vibe-coding..." },
+        { id:2, title:"10 Databricks Use Cases in Financial Services", author:"Data Intellect", keyTakeaway:"Highlights 10 powerful use cases for Databricks in FSI, heavily featuring Unity Catalog and Delta Sharing for governance and data estate modernization.", relevance:"Excellent for targeting FSI clients (Rabobank, Morgan Stanley, etc.) with specific, proven Lakehouse and governance success stories.", link:"https://dataintellect.com/blog/10-databricks-financial-services-use-cases..." },
+        { id:3, title:"100 Data Modelling Interview Questions To Prepare For In 2025", author:"Daivi (ProjectPro)", keyTakeaway:"Comprehensive guide on core data modeling concepts like star vs. snowflake schemas, fact/dimension tables, and forward engineering.", relevance:"Foundational knowledge for data engineering; useful for understanding the technical pain points of our target persona.", link:"https://projectpro.io/article/data-modeling-interview-questions..." },
+        { id:4, title:"2026 State of AI Agents: Enterprise Insights on Building AI", author:"Databricks", keyTakeaway:"Massive market shift happening: enterprise use of agentic AI systems surged 327% as companies move from basic chatbots to multi-agent architectures.", relevance:"Core GTM collateral. Provides urgency and statistical validation that enterprises must adopt Agent Bricks now or fall behind.", link:"https://databricks.com/resources/ebook/state-of-ai-agents" },
+        { id:5, title:"8 AI and data trends shaping financial services in 2026", author:"Databricks Blog", keyTakeaway:"Systemic and organizational silos are the real bottleneck in FSI, not the technology itself. A unified platform is required.", relevance:"Key messaging for FSI pitches: focus on unifying data estates rather than selling point solutions.", link:"https://databricks.com/blog/8-ai-and-data-trends-shaping-financial-services..." },
+        { id:6, title:"A Comprehensive Guide To Databricks Data Engineer Associate Certification", author:"Dave Mathew", keyTakeaway:"Guide detailing exam domains like Spark SQL, incremental processing, and data governance required for Databricks certification.", relevance:"Highlights ecosystem enablement; identifies Dave Mathew as a key influencer for upskilling data teams.", link:"https://dumpsgate.com/databricks-data-engineer-associate-certification" },
+        { id:7, title:"AI and machine learning", author:"SAP Databricks", keyTakeaway:"Databricks / SAP", relevance:"Details how Mosaic AI unifies the ML lifecycle directly on top of SAP Databricks, enabling Vector Search, AI Playground, and Agent frameworks.", link:"https://docs.databricks.com/sap/en/machine-learning" },
+        { id:8, title:"AI/works™", author:"Thoughtworks Agentic Development Platform", keyTakeaway:"Thoughtworks", relevance:"Showcases how Thoughtworks uses AI agents to reverse-engineer and modernize legacy systems without access to original source code.", link:"https://thoughtworks.com/ai/works/" },
+        { id:9, title:"AWS vs. Azure and Google Cloud (GCP), The Executive Guide for 2026", author:"Rushil Bhuptani", keyTakeaway:"Evaluates the \"Big 3\" clouds on AI strategy and pricing. Azure wins for Microsoft-centric enterprise, GCP for AI startups, AWS for general breadth.", relevance:"Provides essential multi-cloud positioning context, helping tailor Databricks pitches to the client's underlying cloud.", link:"https://avidclan.com/blog/aws-vs-azure-and-gcp-the-executive-guide..." },
+        { id:10, title:"About Databricks: The data and AI company", author:"Databricks", keyTakeaway:"Databricks is the creator of the Data Lakehouse, serving 15,000+ organizations to unify data, analytics, and AI.", relevance:"Baseline corporate messaging and credibility metrics (15,000+ customers, 70% of Fortune 500).", link:"https://databricks.com/company/about-us" },
+        { id:11, title:"Accenture + Databricks", author:"Accenture", keyTakeaway:"Introduces the newly expanded Accenture/Databricks business group, delivering 40x faster real-time data access to joint clients.", relevance:"The central hub for the Accenture alliance; critical for joint sales enablement and tracking shared KPIs.", link:"https://accenture.com/us-en/services/ecosystem-partners/databricks" },
+        { id:12, title:"Accenture and Databricks Accelerate Enterprise Adoption of AI Applications...", author:"Accenture PR", keyTakeaway:"Press release detailing the new joint business group and major client wins (Albertsons, BASF, Kyowa Kirin) using agentic AI.", relevance:"Provides high-impact referenceability and proven ROI stories for the joint Accenture GTM motion.", link:"https://newsroom.accenture.com/news/2026..." },
+        { id:13, title:"Agent Bricks in Databricks: Chat with Your Data and Gain Insights", author:"Apostolos (NextLytics AG)", keyTakeaway:"A hands-on guide to building a \"Consultant Matchmaker Agent\" using Agent Bricks, Unity Catalog, and Databricks Foundation Model APIs.", relevance:"Partner-created technical enablement; proves the ease of moving agentic AI from prototype to governed production.", link:"https://nextlytics.com/blog/agent-bricks-in-databricks..." },
+        { id:14, title:"Agent Bricks", author:"Databricks", keyTakeaway:"Databricks", relevance:"Product page for Agent Bricks; emphasizes Open/Multi-AI model choice, Unity Catalog governance, and Model Context Protocol (MCP) integrations.", link:"https://databricks.com/product/artificial-intelligence/agent-bricks" },
+        { id:15, title:"Agent Bricks: The Governed Enterprise Agent Platform", author:"Kasey Uhlenhuth", keyTakeaway:"Highlights GA features like Document Intelligence, Knowledge Assistant, and the CLEARS framework via MLflow for measuring agent quality.", relevance:"Arms sales teams with the latest GA capabilities to overcome objections around agent evaluation and document parsing.", link:"https://databricks.com/blog/agent-bricks-governed-enterprise-agent-platform" },
+        { id:16, title:"Agent Tracing & AI Observability Tools", author:"Managed MLflow", keyTakeaway:"Databricks", relevance:"Positions Managed MLflow as the unified standard for tracing, evaluating, and monitoring GenAI agents, eliminating vendor lock-in via OpenTelemetry.", link:"https://databricks.com/product/managed-mlflow" },
+        { id:17, title:"Agent system design patterns", author:"Databricks on Google Cloud", keyTakeaway:"Databricks", relevance:"Explains the continuum of agent design: deterministic chains vs. single-agent systems vs. complex multi-agent orchestration.", link:"https://docs.databricks.com/gcp/en/generative-ai/guide/agent-system-design-patterns" },
+        { id:18, title:"Agentic AI Meets PL/I: Modernizing Mainframes with AWS Transform", author:"Rolf Sabsch, et al.", keyTakeaway:"Shows how AI agents and AWS Transform extract business logic from legacy mainframes to build modern, cloud-native services.", relevance:"Highlights a highly specific, high-value ecosystem play (AWS mainframe modernization) using agentic AI.", link:"https://aws.amazon.com/blogs/migration-and-modernization/agentic-ai-meets-pl-i..." },
+        { id:19, title:"Agentic AI Use by Businesses Soars 327% in Four Months, Says Report", author:"Automation Today", keyTakeaway:"News report confirming explosive enterprise adoption of agentic AI systems.", relevance:"Third-party validation generating urgency; proves the \"agentic shift\" is real and accelerating.", link:"https://automationtoday.net/featuredarticles/agentic-ai-use-by-businesses-soars..." },
+        { id:20, title:"An AI-First Approach to Data Engineering with Lakeflow and Agent Bricks", author:"Joanna Zouhour", keyTakeaway:"Details how to embed AI directly into ETL pipelines (via", relevance:"Bridges Data Engineering and GenAI; perfect for pitching Lakeflow to data engineers drowning in unstructured data.", link:"https://databricks.com/blog/ai-first-approach-data-engineering-lakeflow..." },
+        { id:21, title:"Announcing the General Availability of Serverless Compute...", author:"Databricks", keyTakeaway:"Announces GA of Serverless compute across Notebooks, Workflows, and DLT.", relevance:"Key TCO and operational efficiency message: Databricks removes infrastructure management burdens.", link:"https://databricks.com/blog/announcing-general-availability-serverless-compute..." },
+        { id:22, title:"April 2026 platform release notes", author:"SAP Databricks", keyTakeaway:"Databricks", relevance:"Highlights automatic semantic metadata syncing from SAP Business Data Cloud to Unity Catalog, and the GA of Governed Tags.", link:"https://docs.databricks.com/sap/en/release-notes/2026/april" },
+        { id:23, title:"April 2026", author:"Databricks on AWS", keyTakeaway:"Databricks", relevance:"Major release notes including GPT-5.5 support, Lakeflow Designer (drag-and-drop), and Lakebase OpenTelemetry export.", link:"https://docs.databricks.com/aws/en/release-notes/product/2026/april" },
+        { id:24, title:"Architecting Autonomous Agentic AI with Databricks Mosaic AI", author:"Modak", keyTakeaway:"Partner guide on treating Vector Search, MLflow, and Foundation Models as composable building blocks for enterprise agents.", relevance:"Strong partner collateral validating Databricks' architecture for moving beyond basic chatbots to autonomous systems.", link:"https://modak.com/blog/architecting-agentic-ai-with-databricks-mosaic-ai..." },
+        { id:25, title:"Azure Databricks Lakebase is now generally available", author:"AnaviNahar", keyTakeaway:"Microsoft announcement of Lakebase GA on Azure Databricks.", relevance:"Validates the strength of the Azure/Databricks first-party integration.", link:"https://techcommunity.microsoft.com/blog/azure-databricks/azure-databricks-lakebase..." },
+        { id:26, title:"Bridging Data Science and Marketing: Databricks Unveils Delta Sharing Integration for Adobe...", author:"Justin Fenton, Dan Zuckerberg, Katy Yuan", keyTakeaway:"Announces zero-copy Delta Sharing with Adobe Experience Platform and bidirectional AI orchestration via Genie MCP.", relevance:"Massive GTM play for the Marketing persona; eliminates data egress costs while infusing AI directly into Adobe campaigns.", link:"https://databricks.com/blog/adobe-databricks-delta-sharing-agentic-marketing" },
+        { id:27, title:"Building the Future: Your Guide to Multimodal AI Data Infrastructure", author:"Pierre Brunelle", keyTakeaway:"Industry analysis comparing multimodal AI infrastructure, noting Databricks' strength in large-scale ML on the Lakehouse.", relevance:"Competitive intelligence; helps position Databricks against specialized tools and cloud-native solutions.", link:"https://pixeltable.com/blog/multimodal-ai-data-infrastructure-guide" },
+        { id:28, title:"Cloud Partners", author:"Databricks", keyTakeaway:"Databricks", relevance:"Outlines deep native integrations with AWS, Azure, and Google Cloud, avoiding vendor lock-in.", link:"https://databricks.com/partners/cloud-partners" },
+        { id:29, title:"Data & AI Sales Capture for Databricks and Snowflake", author:"Accenture", keyTakeaway:"Job listing showing Accenture is actively hiring dedicated sales roles to capture Databricks modernization deals.", relevance:"Proof of Accenture’s financial commitment to aggressively co-selling Databricks in the market.", link:"https://accenture.com/us-en/careers/jobdetails?id=R00304220_en" },
+        { id:30, title:"Data governance with Unity Catalog", author:"SAP Databricks", keyTakeaway:"Databricks", relevance:"Explains how Unity Catalog manages ACLs, data lineage, and Delta Sharing specifically for SAP Databricks environments.", link:"https://docs.databricks.com/sap/en/data-governance" },
+        { id:31, title:"Data modeling techniques / Model Hub solution architecture", author:"Hackolade", keyTakeaway:"Promotes a \"design-first\" (forward engineering) approach to data modeling, integrating directly with platforms like Databricks.", relevance:"Highlights a strong ecosystem partner for enterprise architecture and shift-left data governance.", link:"https://hackolade.com/help/ModelHubsolutionarchitecture.html" },
+        { id:32, title:"Databricks - 2026 Company Profile, Team, Funding & Competitors", author:"Tracxn", keyTakeaway:"Financial overview showing Databricks' $134B valuation and positioning against competitors like Snowflake and Altair.", relevance:"Provides financial credibility and market-share context for enterprise negotiations.", link:"https://tracxn.com/d/companies/databricks/..." },
+        { id:33, title:"Databricks - Wikipedia", author:"Wikipedia", keyTakeaway:"Encyclopedia entry covering the invention of the Lakehouse, Delta Lake, and the DBRX open-source model.", relevance:"High-level company history and credibility.", link:"https://en.wikipedia.org/wiki/Databricks" },
+        { id:34, title:"Databricks 2026 Report: Multi-Agent AI Architectures Surge 327%...", author:"realEnterprise (Reddit)", keyTakeaway:"Grassroots discussion noting that multi-agent architectures are threatening traditional per-seat SaaS licensing models.", relevance:"Captures market sentiment that Databricks' agentic AI is a highly disruptive, cost-saving alternative to traditional SaaS.", link:"https://reddit.com/r/smallbusinessUS/comments/..." },
+        { id:35, title:"Databricks AI Capabilities, ML & GenAI Features", author:"Bartłomiej Grasza (Addepto)", keyTakeaway:"Detailed technical breakdown of Mosaic AI Gateway, Vector Search, and AI functions, praising the tight integration and governance.", relevance:"Excellent third-party validation to use in technical pitches to architects and engineers.", link:"https://addepto.com/blog/a-comprehensive-overview-of-the-databricks-ai-capabilities/" },
+        { id:36, title:"Databricks Announces $850M UK Investment to Accelerate Enterprise Data + AI Adoption", author:"Databricks", keyTakeaway:"Press release announcing a major financial investment in the UK market over three years.", relevance:"Shows global commitment; excellent for EMEA GTM motions and reassuring international clients.", link:"https://databricks.com/company/newsroom/press-releases/databricks-announces-850m-uk-investment..." },
+        { id:37, title:"Databricks Consulting Services / Databricks and dbt Partnership", author:"Analytics8", keyTakeaway:"Showcases consulting success stories (Roche, iFit) and explains the modern data stack synergy between dbt and Databricks.", relevance:"Provides mid-market and enterprise client references, and validates the dbt integration story.", link:"https://analytics8.com/technologies/databricks-partners/" },
+        { id:38, title:"Databricks Grows >55% YoY, Surpasses $4.8B Revenue Run-Rate", author:"Databricks", keyTakeaway:"Financial milestone announcement proving massive, sustained enterprise adoption.", relevance:"The ultimate proof point of market momentum, reducing perceived risk for risk-averse enterprise buyers.", link:"https://databricks.com/company/newsroom/press-releases/databricks-surpasses-4-8b-revenue-run-rate..." },
+        { id:39, title:"Databricks IPO 2026: Valuation, Date & Investor Guide", author:"Matthew Wilson (Allied VC)", keyTakeaway:"Analyzes Databricks' upcoming IPO, citing Lakebase's disruption of Oracle and the massive shift toward AI \"vibe coding\".", relevance:"External validation of Databricks' strategic roadmap and its threat to legacy operational databases.", link:"https://allied.vc/articles/databricks-ipo-expectations-key-dates-valuation-risks" },
+        { id:40, title:"Databricks IPO: Investment Opportunities & Pre-IPO Valuations", author:"Jay Manciocchi (Forge)", keyTakeaway:"Compares private Databricks market data ($134B) favorably against public competitor Snowflake.", relevance:"Financial market perspective that positions Databricks as the superior long-term platform play.", link:"https://forgeglobal.com/databricks_ipo/" },
+        { id:41, title:"Databricks IQ: AI-Driven Analytics for Faster Data Insights", author:"Databricks", keyTakeaway:"Details the Data Intelligence Platform, powered by a GenAI engine that understands the unique semantics of a company's data.", relevance:"Core product messaging: Databricks isn't just a warehouse, it's an intelligent platform that understands your business context.", link:"https://databricks.com/product/data-intelligence-platform" },
+        { id:42, title:"Databricks Introduces Lakebase, a PostgreSQL Database for AI Workloads", author:"Renato Losio (InfoQ)", keyTakeaway:"Technical news coverage of Lakebase, highlighting its ability to run OLTP and AI workloads on Databricks.", relevance:"Technical validation from respected architectural media that Lakebase bridges the OLAP/OLTP divide.", link:"https://infoq.com/news/2026/02/databricks-lakebase-postgresql/" },
+        { id:43, title:"Databricks Lakebase OLTP Database Guide", author:"Datla Rohit varma", keyTakeaway:"Technical guide detailing how Lakebase syncs Delta tables to Postgres and governs them via Unity Catalog.", relevance:"Essential technical reference for pitching Lakebase to DBAs and data architects.", link:"https://scribd.com/document/949952018/Lake-Base" },
+        { id:44, title:"Databricks Lakebase is now Generally Available", author:"Databricks", keyTakeaway:"Official GA announcement of Lakebase, bringing transactional database capabilities directly to the Lakehouse.", relevance:"Key product milestone; allows us to pitch Databricks for operational applications, not just analytics.", link:"https://databricks.com/blog/databricks-lakebase-generally-available" },
+        { id:45, title:"Databricks Launches Agent Bricks: A New Approach to Building AI Agents", author:"Databricks PR", keyTakeaway:"Announces Agent Bricks, emphasizing its auto-generation of synthetic data for evaluation and strong customer quotes.", relevance:"Foundational PR for Agent Bricks; provides immediate customer references (Hawaiian Electric).", link:"https://prnewswire.com/news-releases/databricks-launches-agent-bricks..." },
+        { id:46, title:"What is Databricks", author:"Dtyped", keyTakeaway:"Chronicles Databricks' evolution, highlighting the strategic $2B Tabular acquisition (Iceberg), Lakeflow, and open-sourcing Unity Catalog.", relevance:"Great strategic narrative showing Databricks' aggressive defense of open standards and direct competition with Snowflake.", link:"https://dtyped.com/what-is-databricks/" },
+        { id:47, title:"Databricks vs Snowflake: The Ultimate 2025 Data Platform Comparison", author:"GEM Corporation", keyTakeaway:"Concludes Databricks leads in unified AI and complex workloads, while Snowflake is better for traditional SQL BI.", relevance:"The definitive competitive analysis guide for steering customers away from Snowflake during evaluations.", link:"https://gem-corp.tech/tech-blogs/databricks-vs-snowflake/" },
+        { id:48, title:"Databricks, Accenture Launch Joint Business Venture Focused On Spurring AI Development", author:"CRN", keyTakeaway:"Industry news coverage of the Databricks/Accenture joint venture.", relevance:"Channel validation of the partnership's importance in the IT services market.", link:"https://crn.com/news/ai/2026/databricks-accenture-launch-joint-business-group..." },
+        { id:49, title:"From Data Warehousing to Data Intelligence: How Data Took Over", author:"Richard Tomlinson, Scott Eade", keyTakeaway:"Traces the history from data silos to warehouses, data lakes, the lakehouse, and now the Data Intelligence era.", relevance:"Visionary thought leadership ideal for executive-level (CIO/CDO) presentations on digital transformation.", link:"https://databricks.com/blog/data-warehousing-data-intelligence-how-data-took-over" },
+        { id:50, title:"GenWizard", author:"Accenture", keyTakeaway:"Describes Accenture's GenWizard AI platform for reverse engineering, modernization, and data engineering.", relevance:"Outlines Accenture's proprietary IP, which accelerates migration and implementation of Databricks for joint clients.", link:"https://accenture.com/us-en/services/cloud/application-transformation/genwizard" },
+        { id:51, title:"Granulate Optimizes Intel IT Databricks Platform", author:"Connected Social Media", keyTakeaway:"Intel IT used Granulate on Databricks to cut compute consumption by 23% and increase throughput by 17%.", relevance:"Powerful FinOps/Sustainability client story to prove Databricks can be optimized for severe cost savings.", link:"https://connectedsocialmedia.com/20629/granulate-optimizes-intel-it-databricks-platform/" },
+        { id:52, title:"Inside Databricks's $5.4 billion plan to power the agent era", author:"Victor Dey (Fast Company)", keyTakeaway:"Profiles Databricks hitting a $5.4B run rate and stockpiling capital to lead the agentic AI era and survive market bubbles.", relevance:"Top-tier business press highlighting Databricks' financial stability and visionary leadership in AI.", link:"https://fastcompany.com/91502052/databricks-most-innovative-companies-2026" },
+        { id:53, title:"Kinaxis Partners With Databricks to Accelerate AI-Powered Supply Chain Orchestration", author:"Kinaxis / Databricks", keyTakeaway:"Announces integration of Databricks with Kinaxis Maestro to set a new standard for supply chain decision-making.", relevance:"Excellent targeted partnership play for the Manufacturing and Supply Chain verticals.", link:"https://businesswire.com/news/home/20250401697320/en/" },
+        { id:54, title:"Lakeflow: Unified Data Engineering", author:"Databricks", keyTakeaway:"Introduces Lakeflow Connect (ingestion), declarative pipelines, and native Unity Catalog governance for data engineering.", relevance:"Core messaging for modernizing ETL: Databricks offers a single, unified tool stack for end-to-end data pipelines.", link:"https://databricks.com/product/data-engineering" },
+        { id:55, title:"Lakehouse Storage", author:"Databricks", keyTakeaway:"Highlights open table formats (Delta/Iceberg), Liquid Clustering (no partitions needed), and Predictive Optimization.", relevance:"Vital for pitching infrastructure efficiency, performance gains, and TCO reduction (features M Science story).", link:"https://databricks.com/product/lakehouse-storage" },
+        { id:56, title:"MLflow 3 for GenAI - Azure Databricks", author:"Microsoft", keyTakeaway:"Explains how MLflow 3 unifies tracking, LLM-as-a-judge evaluation, and human feedback for GenAI apps on Azure.", relevance:"Microsoft co-marketing content that validates Databricks' superiority in GenAI evaluation and observability.", link:"https://learn.microsoft.com/en-us/azure/databricks/mlflow3/genai/" },
+        { id:57, title:"Open source vs. managed MLflow on Databricks", author:"Databricks", keyTakeaway:"Compares open-source MLflow with the managed version, emphasizing Unity Catalog integration, RBAC, and fully managed hosting.", relevance:"Key competitive differentiator used to convince customers to buy Databricks rather than DIY open-source deployments.", link:"https://docs.databricks.com/aws/en/mlflow3/genai/overview/oss-managed-diff" },
+        { id:58, title:"IT@Intel: Modernizing Enterprise Data Analytics Using Databricks in the Cloud", author:"Pradeep Baluvaneralu, et al.", keyTakeaway:"Intel IT migrated a massive BU to Databricks, achieving a 65% reduction in ETL time and 58% fewer job failures.", relevance:"A highly credible, metric-heavy enterprise case study proving massive operational ROI on Databricks.", link:"https://intel.com/content/dam/www/central-libraries/us/en/documents/..." },
+        { id:59, title:"Principal Solutions Engineer: Role Blueprint, Responsibilities, Skills...", author:"DevOpsSchool", keyTakeaway:"Outlines the deliverables, skills, and KPIs (e.g., deal win-rate influence) for a Principal SE in enterprise software.", relevance:"Internal enablement resource for understanding technical sales strategies and SE role expectations.", link:"https://devopsschool.com/blog/principal-solutions-engineer-role-blueprint..." },
+        { id:60, title:"Ship quality enterprise AI agents to business users with Agent Bricks and Databricks Apps", author:"Pascal Vogel, Evan Pandya", keyTakeaway:"Explains the exact deployment path: build with Agent Bricks, deploy UI with Databricks Apps, and distribute via Databricks One.", relevance:"Provides the \"how-to\" blueprint for bringing agentic AI directly and securely to business end-users.", link:"https://databricks.com/blog/ship-quality-enterprise-ai-agents-business-users..." },
+        { id:61, title:"Six key insights for C-suite executives to maximize the ROI of agentic AI", author:"Accenture Strategy", keyTakeaway:"Advises a value-targeted \"one-two punch\" strategy for Agentic AI, classifying opportunities into Strategic Bets vs. Table Stakes.", relevance:"High-level executive thought leadership to frame Databricks/Accenture agentic AI deals for the C-suite.", link:"https://accenture.com/content/dam/accenture/final/..." },
+        { id:62, title:"State of AI Agents 2026: Lessons on Governance, Evaluation, and Scale", author:"Sudhir Gajre (Lovelytics)", keyTakeaway:"Analyzes the Databricks AI report, advocating for DSPy prompt optimization and continuous SME evaluation to escape \"pilot purgatory\".", relevance:"Strong partner perspective on how to successfully operationalize agents using Databricks' open platform.", link:"https://lovelytics.com/post/state-of-ai-agents-2026..." },
+        { id:63, title:"The Agentic Pivot: A Strategic Roadmap for Enterprise Reinvention with Databricks and Accenture", author:"N/A", keyTakeaway:"Deep dive into the Databricks-Accenture GTM framework, focusing on Forward Engineering, AI-first ETL, and industry use cases.", relevance:"The central strategic roadmap outlining the exact joint value proposition and architecture for the Accenture alliance.", link:"" },
+        { id:64, title:"The Architectural Supremacy and Strategic Evolution of Databricks", author:"N/A", keyTakeaway:"Analyzes Databricks' $134B rise, the \"Data Lakehouse\" shift, and advanced Unity Catalog features (Governed Tags, AI Classification).", relevance:"Strategic macro-level view of Databricks' architectural dominance, perfect for executive enterprise positioning.", link:"" },
+        { id:65, title:"The Paradigmatic Shift in Enterprise Data Intelligence", author:"N/A", keyTakeaway:"Explores the shift to Data Intelligence platforms, detailing Agent SDK, Vector Search, and the competitive dynamic with Snowflake.", relevance:"Comprehensive ecosystem overview providing ammunition for Databricks' superiority in AI vs. traditional data warehouses.", link:"" },
+        { id:66, title:"The Top Strategic Priorities Guiding Data and AI Leaders in 2026", author:"PDI Marketing Team", keyTakeaway:"Outlines 6 priorities: value portfolios, AI-ready foundations, governance as enablement, production controls, pipeline modernization, and FinOps.", relevance:"Excellent partner framework for aligning Databricks solutions (Unity Catalog, Lakeflow) with CIO/CDO strategic priorities.", link:"https://pacificdataintegrators.com/blogs/top-strategic-priorities-data-ai-leaders-2026" },
+        { id:67, title:"Ultimate Guide to Databricks Certifications (2026)", author:"FlashGenius / Dumpsgate", keyTakeaway:"Practical study guide noting a trend toward tougher exams focused heavily on Unity Catalog, DLT, and GenAI.", relevance:"Shows the maturing, increasingly rigorous technical standards of the Databricks professional ecosystem.", link:"https://flashgenius.net/blog-article/ultimate-guide-to-databricks-certifications-2025..." },
+        { id:68, title:"Unified Security for Data and AI", author:"Databricks", keyTakeaway:"Explains how Unity Catalog provides a unified security model (row/column filters, auditing, Delta Sharing) across all clouds.", relevance:"The definitive pitch for Databricks' enterprise security and cross-platform governance capabilities.", link:"https://databricks.com/trust/security-features/unified-security-for-data-and-ai" },
+        { id:69, title:"Unity Catalog Governance In Databricks", author:"Prolifics", keyTakeaway:"Argues Unity Catalog solves multi-cloud compliance risks (HIPAA, GDPR) via centralized access control and automated data lineage.", relevance:"Partner validation of Unity Catalog's ability to ensure regulatory compliance and scale governance securely.", link:"https://prolifics.com/usa/resource-center/blog/unity-catalog-governance-in-databricks" },
+        { id:70, title:"Use Genie Code for pipeline development", author:"Databricks on AWS", keyTakeaway:"Databricks", relevance:"Explains how Genie Code assists in authoring, explaining, and fixing medallion architecture pipelines.", link:"https://docs.databricks.com/aws/en/ldp/de-agent" },
+        { id:71, title:"Vibe coding - Wikipedia", author:"Wikipedia", keyTakeaway:"Defines \"vibe coding\" as an AI-driven development paradigm and discusses its limitations (security, technical debt).", relevance:"Context for CEO Ali Ghodsi's vision of vibe coding driving 80% of database launches.", link:"https://en.wikipedia.org/wiki/Vibe_coding" },
+        { id:72, title:"What Is the Mosaic AI Agent Framework and How Do You Use It", author:"Krunal Kanojiya (Lucent)", keyTakeaway:"Contrasts Mosaic AI Agent Framework with LangChain, emphasizing built-in enterprise features (Unity Catalog, MLflow) for production.", relevance:"Highly effective partner piece for overcoming objections about using open-source tools vs Databricks for AI agents.", link:"https://lucentinnovation.com/resources/it-insights/mosaic-ai-agent-framework" },
+        { id:73, title:"What is Unity Catalog?", author:"Databricks on AWS", keyTakeaway:"Databricks", relevance:"Explains the object model, managed vs external tables/volumes, and fine-grained access in Unity Catalog.", link:"https://docs.databricks.com/aws/en/data-governance/unity-catalog/" },
       ],
 
       // ── BACKGROUND  { id, category, name, sources, description, link, tags, lastUpdate }
@@ -1260,12 +1195,12 @@
                   <span key={tp} className="tag" style={{background:'var(--primary-pale)',color:'var(--primary)',border:'none'}}>{tp}</span>
                 ))}
               </div>
-              {/* Description */}
+              {/* Key Take-Away */}
               <div>
-                <div className="modal-sec-lbl">Description</div>
-                {source.description
-                  ? <div className="modal-text">{source.description}</div>
-                  : <div className="modal-empty">No description yet — add one in the Sources tab of Databricks_GTM.xlsx.</div>
+                <div className="modal-sec-lbl">Key Take-Away</div>
+                {source.keyTakeaway && source.keyTakeaway !== 'Databricks' && source.keyTakeaway !== 'Thoughtworks'
+                  ? <div className="modal-text">{source.keyTakeaway}</div>
+                  : <div className="modal-empty">No key take-away added yet — update the "Main Thesis / Most Important Points" column in Databricks_GTM.xlsx.</div>
                 }
               </div>
               {/* Relevance */}
@@ -1273,14 +1208,14 @@
                 <div className="modal-sec-lbl">Relevance to Databricks GTM</div>
                 {source.relevance
                   ? <div className="modal-text">{source.relevance}</div>
-                  : <div className="modal-empty">No relevance note yet.</div>
+                  : <div className="modal-empty">No relevance note yet — update the "Relevance for our GTM" column in Databricks_GTM.xlsx.</div>
                 }
               </div>
             </div>
             {source.link && (
               <div className="modal-footer">
                 <a href={source.link} target="_blank" rel="noopener noreferrer" className="btn-nlm">
-                  Visit source&nbsp;<IcoExternal />
+                  Visit website&nbsp;<IcoExternal />
                 </a>
               </div>
             )}
@@ -1407,12 +1342,23 @@
                     <span className="src-card-num">#{String(i+1).padStart(2,'0')}</span>
                   </div>
                   <div className="src-card-title">{row._cleanTitle}</div>
-                  {row._publisher && <div className="src-publisher">{row._publisher}</div>}
+                  {(row.author || row._publisher) && (
+                    <div className="src-publisher">{row.author || row._publisher}</div>
+                  )}
                   <div className="src-card-topics">
                     {row._topics.map(tp => (
                       <span key={tp} className="tag" style={{background:'var(--primary-pale)',color:'var(--primary)',border:'none',fontSize:10}}>{tp}</span>
                     ))}
                   </div>
+                  {row.link && (
+                    <a
+                      href={row.link} target="_blank" rel="noopener noreferrer"
+                      className="src-card-visit"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      <IcoLink />&nbsp;Visit website
+                    </a>
+                  )}
                 </div>
               ))}
             </div>
@@ -1430,7 +1376,9 @@
                   <span className="source-num">{String(i+1).padStart(2,'0')}</span>
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontWeight:600,fontSize:13,color:'var(--t1)'}}>{row._cleanTitle}</div>
-                    {row._publisher && <div style={{fontSize:11,color:'var(--t3)',marginTop:2}}>{row._publisher}</div>}
+                    {(row.author || row._publisher) && (
+                      <div style={{fontSize:11,color:'var(--t3)',marginTop:2}}>{row.author || row._publisher}</div>
+                    )}
                   </div>
                   <div style={{display:'flex',gap:5,flexShrink:0,alignItems:'center'}}>
                     <span className="src-type-badge">{row._type}</span>
@@ -1440,7 +1388,7 @@
                   </div>
                   {row.link && (
                     <a href={row.link} target="_blank" rel="noopener noreferrer" className="source-link" onClick={e => e.stopPropagation()}>
-                      <IcoLink />&nbsp;Visit
+                      <IcoLink />&nbsp;Visit website
                     </a>
                   )}
                 </div>

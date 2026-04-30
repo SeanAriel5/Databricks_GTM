@@ -94,13 +94,11 @@
     /* ── IMAGE BANNER ── */
     .img-banner {
       width: 100%; margin-bottom: 24px;
-      border-radius: var(--r-md); overflow: hidden;
-      background: #fff; box-shadow: var(--sh-m);
-      border: 1px solid var(--border);
-      max-height: 420px;
+      border-radius: var(--r-lg); overflow: hidden;
+      max-height: 600px;
       display: flex; align-items: center; justify-content: center;
     }
-    .img-banner img { width: 100%; max-height: 420px; object-fit: contain; }
+    .img-banner img { width: 100%; max-height: 600px; object-fit: contain; border-radius: var(--r-lg); }
 
     /* ── STATS ── */
     .stats-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 20px; }
@@ -457,14 +455,7 @@
     /* ── LAYOUT ── */
     .main { max-width: 1200px; margin: 0 auto; padding: 28px 40px 60px; }
 
-    /* ── IMAGE BANNER ── */
-    .img-banner {
-      width: 100%; margin-bottom: 20px;
-      background: var(--white); border: 1px solid var(--gray-300);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden; max-height: 260px;
-    }
-    .img-banner img { width: 100%; max-height: 260px; object-fit: contain; }
+    /* ── IMAGE BANNER (legacy override removed) ── */
 
     /* ── STATS STRIP ── */
     .stats-strip {
@@ -1492,17 +1483,13 @@
       const isGTM      = tab.id === 'gtmPipeline';
       const isSources  = tab.id === 'sources';
 
-      const stats = isSources ? [] : isGTM
+      const stats = isGTM
         ? [
             { num: rows.length,                                           lbl: 'Total contacts' },
             { num: uniq(rows,'area').filter(Boolean).length,              lbl: 'Areas covered' },
             { num: uniq(rows,'affiliation').filter(a=>a&&a!=='—').length, lbl: 'Organisations' },
           ]
-        : [
-            { num: rows.length,        lbl: 'Total entries' },
-            { num: categories.length,  lbl: 'Categories' },
-            { num: allTags(rows).size, lbl: 'Unique tags' },
-          ];
+        : [];
 
       return (
         <div>

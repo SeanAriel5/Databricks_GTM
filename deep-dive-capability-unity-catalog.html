@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Unity Catalog — Core Capability Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .feat{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .feat-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .feat-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .obj-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+    .obj-box{background:var(--primary-pale);border:1px solid #D5CAEC;border-radius:8px;padding:14px;text-align:center}
+    .obj-icon{font-size:22px;margin-bottom:6px}
+    .obj-label{font-size:11px;font-weight:700;color:var(--t1)}
+    .obj-sub{font-size:10.5px;color:var(--t2);margin-top:3px}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1)}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .check{color:var(--primary);font-weight:700}
+    .no{color:var(--t3)}
+    .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .metric{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+    .metric-val{font-size:28px;font-weight:700;color:var(--primary);line-height:1}
+    .metric-label{font-size:11px;color:var(--t3);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.feat-grid,.obj-row,.metric-row{grid-template-columns:1fr 1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Core Capabilities › Data Medallion Architecture › Unity Catalog</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Core Capabilities · Data Medallion Architecture</div>
+  <div class="hero-title">Unity Catalog</div>
+  <div class="hero-sub">The unified governance layer for all data, analytics, and AI assets on the Databricks Lakehouse — providing a single security model, automated lineage, and AI-powered documentation across every cloud.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Unity Catalog</span>
+    <span class="hero-badge">Governance</span>
+    <span class="hero-badge">Data Lineage</span>
+    <span class="hero-badge">RBAC</span>
+    <span class="hero-badge">Multi-Cloud</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">What is Unity Catalog?</div>
+    <p class="body-text">Unity Catalog is Databricks' unified governance solution that provides centralized access control, auditing, lineage, and data discovery for all data and AI assets across an enterprise's Databricks deployments. Unlike traditional data catalogs that operate as passive metadata stores bolted on after the fact, Unity Catalog enforces policy <em>at query time</em> — meaning every access, transformation, and model inference is automatically governed and audited. Critically, Unity Catalog governs not just tables and files, but also ML models, AI agents, and external data connections — making it the world's first truly unified data and AI governance layer.</p>
+    <p class="body-text" style="margin-top:14px">In 2026, Databricks open-sourced Unity Catalog, transforming it from a proprietary governance mechanism into an industry standard — while offering the managed version as a premium platform feature with extended enterprise capabilities.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">What Unity Catalog Governs</div>
+    <div class="obj-row">
+      <div class="obj-box">
+        <div class="obj-icon">📋</div>
+        <div class="obj-label">Tables &amp; Views</div>
+        <div class="obj-sub">Managed + external tables across all cloud storage</div>
+      </div>
+      <div class="obj-box">
+        <div class="obj-icon">📁</div>
+        <div class="obj-label">Files &amp; Volumes</div>
+        <div class="obj-sub">Unstructured data: PDFs, images, JSON, Parquet</div>
+      </div>
+      <div class="obj-box">
+        <div class="obj-icon">🤖</div>
+        <div class="obj-label">ML Models &amp; Agents</div>
+        <div class="obj-sub">Registered models, Agent Bricks, Foundation Models</div>
+      </div>
+      <div class="obj-box">
+        <div class="obj-icon">🔗</div>
+        <div class="obj-label">External Connections</div>
+        <div class="obj-sub">Delta Sharing, Lakehouse Federation, MCP servers</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Capabilities</div>
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="feat-title">Fine-Grained Access Control</div>
+        <div class="feat-text">Row-level and column-level security enforced transparently at query time — no application code changes required. Role-based access control (RBAC) with attribute-based policies. Dynamic data masking for PII columns by user group.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Automated Column-Level Lineage</div>
+        <div class="feat-text">Unity Catalog automatically traces the full lineage of every column — from source ingestion through transformations to downstream dashboards and ML models — without any manual annotation. Surfaced in the UI and queryable via API for compliance reporting.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Delta Sharing (Zero-Copy)</div>
+        <div class="feat-text">Share governed data with external partners, customers, or other cloud accounts without copying it. Delta Sharing is an open protocol — recipients can query shared tables using any tool that reads Delta, including Python, Spark, or Tableau.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Lakehouse Federation</div>
+        <div class="feat-text">Query external databases (MySQL, PostgreSQL, Snowflake, Redshift) directly through Unity Catalog's governance layer without data movement. Enables a unified query surface across the entire enterprise data estate.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">AI-Powered Documentation</div>
+        <div class="feat-text">Unity Catalog uses AI to automatically generate table and column descriptions by analyzing data patterns and query history. Genie uses these descriptions to enable natural-language querying, dramatically reducing time-to-insight for business users.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Unity AI Gateway (2026)</div>
+        <div class="feat-text">Extended governance to AI agents: now governs Model Context Protocol (MCP) servers with end-to-end observability, cost attribution, and fine-grained permissions. Every agent call is logged, audited, and rate-limited — critical for enterprise AI governance.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Compliance Coverage</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Regulation / Standard</th><th>Unity Catalog Capability</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>GDPR (EU)</strong></td><td class="check">✓ Right-to-erasure via VACUUM + deletion vectors; column-level masking of PII; automated lineage for data subject impact assessment.</td></tr>
+        <tr><td><strong>HIPAA (US Healthcare)</strong></td><td class="check">✓ Row-level security by patient/provider; audit logs for all PHI access; encryption at rest and in transit enforced by workspace policy.</td></tr>
+        <tr><td><strong>CCPA (California)</strong></td><td class="check">✓ Column-level tagging for sensitive attributes; masking policies by consumer consent state; lineage to prove data provenance.</td></tr>
+        <tr><td><strong>SOC 2 Type II</strong></td><td class="check">✓ Immutable audit logs in Unity Catalog System Tables; time-bound access grants; IP access lists for workspaces.</td></tr>
+        <tr><td><strong>DORA (EU Financial)</strong></td><td class="check">✓ Operational resilience via multi-cloud deployment; Unity Catalog lineage for incident impact analysis.</td></tr>
+        <tr><td><strong>Financial Services (BCBS 239)</strong></td><td class="check">✓ Data lineage from source to report, automated and queryable; proven by FSI clients (Rabobank, Morgan Stanley).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Governance Moat — The Competitive Advantage</div>
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val">12×</div>
+        <div class="metric-label">More AI Projects to Production</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">Open</div>
+        <div class="metric-label">Source (2026 release)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">3</div>
+        <div class="metric-label">Clouds Governed Simultaneously</div>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top:16px">Organizations with Unity Catalog deployed to production deploy 12× more AI projects than those without it (TokenRing AI, 2026). The governance layer is not just a compliance checkbox — it is the mechanism that gives data scientists the confidence to ship models to production quickly, knowing that access control and lineage are handled automatically. For Accenture sellers, Unity Catalog is the answer to every CISO and Chief Data Officer objection: <em>"We can't put AI on sensitive data."</em></p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GTM Positioning</div>
+    <p class="body-text">Unity Catalog is the primary reason enterprises choose Databricks over point solutions. It is the difference between a data warehouse (analytics only) and a Data Intelligence Platform (analytics + ML + agents + governance as one). For Accenture, Unity Catalog is the "platform consolidation" story: instead of managing separate catalogs, lineage tools, access control systems, and AI governance layers — Unity Catalog unifies all of them in a single, open-standards layer. This dramatically reduces operational overhead and eliminates the governance gaps that create regulatory risk.</p>
+    <p class="body-text" style="margin-top:12px"><strong>Key sales angle for regulated industries:</strong> "Your current data stack has five different systems enforcing five different access control policies. Unity Catalog replaces all of them with one governed layer that automatically generates your GDPR lineage reports and audits every AI inference."</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#30 — Data governance with Unity Catalog (SAP Databricks)</span>
+      <span class="chip">#68 — Unified Security for Data and AI (Databricks)</span>
+      <span class="chip">#69 — Unity Catalog Governance (Prolifics)</span>
+      <span class="chip">#73 — What is Unity Catalog? (Databricks AWS docs)</span>
+      <span class="chip">#89 — Databricks Unity Catalog (InvGate review)</span>
+      <span class="chip">#120 — Governance Moat: 12× AI Production Rate (TokenRing)</span>
+      <span class="chip">#125 — Unity Catalog Product Page (Databricks)</span>
+      <span class="chip">#130 — What is Unity Catalog? (Databricks AWS deep-dive)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

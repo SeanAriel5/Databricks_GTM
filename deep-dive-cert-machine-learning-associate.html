@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Machine Learning Associate — Certification Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .domain-list{display:flex;flex-direction:column;gap:14px;margin-top:12px}
+    .domain{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;display:grid;grid-template-columns:80px 1fr auto;gap:16px;align-items:center}
+    .domain-pct{font-size:22px;font-weight:700;color:var(--primary);text-align:center}
+    .domain-info{}
+    .domain-name{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:4px}
+    .domain-topics{font-size:12.5px;color:var(--t2);line-height:1.6}
+    .domain-badge{background:var(--primary-pale);color:var(--primary);font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap;align-self:flex-start}
+    .persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+    .persona{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;text-align:center}
+    .persona-icon{font-size:28px;margin-bottom:8px}
+    .persona-name{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:6px}
+    .persona-desc{font-size:12px;color:var(--t2);line-height:1.5}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .trend-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .trend-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .trend-list li::before{content:'↗';color:var(--primary);font-weight:700;flex-shrink:0;font-size:16px}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.domain{grid-template-columns:1fr}.persona-grid{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Certifications › Machine Learning Associate</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Certifications · Machine Learning Track</div>
+  <div class="hero-title">Machine Learning Associate</div>
+  <div class="hero-sub">The foundational ML certification validating hands-on expertise with Databricks AutoML, MLflow experiment tracking, Feature Store, model training, and production deployment — the credential that bridges data science and production ML on the Lakehouse.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Certification</span>
+    <span class="hero-badge">MLflow</span>
+    <span class="hero-badge">AutoML</span>
+    <span class="hero-badge">Feature Store</span>
+    <span class="hero-badge">Model Serving</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Certification Overview</div>
+    <p class="body-text">The Databricks Certified Machine Learning Associate validates foundational competence in building, tracking, and deploying machine learning models on the Databricks Lakehouse. While the Data Engineer certifications focus on pipeline architecture and data reliability, the ML Associate targets the data scientist and ML engineer persona — validating knowledge of the full model lifecycle from exploratory analysis through production deployment. This is the recommended first certification for Accenture's AI/ML consulting teams and client-facing data scientists working on Databricks engagements.</p>
+    <p class="body-text" style="margin-top:12px"><strong>Format:</strong> 120 minutes · ~60 questions · Multiple-choice and scenario-based · Recertification required every 2 years · No formal prerequisites, though hands-on Databricks experience is assumed.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Target Personas</div>
+    <div class="persona-grid">
+      <div class="persona">
+        <div class="persona-icon">🔬</div>
+        <div class="persona-name">Data Scientist</div>
+        <div class="persona-desc">Validates ability to run experiments, track results with MLflow, compare models, and register champions for deployment — without relying on data engineers for infrastructure.</div>
+      </div>
+      <div class="persona">
+        <div class="persona-icon">⚙️</div>
+        <div class="persona-name">ML Engineer</div>
+        <div class="persona-desc">Validates production deployment skills: model serving endpoints, feature serving from Feature Store, real-time inference, and monitoring. Bridges model development to production operation.</div>
+      </div>
+      <div class="persona">
+        <div class="persona-icon">🏗️</div>
+        <div class="persona-name">Accenture AI Consultant</div>
+        <div class="persona-desc">Signals to clients that the assigned consultant can independently build, evaluate, and deploy ML models on Databricks — a credibility marker in discovery and scoping conversations.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Exam Domains &amp; Weighting</div>
+    <div class="domain-list">
+      <div class="domain">
+        <div class="domain-pct">29%</div>
+        <div class="domain-info">
+          <div class="domain-name">Databricks ML — Core Tools &amp; AutoML</div>
+          <div class="domain-topics">Databricks AutoML (classification, regression, forecasting), Databricks Notebooks for ML (cluster configuration, GPU clusters, collaborative development), integration of Spark MLlib vs. single-node scikit-learn on Databricks, and the Databricks ML runtime (preinstalled libraries, GPU support).</div>
+        </div>
+        <div class="domain-badge">Foundational</div>
+      </div>
+      <div class="domain">
+        <div class="domain-pct">33%</div>
+        <div class="domain-info">
+          <div class="domain-name">ML Workflow — MLflow Experiment Tracking</div>
+          <div class="domain-topics">MLflow runs and experiments (mlflow.start_run(), logging params/metrics/artifacts), autologging with mlflow.autolog(), comparing runs in the MLflow UI, tracking hyperparameter tuning with Hyperopt, model signatures and input example logging, and experiment sharing across workspaces.</div>
+        </div>
+        <div class="domain-badge">Core</div>
+      </div>
+      <div class="domain">
+        <div class="domain-pct">19%</div>
+        <div class="domain-info">
+          <div class="domain-name">ML Workflow — Feature Store</div>
+          <div class="domain-topics">Creating and updating feature tables, feature lookups for training and serving, point-in-time correct feature retrieval, Unity Catalog integration for feature governance, and the relationship between Feature Store and training vs. serving data pipelines to prevent training-serving skew.</div>
+        </div>
+        <div class="domain-badge">Core</div>
+      </div>
+      <div class="domain">
+        <div class="domain-pct">19%</div>
+        <div class="domain-info">
+          <div class="domain-name">ML Workflow — Model Registry &amp; Production Deployment</div>
+          <div class="domain-topics">Registering models in Unity Catalog Model Registry (mlflow.register_model()), model versioning and lifecycle stages (Staging/Production/Archived), model serving endpoints (real-time and batch), Databricks Model Serving autoscaling, inference tables for monitoring, and A/B testing with champion/challenger routing.</div>
+        </div>
+        <div class="domain-badge">Core</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">ML Associate vs. Data Engineer Associate — Different Tracks</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Dimension</th><th>ML Associate</th><th>Data Engineer Associate</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Primary Persona</strong></td><td>Data Scientist, ML Engineer</td><td>Data Engineer, Analytics Engineer</td></tr>
+        <tr><td><strong>Core Focus</strong></td><td>Model experimentation, tracking, deployment, serving</td><td>Pipeline design, ETL, Delta Lake operations, streaming</td></tr>
+        <tr><td><strong>MLflow Role</strong></td><td>Central — full experiment lifecycle management</td><td>Peripheral — awareness of MLflow integration with pipelines</td></tr>
+        <tr><td><strong>Spark Knowledge Required</strong></td><td>Moderate — distributed inference, pandas-on-Spark for feature engineering</td><td>Deep — query plans, streaming, performance tuning</td></tr>
+        <tr><td><strong>Governance Focus</strong></td><td>Model Registry in Unity Catalog, feature governance</td><td>Unity Catalog table/file access control, DLT lineage</td></tr>
+        <tr><td><strong>Accenture GTM Value</strong></td><td>ML/AI project credibility; staffing for GenAI and ML delivery</td><td>Data platform credibility; staffing for Lakehouse migration and pipelines</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2026 Exam Updates</div>
+    <ul class="trend-list">
+      <li><strong>Unity Catalog Model Registry replaces workspace registry</strong> — All model registration questions now reference the Unity Catalog-backed registry (not the deprecated workspace MLflow registry). Candidates must understand the 3-level namespace (catalog.schema.model) for model registration.</li>
+      <li><strong>GenAI evaluation is now testable</strong> — The exam includes questions on using MLflow 3's LLM-as-a-judge evaluation for generative models — correctness scoring, safety evaluation, and human feedback loops. Reflects Databricks' strategic push into LLMOps.</li>
+      <li><strong>Feature Store + Delta Lake integration</strong> — Updated questions test understanding of how feature tables are stored as Delta tables, enabling time travel for point-in-time correct training datasets — a critical concept for preventing data leakage in production models.</li>
+      <li><strong>Model Serving on Serverless</strong> — New questions on deploying models to Databricks Model Serving in serverless mode — autoscaling to zero, pay-per-token pricing, and integration with Databricks Apps for business user-facing model endpoints.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Why This Matters for Accenture GTM</div>
+    <p class="body-text">The ML Associate certification is the primary credential for Accenture consultants who participate in AI/ML delivery engagements on Databricks — not just data engineers building pipelines. As enterprise clients increasingly ask "who on the team is actually certified to build and deploy models on Databricks?", holding the ML Associate signals hands-on capability across the model lifecycle. It is also the recommended precursor to the GenAI Engineering Associate exam — making it part of a structured upskilling path for Accenture's 25,000-professional Databricks training commitment. For client development, presenting ML-certified data scientists builds confidence with CDOs and Chief AI Officers that Accenture can deliver production AI, not just platform setup.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#6 — Data Engineer Associate Cert Guide — context on the certification ecosystem (Dave Mathew)</span>
+      <span class="chip">#67 — Ultimate Guide to Databricks Certifications 2026</span>
+      <span class="chip">#83 — Certifications &amp; Badges Worth Knowing (Dumpsgate)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Client Use Cases Overview — Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .archetype-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .archetype{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .arch-label{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:.08em;margin-bottom:6px}
+    .arch-name{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .arch-clients{font-size:12px;color:var(--t3);font-weight:600;margin-bottom:6px}
+    .arch-text{font-size:12.5px;color:var(--t2);line-height:1.6}
+    .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .metric{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;text-align:center}
+    .metric-val{font-size:28px;font-weight:700;color:var(--primary);line-height:1}
+    .metric-label{font-size:11px;color:var(--t3);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    .ref-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .ref-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .ref-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .ref-table tr:hover td{background:var(--primary-pale)}
+    .trend-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .trend-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .trend-list li::before{content:'↗';color:var(--primary);font-weight:700;flex-shrink:0;font-size:16px}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.archetype-grid,.metric-row{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Background › Comparisons › Client Use Cases & Success Stories</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Background · Comparisons</div>
+  <div class="hero-title">Client Use Cases: Pattern Library & GTM Guide</div>
+  <div class="hero-sub">A structured view of Databricks' enterprise client success stories — mapped to five use case archetypes, three launch proof points from the Accenture JBG, and the 327% agentic AI adoption surge driving every new engagement. How to deploy references strategically in client conversations.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Use Case Library</span>
+    <span class="hero-badge">Client References</span>
+    <span class="hero-badge">Accenture JBG</span>
+    <span class="hero-badge">Agentic AI</span>
+    <span class="hero-badge">GTM Patterns</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Why Use Cases Matter More Than Features in 2026</div>
+    <p class="body-text">Enterprise buyers in 2026 are not evaluating Databricks features in isolation — they are pattern-matching against peer organizations that have already solved their problem. The 327% surge in agentic AI adoption means most target clients have watched a competitor or adjacent industry player deploy production AI, and they want to replicate that outcome, not explore a technology. Every GTM conversation should begin with a reference that mirrors the client's industry, data complexity, and organizational maturity — not with a product demo. The Accenture JBG's three launch proof points (Albertsons, BASF, Kyowa Kirin) cover CPG retail, industrial chemicals, and life sciences — the three verticals where Accenture and Databricks have the deepest joint delivery credibility.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Five Use Case Archetypes</div>
+    <div class="archetype-grid">
+      <div class="archetype">
+        <div class="arch-label">Archetype 1</div>
+        <div class="arch-name">Agentic Reinvention</div>
+        <div class="arch-clients">Albertsons · BASF · Kyowa Kirin · 7-Eleven · Arize</div>
+        <div class="arch-text">Autonomous agent systems built on Agent Bricks replacing manual workflows that require thousands of micro-decisions per day. The defining pattern: a human-in-the-loop escalation threshold where agents handle routine decisions independently, and exceptions are surfaced to SMEs. Agent Bricks + Unity AI Gateway provide the governance layer that makes this acceptable to enterprise risk and compliance teams.</div>
+      </div>
+      <div class="archetype">
+        <div class="arch-label">Archetype 2</div>
+        <div class="arch-name">Retail & Consumer Intelligence</div>
+        <div class="arch-clients">Albertsons · Adidas · 7-Eleven · Prada Group</div>
+        <div class="arch-text">Demand forecasting, dynamic pricing, loyalty personalization, and assortment optimization at scale — impossible with traditional BI tools when data spans thousands of SKUs, stores, and markets. Delta Lake + Mosaic AI + Genie enable store-level intelligence that was previously only achievable for global top-20 retailers with dedicated data science organizations.</div>
+      </div>
+      <div class="archetype">
+        <div class="arch-label">Archetype 3</div>
+        <div class="arch-name">Healthcare & Life Sciences AI</div>
+        <div class="arch-clients">Providence Health · Kyowa Kirin · BASF (life sciences)</div>
+        <div class="arch-text">HIPAA and GxP-compliant AI on regulated patient and clinical data — the hardest governance scenario in any industry. Unity Catalog's row-level security, column masking, and automated audit logs solve the compliance problem that has blocked cloud platform adoption in clinical settings. Population health analytics, patient outcomes prediction, and drug discovery acceleration are the primary patterns.</div>
+      </div>
+      <div class="archetype">
+        <div class="arch-label">Archetype 4</div>
+        <div class="arch-name">Financial Services Intelligence</div>
+        <div class="arch-clients">BASF (FOX digital assistant) · Mastercard · Moody's · Experian</div>
+        <div class="arch-text">Real-time fraud detection, risk modeling, regulatory reporting, and AI-powered financial digital assistants. FSI's defining challenge is the intersection of real-time data requirements (sub-second fraud decisions) and strict auditability mandates (every model decision must be explainable and logged). Databricks' streaming + Unity Catalog governance combination addresses both simultaneously.</div>
+      </div>
+      <div class="archetype">
+        <div class="arch-label">Archetype 5</div>
+        <div class="arch-name">Manufacturing & Supply Chain AI</div>
+        <div class="arch-clients">7-Eleven · Kinaxis ecosystem · Adidas</div>
+        <div class="arch-text">Demand sensing, autonomous replenishment, predictive maintenance, and sustainability reporting across multi-tier global supply chains. The Kinaxis + Databricks partnership (Delta Sharing integration) is the production blueprint: real-time supply chain orchestration without data duplication between the planning system and the Lakehouse. Lakeflow Connect manages the ingestion; Agent Bricks orchestrates the decision cycle.</div>
+      </div>
+      <div class="archetype">
+        <div class="arch-label">Archetype 6</div>
+        <div class="arch-name">LLMOps & AI Infrastructure</div>
+        <div class="arch-clients">Arize · Thoughtworks · Built-On Databricks ISVs</div>
+        <div class="arch-text">Enterprises that have deployed initial AI models and now need production-grade monitoring, evaluation, and governance for their GenAI and agentic systems. Arize's MLflow-native observability, Agent Bricks tracing through Unity AI Gateway, and MLflow 3's LLM-as-a-judge evaluation form the production AI operations stack. This archetype is growing fastest as pilot programs mature into production systems.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Market Momentum</div>
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val">327%</div>
+        <div class="metric-label">Agentic AI Adoption Surge (2026)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">15K+</div>
+        <div class="metric-label">Databricks Enterprise Customers</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">70%</div>
+        <div class="metric-label">Fortune 500 on Databricks</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Accenture JBG Launch Proof Points — Reference Map</div>
+    <table class="ref-table">
+      <thead>
+        <tr><th>Client</th><th>Industry</th><th>Core Capability</th><th>Lead Use Case</th><th>Door-Opener For</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Albertsons</strong></td><td>Grocery Retail</td><td>Agent Bricks + Mosaic AI</td><td>AI-powered merchant twin for pricing & promotional optimization</td><td>Any CPG retailer, grocer, pharmacy chain asking about AI pricing or merchandising</td></tr>
+        <tr><td><strong>BASF (FOX)</strong></td><td>Industrial Chemicals</td><td>Agent Bricks + Delta Lake</td><td>FOX digital financial assistant for plant-level analytics</td><td>Any industrial manufacturer, chemicals company, or asset-intensive operation building internal AI assistants</td></tr>
+        <tr><td><strong>Kyowa Kirin</strong></td><td>Life Sciences / Pharma</td><td>Unity Catalog + MLflow</td><td>Patient outcomes data platform across international markets</td><td>Any pharma company, biotech, or health system building regulated clinical AI</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">How to Deploy References Strategically</div>
+    <ul class="trend-list">
+      <li><strong>Lead with industry first, technology second.</strong> A grocery CPTO cares about "how Albertsons solved promotional optimization" — not "how Agent Bricks works." Match the reference to the client's vertical before explaining the platform.</li>
+      <li><strong>Use the 327% stat to create urgency.</strong> "Enterprise agentic AI adoption surged 327% in 2026. Albertsons, 7-Eleven, and Prada are already in production. What is your timeline for moving from pilot to production?" (Sources #4, #19)</li>
+      <li><strong>Use Arize to handle observability objections.</strong> When clients ask "How do we know the agents are working correctly?" — Arize + Unity AI Gateway is the production answer. Use it for any client already in AI experimentation who is hesitant to go to production without monitoring.</li>
+      <li><strong>Providence Health unlocks healthcare conversations.</strong> HIPAA compliance is the blocker for 80% of health system AI programs. Providence proves Unity Catalog solves it in production — at 51-hospital scale. Use this reference to break the "we can't put patient data in the cloud" objection.</li>
+      <li><strong>The BCG/Anthropic research (Source #119) is your executive closer.</strong> "Data context and organizational readiness are the bottleneck — not model capability." This reframes the conversation from AI model selection to data platform selection — which is exactly where Databricks wins.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#4 — 2026 State of AI Agents: Enterprise Insights (Databricks)</span>
+      <span class="chip">#12 — Accenture & Databricks Accelerate Enterprise AI (PR)</span>
+      <span class="chip">#19 — Agentic AI Use by Businesses Soars 327% (Automation Today)</span>
+      <span class="chip">#34 — Databricks 2026: Multi-Agent Architectures (Reddit)</span>
+      <span class="chip">#63 — The Agentic Pivot: Strategic Roadmap (Accenture × Databricks)</span>
+      <span class="chip">#119 — 2026 State of AI Agents Report (Anthropic / BCG)</span>
+      <span class="chip">#120 — The Agentic Revolution: 12× AI Deployment (TokenRing)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Albertsons — Client Use Case Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .uc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .uc-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .uc-cat{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:.08em;margin-bottom:8px}
+    .uc-title{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .uc-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .metric{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;text-align:center}
+    .metric-val{font-size:28px;font-weight:700;color:var(--primary);line-height:1}
+    .metric-label{font-size:11px;color:var(--t3);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    .tech-stack{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .tech-chip{background:var(--black);color:#fff;font-size:11.5px;font-weight:600;padding:6px 16px;border-radius:6px}
+    .roadmap-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:12px}
+    .roadmap-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .roadmap-dot{flex-shrink:0;width:10px;height:10px;border-radius:50%;background:var(--primary);margin-top:6px}
+    .quote-box{background:var(--primary-pale);border-left:4px solid var(--primary);border-radius:0 10px 10px 0;padding:20px 24px;margin-top:16px}
+    .quote-text{font-size:15px;color:var(--t1);line-height:1.8;font-style:italic}
+    .quote-source{font-size:12px;color:var(--t3);margin-top:8px;font-weight:600}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.uc-grid,.metric-row{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Client Use Cases › Agentic Reinvention › Albertsons</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Client Use Cases · Agentic Reinvention · Accenture JBG Launch Proof Point</div>
+  <div class="hero-title">Albertsons × Accenture × Databricks</div>
+  <div class="hero-sub">The flagship Accenture JBG launch proof point — Albertsons Companies (2,270+ stores, $79B revenue, operating Safeway, Vons, Jewel-Osco, and Shaw's) uses Agent Bricks and the Databricks Data Intelligence Platform to build a "merchant twin" agentic AI capability that autonomously optimizes pricing and promotional calendars, compressing weeks of manual analysis to hours and delivering measurable margin improvement across all banner brands.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Grocery Retail</span>
+    <span class="hero-badge">Agentic AI</span>
+    <span class="hero-badge">Pricing Intelligence</span>
+    <span class="hero-badge">Merchandising</span>
+    <span class="hero-badge">Accenture JBG</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Client Context</div>
+    <p class="body-text">Albertsons Companies is the second-largest supermarket chain in the United States, operating 2,270+ stores across 34 states and Washington D.C. under 20 banner brands including Safeway, Vons, Jewel-Osco, Shaw's, Albertsons, ACME, Tom Thumb, and Randalls. With $79B in revenue, Albertsons faces the defining challenge of large-format grocery retail in 2026: making consistent, optimized pricing and promotional decisions at banner-by-banner, store-by-store, and SKU-by-SKU granularity — across a product catalog with tens of thousands of items — faster than the competitive cycle demands.</p>
+    <p class="body-text" style="margin-top:12px">Traditional merchandising processes at Albertsons' scale involve hundreds of category managers and pricing analysts manually reviewing competitive pricing data, historical promotional performance, and inventory signals to set promotional calendars weeks in advance. The speed and consistency limitations of this approach leave margin on the table and create promotional calendar fragmentation across banner brands. Albertsons partnered with Accenture and Databricks to transform this process with agentic AI — making the Accenture JBG's most prominent named client and the prototypical proof point for agentic AI in grocery and CPG retail.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Merchant Twin: Core Use Case</div>
+    <div class="uc-grid">
+      <div class="uc-card">
+        <div class="uc-cat">Pricing Intelligence</div>
+        <div class="uc-title">Autonomous Competitive Price Monitoring</div>
+        <div class="uc-text">Agent Bricks monitors competitive pricing signals, historical price elasticity data, and margin targets across all banner brands — generating prioritized pricing recommendations for merchant review. The agent surfaces category-level and SKU-level price adjustment opportunities ranked by margin impact, reducing the time merchants spend on competitive analysis from days to minutes per category.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Promotional Planning</div>
+        <div class="uc-title">AI-Optimized Promotional Calendar</div>
+        <div class="uc-text">The merchant twin builds and optimizes promotional calendars by combining historical promotional response data (Delta Lake), seasonal demand signals (Mosaic AI forecasting models), inventory positions (Lakeflow Connect from supply chain systems), and vendor funding availability — generating promotional plans that maximize sales lift and vendor contribution while respecting banner-specific brand positioning.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Merchandising Intelligence</div>
+        <div class="uc-title">Unified Data Foundation</div>
+        <div class="uc-text">Delta Lake consolidates Albertsons' fragmented data sources — POS transaction data across 2,270+ stores, loyalty program data (Albertsons for U), supply chain inventory data, competitive pricing feeds, vendor funding systems, and weather/event signals — into a unified Medallion Architecture Lakehouse. This consolidated foundation makes the merchant twin's recommendations coherent across the full data context, not siloed by function or banner.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Human-in-the-Loop</div>
+        <div class="uc-title">Merchant Review & Escalation</div>
+        <div class="uc-text">The merchant twin operates with a human-in-the-loop approval model: routine pricing adjustments within defined guardrails are surfaced for merchant confirmation with one-click approval; promotions exceeding margin thresholds or involving strategic brand decisions are escalated for senior buyer review with full supporting rationale. Unity Catalog's audit logs capture every recommendation and approval decision — satisfying internal pricing governance requirements.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Scale of the Opportunity</div>
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val">2,270+</div>
+        <div class="metric-label">Stores Across 20 Banners</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">$79B</div>
+        <div class="metric-label">Annual Revenue</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">34</div>
+        <div class="metric-label">States Operated</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Technology Stack</div>
+    <div class="tech-stack">
+      <span class="tech-chip">Agent Bricks</span>
+      <span class="tech-chip">Delta Lake</span>
+      <span class="tech-chip">Medallion Architecture</span>
+      <span class="tech-chip">Mosaic AI</span>
+      <span class="tech-chip">Lakeflow Connect</span>
+      <span class="tech-chip">Unity Catalog</span>
+      <span class="tech-chip">MLflow</span>
+      <span class="tech-chip">Genie</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Agentic AI Roadmap</div>
+    <ul class="roadmap-list">
+      <li><span class="roadmap-dot"></span><div><strong>Autonomous Promotional Calendar Generation</strong> — Expanding the merchant twin to generate full promotional calendars autonomously for routine categories, with merchants reviewing and approving the full calendar rather than building it from scratch — compressing the monthly promotional planning cycle from weeks to days.</div></li>
+      <li><span class="roadmap-dot"></span><div><strong>Personalized Loyalty Offer Optimization</strong> — Agent Bricks integration with Albertsons for U loyalty data to generate personalized promotional offers at the individual customer level — moving from banner-wide promotions to customer-specific pricing that maximizes both sales lift and loyalty program engagement.</div></li>
+      <li><span class="roadmap-dot"></span><div><strong>Cross-Banner Vendor Negotiation Intelligence</strong> — An agentic assistant for vendor negotiation teams that synthesizes promotional performance history, competitive market data, and category margin targets to generate recommended vendor funding terms and promotional co-investment asks — strengthening Albertsons' position in vendor negotiations with data-backed recommendations.</div></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Why Albertsons Matters for Accenture GTM</div>
+    <div class="quote-box">
+      <div class="quote-text">"Agentic AI shifts economic value from productivity to growth — and nowhere is growth more dependent on pricing and promotional execution than grocery retail. The brands that win will be those that use AI to make better merchandising decisions at a speed humans cannot match alone."</div>
+      <div class="quote-source">Source #124 — The Age of Co-Intelligence (James Crowley et al., Accenture)</div>
+    </div>
+    <p class="body-text" style="margin-top:16px">Albertsons is the Accenture JBG's most prominent named proof point and the single most referenceable client for any GTM conversation with a CPG retailer, grocer, pharmacy chain, or mass merchandiser. The merchant twin use case is immediately comprehensible to any grocery or retail CPTO — pricing and promotional optimization is a universal pain point that every large retailer faces and that every category manager can immediately relate to. The combination of Accenture (strategy + delivery), Databricks (platform), and a named Tier 1 grocery client at production scale eliminates the "who has done this before?" objection that slows enterprise AI adoption. Use Albertsons as the entry point for any retail or CPG conversation, then pivot to the client's specific variant of the pricing/merchandising challenge.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#12 — Accenture & Databricks Accelerate Enterprise AI (Joint PR)</span>
+      <span class="chip">#15 — Accenture Forward Engineering with Databricks</span>
+      <span class="chip">#45 — Agent Bricks GA: Production Agentic AI (Databricks)</span>
+      <span class="chip">#63 — The Agentic Pivot: Strategic Roadmap (Accenture × Databricks)</span>
+      <span class="chip">#124 — The Age of Co-Intelligence (Accenture)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

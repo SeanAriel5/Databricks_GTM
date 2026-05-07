@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Lakeflow — Core Capability Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#2d0050 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+    .pillar{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center;border-top:4px solid var(--primary)}
+    .pillar-icon{font-size:28px;margin-bottom:10px}
+    .pillar-name{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .pillar-desc{font-size:12.5px;color:var(--t2);line-height:1.6;text-align:left}
+    .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .feat{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .feat-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .feat-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .metric{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;text-align:center}
+    .metric-val{font-size:32px;font-weight:700;color:var(--primary);line-height:1}
+    .metric-label{font-size:11px;color:var(--t3);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .check{color:var(--primary);font-weight:700}
+    .arch-flow{display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap}
+    .arch-step{background:var(--primary-pale);border:1px solid #C2A3FF;border-radius:8px;padding:12px 16px;font-size:12.5px;font-weight:600;color:var(--primary);flex:1;min-width:100px;text-align:center;line-height:1.4}
+    .arch-arrow{color:var(--primary);font-size:20px;font-weight:700;flex-shrink:0}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.pillar-grid,.feat-grid,.metric-row{grid-template-columns:1fr}.arch-flow{flex-direction:column}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Core Capabilities › Data Medallion Architecture › Lakeflow</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Core Capabilities · Data Medallion Architecture</div>
+  <div class="hero-title">Lakeflow</div>
+  <div class="hero-sub">Databricks' unified data engineering platform — combining managed ingestion (Lakeflow Connect), declarative AI-first pipelines (Lakeflow Pipelines), and visual drag-and-drop authoring (Lakeflow Designer) in a single governed stack that replaces fragmented legacy ETL tools.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Lakeflow</span>
+    <span class="hero-badge">Data Engineering</span>
+    <span class="hero-badge">ETL / ELT</span>
+    <span class="hero-badge">Pipelines</span>
+    <span class="hero-badge">AI-First ETL</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">What is Lakeflow?</div>
+    <p class="body-text">Lakeflow is Databricks' answer to the fragmented, multi-tool data engineering stack that enterprises have accumulated over the past decade — separate ingestion tools, transformation frameworks, orchestration schedulers, and monitoring dashboards that don't share governance, lineage, or operational context. Lakeflow unifies these into a single platform: from raw source connectivity through pipeline orchestration to AI-enriched data delivery, all governed by Unity Catalog and observable through a single operational pane.</p>
+    <p class="body-text" style="margin-top:12px">Lakeflow is built on three pillars: <strong>Lakeflow Connect</strong> (managed ingestion connectors that pull data from SaaS, databases, and event streams into Delta Lake), <strong>Lakeflow Pipelines</strong> (the declarative Delta Live Tables engine that automatically manages data quality, incremental processing, and lineage), and <strong>Lakeflow Designer</strong> (GA April 2026 — a drag-and-drop visual pipeline builder that makes data engineering accessible to a broader audience). Together, they cover the full data engineering lifecycle on a single unified stack.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Three Pillars of Lakeflow</div>
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="pillar-icon">🔌</div>
+        <div class="pillar-name">Lakeflow Connect</div>
+        <div class="pillar-desc">Managed ingestion connectors for 50+ SaaS sources (Salesforce, SAP, ServiceNow), databases (SQL Server, Oracle, MySQL), and event streams (Kafka, Kinesis). Automatically handles schema drift, CDC (Change Data Capture), and initial full loads — eliminating the operational burden of custom connector maintenance.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">⚙️</div>
+        <div class="pillar-name">Lakeflow Pipelines</div>
+        <div class="pillar-desc">Built on Delta Live Tables (DLT) — Databricks' declarative pipeline framework. Data engineers define what data should look like (expectations, transformations) rather than how to compute it. DLT handles incremental processing, dependency ordering, data quality enforcement (EXPECT clauses), and Unity Catalog lineage automatically.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🎨</div>
+        <div class="pillar-name">Lakeflow Designer</div>
+        <div class="pillar-desc">GA April 2026 — a drag-and-drop visual interface for building Lakeflow pipelines without writing code. Analysts and data engineers can visually connect sources, define transformations, and schedule workflows. Generates production-quality DLT Python/SQL code that can be promoted to source control. Designed to accelerate pipeline development for non-expert practitioners.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">AI-First Data Engineering</div>
+    <p class="body-text">Lakeflow's most distinctive 2026 capability is its native AI integration: data engineers can embed AI directly into ETL pipelines without building separate AI microservices. Lakeflow AI functions allow pipelines to call Foundation Model APIs (GPT-5.5, Claude, Llama, Gemini) directly within SQL transformations — enabling document parsing, entity extraction, sentiment classification, and multimodal analysis as first-class pipeline steps.</p>
+    <div class="feat-grid" style="margin-top:16px">
+      <div class="feat">
+        <div class="feat-title">AI Functions in Pipelines</div>
+        <div class="feat-text">Call Foundation Model APIs directly within DLT SQL transformations: <code>ai_classify()</code>, <code>ai_extract()</code>, <code>ai_summarize()</code>. Pipelines can parse invoices, classify support tickets, extract entities from unstructured text — all within the same Medallion Architecture flow, governed by Unity Catalog.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Genie Code for Pipelines</div>
+        <div class="feat-text">Genie Code assists data engineers in authoring, explaining, and troubleshooting Lakeflow pipelines in natural language. Engineers can ask "Why is this pipeline failing?" or "Generate a Silver layer join between these two tables" — reducing time spent debugging and accelerating development cycles.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Agent Bricks Integration</div>
+        <div class="feat-text">Lakeflow pipelines can be triggered and orchestrated by Agent Bricks autonomous agents. An agentic replenishment system, for example, can trigger a Lakeflow pipeline to enrich demand data with external signals — then pass the enriched dataset to the next agent step without manual handoffs.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Unity Catalog Lineage</div>
+        <div class="feat-text">Every Lakeflow pipeline step is automatically tracked in Unity Catalog's column-level lineage graph. From source ingestion through Bronze → Silver → Gold, data engineers and compliance teams can trace exactly which source data produced which analytical output — zero manual annotation required.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Proven Impact</div>
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val">65%</div>
+        <div class="metric-label">ETL Time Reduction (Intel IT)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">58%</div>
+        <div class="metric-label">Fewer Job Failures (Intel IT)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">50+</div>
+        <div class="metric-label">Managed Source Connectors</div>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top:16px">Intel IT's migration to Databricks (Lakeflow + Photon) cut ETL processing time by 65% and reduced pipeline job failures by 58% — measured against their previous multi-tool stack. These are the benchmark proof points for enterprise conversations: a 65% reduction in ETL time means fewer pipeline delays, fresher data for BI tools, and smaller on-call burdens for data engineering teams. For organizations running 100+ daily ETL pipelines, this translates directly to headcount reallocation from pipeline maintenance to higher-value data product work.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Lakeflow Architecture in the Medallion Stack</div>
+    <div class="arch-flow">
+      <div class="arch-step">Source Systems<br/><small>(SaaS, DB, Events)</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Lakeflow Connect<br/><small>(Managed Ingestion)</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Bronze Layer<br/><small>(Raw + Lakeflow AI)</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Silver Layer<br/><small>(DLT Pipelines)</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Gold Layer<br/><small>(Curated + Agent-Ready)</small></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Lakeflow vs. Legacy ETL Tools</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Capability</th><th>Lakeflow (Databricks)</th><th>Informatica / Talend</th><th>AWS Glue / Azure Data Factory</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>AI Functions in Pipelines</strong></td><td class="check">✓ Native — ai_classify(), ai_extract(), Foundation Model API calls in SQL</td><td>✗ Requires separate ML microservice integration</td><td>✗ Requires separate Azure OpenAI / Bedrock API wiring</td></tr>
+        <tr><td><strong>Declarative Quality Rules</strong></td><td class="check">✓ DLT EXPECT clauses — automatic quarantine of bad records with lineage</td><td>Limited — quality is typically imperative rules, not declarative constraints</td><td>Limited — ADF has data flow validation; Glue has minimal quality enforcement</td></tr>
+        <tr><td><strong>Unity Catalog Lineage</strong></td><td class="check">✓ Automatic column-level lineage — every pipeline step tracked without annotation</td><td>Partial — catalog integration requires separate metadata tooling</td><td>Partial — Azure Purview for ADF, but separate system and cost center</td></tr>
+        <tr><td><strong>Visual Builder (No-Code)</strong></td><td class="check">✓ Lakeflow Designer GA — generates production DLT code</td><td>✓ Informatica PowerCenter GUI</td><td>✓ ADF drag-and-drop; Glue Studio</td></tr>
+        <tr><td><strong>Single Governance Layer</strong></td><td class="check">✓ Unity Catalog governs pipeline metadata, data, ML models, and AI agents on one platform</td><td>✗ Separate catalog, separate governance — Informatica MDM is a distinct product</td><td>✗ Multi-tool governance: Purview + IAM + Data Factory policies separate</td></tr>
+        <tr><td><strong>Cost Model</strong></td><td>DBU consumption — scales with compute; Photon reduces cost</td><td>Core-based licensing — can be very expensive for large workloads</td><td>Pay-per-activity / pay-per-node — cost can spike on large jobs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GTM Positioning</div>
+    <p class="body-text">Lakeflow's GTM message is displacement: every enterprise running Informatica, Talend, or a homegrown Python pipeline mess has a Lakeflow story. The combination of AI functions in pipelines (a competitor cannot match), automatic Unity Catalog lineage (eliminates a separate cataloging tool), and Genie-assisted pipeline development (reduces DE headcount requirements) creates a compelling TCO argument. For FinOps-focused clients, Lakeflow on serverless compute eliminates cluster management and idle cost. The Intel IT proof point — 65% ETL reduction — is the most cited metric in pipeline displacement conversations. Lead with this number, then walk through how Lakeflow Connect eliminates connector maintenance and Lakeflow Designer lowers the barrier for pipeline development beyond the core DE team.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#20 — AI-First Approach to Data Engineering with Lakeflow (Databricks)</span>
+      <span class="chip">#23 — April 2026 Platform Release Notes — Lakeflow Designer GA (AWS)</span>
+      <span class="chip">#46 — What is Databricks — Lakeflow narrative (Dtyped)</span>
+      <span class="chip">#54 — Lakeflow: Unified Data Engineering (Databricks)</span>
+      <span class="chip">#58 — IT@Intel: 65% ETL Reduction on Databricks</span>
+      <span class="chip">#66 — Top Strategic Priorities Guiding Data and AI Leaders 2026</span>
+      <span class="chip">#96 — ETL for AI: Agentic Data Infrastructure (Airbyte)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Snowflake Ecosystem Position — Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#003a5c 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .uc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .uc-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .uc-cat{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:.08em;margin-bottom:8px}
+    .uc-title{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .uc-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .db-wins{color:var(--primary);font-weight:700}
+    .sf-wins{color:#2196F3;font-weight:700}
+    .trend-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .trend-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .trend-list li::before{content:'→';color:var(--primary);font-weight:700;flex-shrink:0;font-size:16px}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.uc-grid{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Partnership Ecosystem › Complementary Technology Partners › Snowflake</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Partnership Ecosystem · Competitive Intelligence</div>
+  <div class="hero-title">Snowflake: Competitive Positioning & Coexistence</div>
+  <div class="hero-sub">Snowflake is the primary enterprise data platform competitor — and, increasingly, an interoperability target via Apache Iceberg and Delta UniForm. Understanding where Databricks wins, where Snowflake retains strength, and how to handle multi-vendor environments is essential for every GTM conversation.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Competitive Intel</span>
+    <span class="hero-badge">Snowflake</span>
+    <span class="hero-badge">Displacement</span>
+    <span class="hero-badge">Iceberg</span>
+    <span class="hero-badge">Migration</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">The Competitive Landscape in 2026</div>
+    <p class="body-text">Snowflake and Databricks have been the two dominant enterprise data platforms since 2020. In 2026, the competitive dynamic has shifted decisively: enterprises that chose Snowflake for SQL analytics simplicity are now confronting its limitations as AI and agent workloads become strategic priorities. Snowflake's SQL-first architecture — its greatest strength for BI and reporting — becomes its greatest weakness when enterprises need to run ML training, Structured Streaming, and autonomous agents on the same data. The 2026 migration wave from Snowflake to Databricks is driven by one central question: "Why am I paying Snowflake credits for analytics when I also need a separate ML platform, a separate streaming infrastructure, and a separate agent framework?"</p>
+    <p class="body-text" style="margin-top:12px">Databricks' response to Snowflake is not just product superiority in AI — it is <strong>platform consolidation</strong>: analytics + ML + streaming + agents on one governed platform, with one security model, one cost center, and one operational team. Multiple independent analysts (GEM Corp, LatentView, DataCouch) have concluded that Databricks wins for AI-native enterprises while Snowflake retains strength in SQL simplicity — and the market is moving toward AI-native requirements.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Where Databricks Wins vs. Where Snowflake Retains Strength</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Dimension</th><th>Databricks Wins</th><th>Snowflake Retains Strength</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>ML & Model Training</strong></td><td class="db-wins">✓ Native — Mosaic AI, AutoML, MLflow, Feature Store on same data</td><td>Snowpark ML — limited compute, separate from warehouse; no Feature Store equivalent</td></tr>
+        <tr><td><strong>Agentic AI</strong></td><td class="db-wins">✓ Agent Bricks GA — governed multi-agent orchestration, Unity AI Gateway, MCP governance</td><td>Cortex AI — SQL-centric AI functions; no autonomous agent framework</td></tr>
+        <tr><td><strong>Real-Time Streaming</strong></td><td class="db-wins">✓ Structured Streaming on Delta Lake — sub-second latency for analytics + ML simultaneously</td><td>Snowpipe Streaming — append-only, limited to analytics; no ML on streaming data</td></tr>
+        <tr><td><strong>Storage Format</strong></td><td class="db-wins">✓ Open Delta Lake / Apache Iceberg — vendor portability; no lock-in</td><td>Proprietary FDN format — lock-in; Iceberg export available but not native</td></tr>
+        <tr><td><strong>OLTP / Operational DB</strong></td><td class="db-wins">✓ Lakebase — PostgreSQL-compatible serverless OLTP, now GA</td><td>No OLTP capability — analytics-only platform</td></tr>
+        <tr><td><strong>SQL Analytics Simplicity</strong></td><td>Databricks SQL is highly capable but requires cluster management knowledge for optimization</td><td class="sf-wins">✓ Snowflake — easier for non-technical SQL users; no cluster concept</td></tr>
+        <tr><td><strong>BI Tool Ecosystem (Tableau, Sigma)</strong></td><td>Strong BI integrations; Photon competitive on SQL performance</td><td class="sf-wins">✓ Stronger native integrations with Tableau and Sigma; simpler for BI-primary use cases</td></tr>
+        <tr><td><strong>Enterprise Governance</strong></td><td class="db-wins">✓ Unity Catalog — governs tables, models, AI agents, files, external connections in one layer</td><td>Horizon Catalog — governance layer, but separate from AI governance</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Coexistence &amp; Migration Patterns</div>
+    <div class="uc-grid">
+      <div class="uc-card">
+        <div class="uc-cat">Interoperability</div>
+        <div class="uc-title">Delta UniForm / Apache Iceberg Bridge</div>
+        <div class="uc-text">Delta UniForm allows Snowflake to read Delta Lake tables as Apache Iceberg tables — enabling a gradual migration where Snowflake-based BI tools continue working on Databricks-managed data during the transition. No data duplication required. This is the recommended pattern for enterprises with significant Snowflake BI tool investments: migrate analytics to Databricks first, maintain Snowflake read access during transition, deprecate Snowflake credits as Databricks SQL takes over the BI layer.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Displacement Play</div>
+        <div class="uc-title">AI Workload Expansion</div>
+        <div class="uc-text">The most common displacement pattern starts with a new AI or ML workload that Snowflake cannot handle — a customer churn prediction model, a real-time fraud detection pipeline, or an Agent Bricks assistant. Databricks wins the AI workload, proves value, and then absorbs the adjacent analytics workloads as teams realize they are maintaining two platforms for overlapping data. LatentView calls this the "wedge and expand" migration pattern.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Cost Displacement</div>
+        <div class="uc-title">SQL Workload Migration</div>
+        <div class="uc-text">Photon's vectorized engine delivers comparable SQL performance to Snowflake for most workloads — at lower DBU cost than equivalent Snowflake credits. For FinOps-focused clients paying growing Snowflake bills, the pitch is: "Run your same SQL queries on Databricks (with Photon) for fewer credits — and get ML, streaming, and Agent Bricks included in the platform you're already paying for." Cost displacement requires a proof-of-concept benchmark, but Accenture's delivery teams have the tooling to execute this in days.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Objection Handling</div>
+        <div class="uc-title">"Our BI Team Loves Snowflake"</div>
+        <div class="uc-text">Databricks SQL + Genie handles the same BI use cases as Snowflake for technical analysts. For non-technical business users, Genie's natural language querying is actually more accessible than Snowflake's SQL Worksheets. The Delta UniForm bridge means existing Tableau/Sigma dashboards on Snowflake can point to Databricks Delta tables without rebuilding dashboards — making the transition nearly invisible to BI consumers.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Migration Proof Points</div>
+    <ul class="trend-list">
+      <li><strong>LatentView (2026):</strong> "Enterprises are actively migrating from Snowflake to Databricks to handle SQL alongside streaming and ML on a single platform" — the most direct analyst endorsement of the migration trend. Use this in conversations with clients running both Snowflake and a separate ML/streaming tool. (Source #94)</li>
+      <li><strong>GEM Corporation battlecard conclusion:</strong> "Databricks leads in unified AI and complex workloads" — a partner-produced competitive guide that sales teams can share directly with technical evaluators. Useful when the client's data architects are driving the platform decision. (Source #47)</li>
+      <li><strong>DataCouch 2026 decision framework:</strong> "Databricks wins on Agentic AI, Lakebase OLTP, and real-time pipelines; Snowflake wins on simplicity." Use this framing when the client has mixed workloads — acknowledge Snowflake's SQL simplicity strength while redirecting to AI requirements where Databricks is unambiguously superior. (Source #123)</li>
+      <li><strong>DHS IT Solutions assessment:</strong> Side-by-side evaluation by a neutral SI concluding Databricks is superior for generative AI, API integration, and cloud data architecture — particularly relevant for clients who want "evidence from someone other than Databricks." (Source #115)</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GTM Talk Track</div>
+    <p class="body-text"><em>"Snowflake is a strong SQL analytics platform — but you're paying Snowflake credits for analytics while also paying for a separate ML platform, a separate streaming tool, and now a separate agent framework. Databricks runs all four on the same governed data, in the same billing relationship, with one team operating it. Your Snowflake investment doesn't disappear — we can bridge your existing BI tools to Databricks data via Apache Iceberg during the transition. The question isn't 'Snowflake vs Databricks' — it's 'Do you want one platform for data, ML, streaming, and AI agents, or four?'"</em></p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#47 — Databricks vs Snowflake: The Ultimate 2025 Comparison (GEM Corp)</span>
+      <span class="chip">#64 — Architectural Supremacy & Strategic Evolution of Databricks</span>
+      <span class="chip">#65 — Paradigmatic Shift in Enterprise Data Intelligence</span>
+      <span class="chip">#94 — Databricks vs Snowflake 2026 (LatentView Analytics)</span>
+      <span class="chip">#115 — Snowflake and Databricks in 2025: SI Comparative Analysis (DHS IT)</span>
+      <span class="chip">#116 — Snowflake and Databricks: AI Visions Compared (CIO.inc)</span>
+      <span class="chip">#123 — Ultimate Decision Framework: Snowflake vs Databricks vs BigQuery (DataCouch)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

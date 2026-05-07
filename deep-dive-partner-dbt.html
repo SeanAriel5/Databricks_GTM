@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>dbt Partnership — Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .uc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .uc-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .uc-cat{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:.08em;margin-bottom:8px}
+    .uc-title{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .uc-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .check{color:var(--primary);font-weight:700}
+    .quote-box{background:var(--primary-pale);border-left:4px solid var(--primary);border-radius:0 10px 10px 0;padding:20px 24px;margin-top:16px}
+    .quote-text{font-size:15px;color:var(--t1);line-height:1.8;font-style:italic}
+    .quote-source{font-size:12px;color:var(--t3);margin-top:8px;font-weight:600}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.uc-grid{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Partnership Ecosystem › Complementary Technology Partners › dbt</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Partnership Ecosystem · Complementary Technology Partners</div>
+  <div class="hero-title">dbt Labs Partnership</div>
+  <div class="hero-sub">The modern data stack's most popular SQL-first transformation layer meets the world's leading Lakehouse — dbt on Databricks enables analytics engineers to build production-grade Silver and Gold layer transformations with Git-based version control, data quality tests, and automatic documentation, all governed by Unity Catalog.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">dbt</span>
+    <span class="hero-badge">SQL Transformation</span>
+    <span class="hero-badge">Analytics Engineering</span>
+    <span class="hero-badge">Modern Data Stack</span>
+    <span class="hero-badge">Unity Catalog</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Partnership Overview</div>
+    <p class="body-text">dbt (data build tool) by dbt Labs is the dominant SQL-first transformation framework in the analytics engineering market — used by more than 50,000 companies to build version-controlled, tested, and documented data transformation pipelines. The Databricks + dbt partnership is a natural modern data stack synergy: dbt provides the SQL transformation and data modeling layer (Silver → Gold), while Databricks provides the governed Lakehouse infrastructure (Delta Lake storage, Photon execution, Unity Catalog governance). Together, they give analytics engineers a familiar SQL-centric workflow on top of Databricks' scalable, AI-ready data platform.</p>
+    <p class="body-text" style="margin-top:12px">Analytics8, a dbt Labs partner and Databricks-certified consulting firm, has validated this combined architecture with successful enterprise deployments at Roche (life sciences) and iFit (consumer health tech) — demonstrating that the dbt + Databricks pattern scales from mid-market to Fortune 500. Simon Collis of Analytics8 is a recognized thought leader on the combined architecture, publishing the most comprehensive practitioner guides on deploying dbt models on Databricks' Lakehouse.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Integration Capabilities</div>
+    <div class="uc-grid">
+      <div class="uc-card">
+        <div class="uc-cat">Transformation Layer</div>
+        <div class="uc-title">dbt Core + dbt Cloud on Databricks SQL</div>
+        <div class="uc-text">dbt models run as Databricks SQL queries — leveraging Photon's vectorized engine for maximum transformation performance. dbt Core (open-source) connects to Databricks via the dbt-databricks adapter; dbt Cloud provides managed job scheduling, CI/CD integration, and a hosted IDE. Both modes write output to Delta tables registered in Unity Catalog.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Governance</div>
+        <div class="uc-title">Unity Catalog Integration</div>
+        <div class="uc-text">dbt models write outputs directly to Unity Catalog-managed Delta tables, inheriting all Unity Catalog access controls, lineage tracking, and audit logging. dbt's model documentation (descriptions, column-level metadata) syncs to Unity Catalog's AI-powered table documentation — making Genie's natural language queries more accurate by enriching the semantic layer.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Data Quality</div>
+        <div class="uc-title">dbt Tests + Delta Live Tables</div>
+        <div class="uc-text">dbt's built-in data tests (not_null, unique, accepted_values, relationships) can be combined with DLT's EXPECT clauses for layered quality enforcement. dbt tests run post-transformation to validate business logic; DLT expectations run during ingestion to enforce schema and format rules. Together, they provide defense-in-depth data quality across the full Medallion Architecture.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Developer Experience</div>
+        <div class="uc-title">Git-Based Workflow + CI/CD</div>
+        <div class="uc-text">dbt's version-controlled workflow (SQL models in Git, branch-based development, PR-triggered CI runs) integrates with Databricks' Git integration and Repos. Analytics engineers get a software engineering workflow — code review, automated testing, documented changes — applied to data transformation work that was previously managed in ad-hoc scripts or GUI ETL tools.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Client References via Analytics8</div>
+    <div class="quote-box">
+      <div class="quote-text">"Analytics8's deployments at Roche and iFit demonstrate that the dbt + Databricks pattern is production-validated across both highly regulated life sciences and high-volume consumer data environments — two of the most demanding enterprise data scenarios."</div>
+      <div class="quote-source">Source #37 — Analytics8 / dbt Partnership Case Studies</div>
+    </div>
+    <p class="body-text" style="margin-top:16px">Roche (pharmaceutical/life sciences): dbt models on Databricks handle regulated analytical datasets — leveraging Unity Catalog's HIPAA-aligned access controls while maintaining dbt's Git-based audit trail for all data transformation changes. iFit (consumer health): high-frequency event data from connected fitness devices flows through Lakeflow Connect into Bronze, is cleaned in Silver via DLT, and final Gold-layer metrics are built with dbt SQL models and served to business intelligence tools and the iFit app's analytics engine.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">dbt vs. Lakeflow: When to Use Which</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Scenario</th><th>Use dbt</th><th>Use Lakeflow Pipelines</th><th>Use Both</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Team Profile</strong></td><td>Analytics engineers with SQL expertise; teams already in dbt workflows</td><td>Data engineers with Spark/Python expertise; teams new to Databricks</td><td>Mixed teams — DEs build ingestion + streaming; AEs build transformation models</td></tr>
+        <tr><td><strong>Workload Type</strong></td><td>Batch SQL transformations, dimensional modeling, BI layer Gold tables</td><td>Streaming ingestion, CDC, complex Python transformations, AI functions</td><td>Full Medallion Architecture: Lakeflow for Bronze/Silver ingestion + dbt for Silver/Gold SQL modeling</td></tr>
+        <tr><td><strong>AI Integration</strong></td><td>Limited — dbt macros can call Databricks AI functions but it's less native</td><td class="check">Native — ai_classify(), ai_extract() are first-class DLT SQL functions</td><td>Optimal — DLT enriches raw data with AI; dbt builds clean business metrics on top</td></tr>
+        <tr><td><strong>Governance</strong></td><td>dbt metadata syncs to Unity Catalog; column lineage requires dbt docs integration</td><td class="check">Native Unity Catalog lineage — every DLT step automatically tracked</td><td>Combined: richest governance story with both dbt docs and DLT lineage in Unity Catalog</td></tr>
+        <tr><td><strong>Recommended Pattern</strong></td><td>Gold layer BI models, metric stores, slowly-changing dimensions</td><td>Bronze ingestion, Structured Streaming, AI-enriched Silver tables</td><td class="check">Best practice for large enterprises with both AE and DE teams</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GTM Angle for Accenture</div>
+    <p class="body-text">dbt is the "trojan horse" into the analytics engineering community: the majority of mid-to-large enterprises with a modern data stack already use dbt. When they ask about moving to Databricks, the answer is "yes — and your dbt investment is preserved and enhanced, not replaced." This is a powerful displacement narrative against Snowflake: Snowflake has historically been the preferred dbt backend; Databricks offers everything Snowflake does for dbt plus ML, streaming, AI functions, and Agent Bricks on the same platform. Analytics8's role in the GTM is to serve as the technical validation partner that has already deployed this architecture in production — reducing perceived implementation risk for new clients.</p>
+    <p class="body-text" style="margin-top:12px">For Accenture engagements, the recommended pattern is to propose dbt + Databricks as a joint package: Accenture brings Databricks Lakehouse architecture and Lakeflow for ingestion; Analytics8 or Accenture's analytics engineering practice brings dbt for the transformation layer. This positions Accenture as platform-agnostic enough to preserve client investments while driving them to the Databricks Lakehouse as the governed backbone.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#20 — AI-First Approach to Data Engineering with Lakeflow (Databricks)</span>
+      <span class="chip">#37 — Databricks Consulting Services / dbt Partnership (Analytics8)</span>
+      <span class="chip">#66 — Top Strategic Priorities Guiding Data and AI Leaders 2026</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Certification Landscape Comparison — Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .track-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .track{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-top:4px solid var(--primary)}
+    .track-label{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:.08em;margin-bottom:6px}
+    .track-name{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .track-certs{display:flex;flex-direction:column;gap:6px}
+    .cert-item{font-size:12.5px;color:var(--t2);display:flex;align-items:center;gap:8px;line-height:1.5}
+    .cert-dot{flex-shrink:0;width:7px;height:7px;border-radius:50%;background:var(--primary)}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .check{color:var(--primary);font-weight:700}
+    .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .metric{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;text-align:center}
+    .metric-val{font-size:28px;font-weight:700;color:var(--primary);line-height:1}
+    .metric-label{font-size:11px;color:var(--t3);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    .trend-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .trend-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .trend-list li::before{content:'↗';color:var(--primary);font-weight:700;flex-shrink:0;font-size:16px}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.track-grid,.metric-row{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Background › Comparisons › Certifications</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Background · Comparisons</div>
+  <div class="hero-title">Certification Landscape: Databricks vs. the Market</div>
+  <div class="hero-sub">How Databricks' structured credential ecosystem — spanning Data Engineering, ML, GenAI, and Spark — compares to AWS, Azure, GCP, and Snowflake certifications, and why Accenture's 25,000-professional training commitment is a decisive GTM differentiator.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Certifications</span>
+    <span class="hero-badge">Accenture Alliance</span>
+    <span class="hero-badge">Upskilling</span>
+    <span class="hero-badge">Market Comparison</span>
+    <span class="hero-badge">GTM Enablement</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Why Certifications Matter in 2026</div>
+    <p class="body-text">The data and AI talent market has tightened significantly as enterprises rush to build Databricks practices. Certifications have shifted from a nice-to-have to a gating requirement: enterprise procurement teams increasingly include "Databricks Certified professionals on the delivery team" as an RFP criterion, and client CDOs use cert counts as a proxy for delivery confidence when evaluating SI proposals. For Accenture, the 25,000-professional Databricks training commitment — the largest in any SI partnership — is a commercial weapon: it signals that Accenture can field certified practitioners at scale, not just a handful of architects.</p>
+    <p class="body-text" style="margin-top:12px">The 2026 Databricks certification ecosystem is also more rigorous than it was two years ago: exam content now reflects real production challenges (Unity Catalog governance, DLT pipelines, GenAI evaluation, agentic AI architecture) rather than theoretical platform knowledge. Holding a current Databricks certification demonstrates hands-on fluency, not just familiarity.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Databricks Certification Ecosystem</div>
+    <div class="track-grid">
+      <div class="track">
+        <div class="track-label">Data Engineering Track</div>
+        <div class="track-name">2 Tiers · Foundation → Mastery</div>
+        <div class="track-certs">
+          <div class="cert-item"><span class="cert-dot"></span><strong>Data Engineering Associate</strong> — Core Spark, Delta Live Tables, Auto Loader, Unity Catalog, incremental processing. 90 min, ~45 questions. Recommended first cert for DE practitioners.</div>
+          <div class="cert-item"><span class="cert-dot"></span><strong>Data Engineering Professional</strong> — Advanced Spark optimization, Structured Streaming, Delta internals, complex DLT pipelines, production monitoring. 120 min, ~60 scenario-based questions. Senior architect credential.</div>
+        </div>
+      </div>
+      <div class="track">
+        <div class="track-label">Machine Learning Track</div>
+        <div class="track-name">2 Tiers · Practitioner → GenAI</div>
+        <div class="track-certs">
+          <div class="cert-item"><span class="cert-dot"></span><strong>Machine Learning Associate</strong> — AutoML, MLflow experiment tracking, Feature Store, Model Registry, production deployment. 120 min, ~60 questions. Recommended for data scientists and ML engineers.</div>
+          <div class="cert-item"><span class="cert-dot"></span><strong>Generative AI Engineering Associate</strong> — Foundation Model APIs, Vector Search, Agent Bricks/SDK, MLflow GenAI evaluation, Unity AI Gateway governance. 90 min. The most strategically important 2026 credential.</div>
+        </div>
+      </div>
+      <div class="track">
+        <div class="track-label">Developer Track</div>
+        <div class="track-name">1 Certification</div>
+        <div class="track-certs">
+          <div class="cert-item"><span class="cert-dot"></span><strong>Associate Developer for Apache Spark</strong> — Core Spark programming (Python/Scala), transformations, actions, DataFrame API, Spark SQL. Suitable for developers new to the Databricks ecosystem. Not platform-specific — validates underlying Spark competency.</div>
+        </div>
+      </div>
+      <div class="track">
+        <div class="track-label">Accreditations (Non-Proctored)</div>
+        <div class="track-name">3 Free Credentials</div>
+        <div class="track-certs">
+          <div class="cert-item"><span class="cert-dot"></span><strong>Lakehouse Platform Fundamentals</strong> — Platform overview, ideal for onboarding new team members.</div>
+          <div class="cert-item"><span class="cert-dot"></span><strong>Platform Administrator</strong> — Workspace setup, cluster policies, identity management.</div>
+          <div class="cert-item"><span class="cert-dot"></span><strong>Cloud Platform Architect</strong> — Multi-cloud deployment patterns, network architecture, security configuration.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Accenture Training Commitment</div>
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val">25,000</div>
+        <div class="metric-label">Databricks-Trained Professionals</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">5</div>
+        <div class="metric-label">Certification Tracks Available</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">2yr</div>
+        <div class="metric-label">Recertification Cadence</div>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top:16px">The 25,000-professional commitment is not just a marketing figure — it represents a structured upskilling program that maps certification tracks to Accenture's Databricks delivery roles. Data Engineers pursuing Lakehouse migrations target the DE Associate + Professional path. Data Scientists on ML delivery engagements pursue the ML Associate → GenAI Engineering Associate track. Platform architects on infrastructure engagements pursue the Cloud Platform Architect accreditation and DE Professional. Accenture actively lists "Data & AI Sales Capture" roles requiring Databricks knowledge (Source #29), signaling that even client-facing commercial roles are expected to hold meaningful platform credentials.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Databricks vs. Cloud Provider Certifications</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Dimension</th><th>Databricks</th><th>AWS Data/ML Track</th><th>Azure Data/AI Track</th><th>GCP Data Track</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Platform Specificity</strong></td><td class="check">Databricks-native: Delta Lake, DLT, Agent Bricks, MLflow, Unity Catalog</td><td>Broad AWS services (Redshift, SageMaker, Glue) — less AI-agent depth</td><td>Azure services (Fabric, AML, Databricks) — split across providers</td><td>BigQuery, Vertex AI — less multi-cloud applicable</td></tr>
+        <tr><td><strong>AI/GenAI Content</strong></td><td class="check">Full GenAI track: Agent Bricks, Foundation Models, LLMOps evaluation, Unity AI Gateway</td><td>AWS ML Specialty — SageMaker-heavy, limited agentic AI content</td><td>Azure AI Engineer — strong Azure OpenAI coverage, limited agent governance</td><td>Professional ML Engineer — Vertex AI focus, Gemini integration</td></tr>
+        <tr><td><strong>Exam Rigor</strong></td><td class="check">Scenario-based; 2026 updates reflect production challenges (CDC, Liquid Clustering, LLM-as-a-judge)</td><td>High rigor on AWS infrastructure, moderate on analytics</td><td>Moderate rigor; Azure DP-203 is well-regarded for DE</td><td>High rigor for ML; Professional DE certification is demanding</td></tr>
+        <tr><td><strong>Vendor Neutrality</strong></td><td class="check">Databricks runs on all 3 clouds — cert applies regardless of client's cloud</td><td>AWS-specific — limited portability</td><td>Azure-specific — limited portability</td><td>GCP-specific — limited portability</td></tr>
+        <tr><td><strong>Recertification</strong></td><td>Every 2 years — keeps practitioners current on fast-moving platform</td><td>Every 3 years</td><td>Every 1 year (some) / 2 years</td><td>Every 2 years</td></tr>
+        <tr><td><strong>GTM Signal to Client</strong></td><td class="check">Signals hands-on Lakehouse + AI delivery capability — the specific platform being implemented</td><td>AWS generalist signal — less specific to analytics delivery</td><td>Azure generalist — strong for Microsoft-centric clients</td><td>GCP-specific signal</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Databricks vs. Snowflake Certifications</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Dimension</th><th>Databricks</th><th>Snowflake</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Certification Breadth</strong></td><td class="check">5 credentials spanning DE, ML, GenAI, Spark — full data + AI lifecycle</td><td>SnowPro Core + 4 Specialty tracks (Advanced: DE, Architect, DS, DBAdmin) — analytics-centric</td></tr>
+        <tr><td><strong>GenAI / Agentic Track</strong></td><td class="check">Dedicated GenAI Engineering Associate covering Agent Bricks, Foundation Models, MLflow evaluation, Unity AI Gateway</td><td>No standalone GenAI certification — Cortex AI covered partially in SnowPro Core</td></tr>
+        <tr><td><strong>ML / Model Lifecycle</strong></td><td class="check">Full ML Associate track: AutoML, MLflow, Feature Store, Model Registry, serverless serving</td><td>Data Scientist Specialty covers Snowpark ML — narrower scope</td></tr>
+        <tr><td><strong>Market Demand Growth</strong></td><td class="check">Databricks cert searches surging in 2026 as enterprises shift from Snowflake to Databricks for AI workloads</td><td>Stable demand — strong SQL analytics practitioners, slower growth</td></tr>
+        <tr><td><strong>SI Commitment Signal</strong></td><td class="check">Accenture JBG: 25,000 trained professionals — largest SI commitment in Databricks' history</td><td>No comparable dedicated SI training commitment at this scale</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recommended Certification Path for Accenture Practitioners</div>
+    <ul class="trend-list">
+      <li><strong>New to Databricks (Data Engineer)</strong> → Lakehouse Platform Fundamentals (free, 2 hours) → Data Engineering Associate → Data Engineering Professional within 12 months. Target: every Accenture DE on Databricks engagements holds at minimum the Associate within 6 months of project start.</li>
+      <li><strong>Data Scientist / ML Engineer</strong> → Machine Learning Associate → Generative AI Engineering Associate. The ML Associate is the recommended prerequisite; GenAI Associate should follow within 6 months as all Databricks ML engagements now involve GenAI components.</li>
+      <li><strong>Platform Architect / Cloud Architect</strong> → Cloud Platform Architect accreditation + Data Engineering Professional. Architects advising on multi-cloud deployments, networking, and security configurations.</li>
+      <li><strong>Client-Facing Consultants / Solution Sellers</strong> → Lakehouse Platform Fundamentals + Data Engineering Associate at minimum. Holding the Associate signals to clients that even the commercial team has hands-on platform fluency — a credibility differentiator in discovery meetings with CDOs and Chief AI Officers.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Why Certifications Matter for Accenture GTM</div>
+    <p class="body-text">In competitive RFP situations, Accenture's certified headcount becomes a differentiating data point: "Accenture has X Databricks-certified professionals on the delivery team, including Y Data Engineering Professionals and Z GenAI Engineering Associates." Enterprise clients evaluating Databricks SIs increasingly ask for proof of certification depth, not just general data/AI experience. The 2026 exam refresh — adding Unity Catalog governance, LLM-as-a-judge evaluation, Agent Bricks SDK, and Lakeflow Designer — means only recently certified practitioners reflect the current platform state. This keeps Accenture's credential base fresh and credible, and creates a natural renewal conversation with the 25,000-strong practitioner pool every two years.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#6 — Data Engineer Associate Cert Guide (Dave Mathew)</span>
+      <span class="chip">#29 — Data & AI Sales Capture for Databricks (Accenture job listing)</span>
+      <span class="chip">#67 — Ultimate Guide to Databricks Certifications 2026</span>
+      <span class="chip">#83 — Certifications & Badges Worth Knowing (Dumpsgate)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

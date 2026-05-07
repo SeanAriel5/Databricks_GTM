@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>HyperScaler Multi-Cloud Strategy — Partnership Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .cloud-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+    .cloud{border-radius:12px;padding:22px 18px;border:1px solid var(--border);background:var(--surf)}
+    .cloud-azure{border-top:4px solid #0078D4}
+    .cloud-aws{border-top:4px solid #FF9900}
+    .cloud-gcp{border-top:4px solid #4285F4}
+    .cloud-name{font-size:15px;font-weight:700;color:var(--t1);margin-bottom:10px}
+    .cloud-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+    .cloud-list li{font-size:12.5px;color:var(--t2);line-height:1.5;display:flex;gap:8px;align-items:flex-start}
+    .cloud-list li::before{content:'✓';color:var(--primary);font-weight:700;flex-shrink:0}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .check{color:var(--primary);font-weight:700}
+    .trend-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .trend-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .trend-list li::before{content:'→';color:var(--primary);font-weight:700;flex-shrink:0;font-size:16px}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.cloud-grid{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Partnership Ecosystem › HyperScaler / Multi-Cloud Strategy › Overview</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Partnership Ecosystem · HyperScaler Strategy</div>
+  <div class="hero-title">Multi-Cloud Strategy: AWS, Azure & GCP</div>
+  <div class="hero-sub">Databricks meets enterprises on the cloud they have already committed to — with deeply integrated first-party services on all three hyperscalers, open Delta Lake/Iceberg storage that eliminates cloud lock-in, and co-sell motions that make Databricks purchasable against existing cloud commitments. The multi-cloud posture is Databricks' primary architectural differentiator against cloud-native analytics alternatives.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Multi-Cloud</span>
+    <span class="hero-badge">AWS</span>
+    <span class="hero-badge">Microsoft Azure</span>
+    <span class="hero-badge">Google Cloud</span>
+    <span class="hero-badge">No Vendor Lock-In</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">The Multi-Cloud Philosophy</div>
+    <p class="body-text">Databricks' multi-cloud strategy is built on a foundational principle: enterprise data lives on the cloud the business has already committed to, and the data platform should follow — not force migration. Unlike cloud-native analytics alternatives (Amazon Redshift, Microsoft Fabric, Google BigQuery) that are optimized for their respective hyperscalers and require data to live within that cloud's ecosystem, Databricks runs identically across AWS, Azure, and GCP — and the underlying Delta Lake/Apache Iceberg storage format means data is never locked to any cloud or vendor.</p>
+    <p class="body-text" style="margin-top:12px">This posture creates two decisive GTM advantages. First, <strong>no cloud commitment risk</strong>: enterprises adopting Databricks are not forced to choose or consolidate clouds — Databricks works on whichever cloud (or clouds) their data already resides on. Second, <strong>cloud marketplace purchasing</strong>: all three hyperscalers list Databricks on their marketplaces, allowing purchase against existing cloud spend commitments (AWS EDP, Azure MACC, GCP CUD) — reducing procurement friction and accelerating deal closure.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2026 Capabilities by Cloud</div>
+    <div class="cloud-grid">
+      <div class="cloud cloud-azure">
+        <div class="cloud-name">Microsoft Azure</div>
+        <ul class="cloud-list">
+          <li>Flagship first-party joint service (Azure Databricks)</li>
+          <li>Lakebase GA — PostgreSQL OLTP on Azure</li>
+          <li>Azure AI Foundry integration</li>
+          <li>Power Platform data consumption</li>
+          <li>Azure AD / Entra ID native RBAC</li>
+          <li>Standard tier retirement Oct 2026 → Premium</li>
+          <li>MACC marketplace purchasing</li>
+        </ul>
+      </div>
+      <div class="cloud cloud-aws">
+        <div class="cloud-name">Amazon Web Services</div>
+        <ul class="cloud-list">
+          <li>Largest volume deployment — born on S3</li>
+          <li>Lakebase Autoscaling GA (scale-to-zero)</li>
+          <li>OpenTelemetry export to CloudWatch</li>
+          <li>SageMaker model deployment from Unity Catalog</li>
+          <li>AWS Transform mainframe modernization coalition</li>
+          <li>EDP marketplace purchasing</li>
+          <li>GPT-5.5 + Lakeflow Designer (April 2026)</li>
+        </ul>
+      </div>
+      <div class="cloud cloud-gcp">
+        <div class="cloud-name">Google Cloud Platform</div>
+        <ul class="cloud-list">
+          <li>Gemini family natively available via Mosaic AI</li>
+          <li>Vertex AI integration for model serving</li>
+          <li>BigQuery Lakehouse Federation (zero-copy query)</li>
+          <li>Google IAM native identity integration</li>
+          <li>CUD marketplace purchasing</li>
+          <li>Thomas Kurian joint partnership announcement</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Multi-Cloud vs. Cloud-Native Analytics: The Key Differentiators</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Dimension</th><th>Databricks (Multi-Cloud)</th><th>Cloud-Native Alternatives</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Cloud Portability</strong></td><td class="check">✓ Identical platform on AWS, Azure, GCP — data portable via open Delta/Iceberg</td><td>Optimized for one cloud; cross-cloud data access requires duplication or egress</td></tr>
+        <tr><td><strong>ML & AI Workloads</strong></td><td class="check">✓ Mosaic AI, Agent Bricks, Lakebase on all three clouds with same APIs</td><td>AWS SageMaker (AWS only), Azure ML (Azure only), Vertex AI (GCP only) — no portability</td></tr>
+        <tr><td><strong>Governance Layer</strong></td><td class="check">✓ Unity Catalog — one governance model across all clouds</td><td>Cloud IAM + warehouse-specific permissions — separate governance per cloud per service</td></tr>
+        <tr><td><strong>Storage Format</strong></td><td class="check">✓ Open Delta Lake / Apache Iceberg — no lock-in</td><td>Proprietary formats (Redshift internal, BigQuery Capacitor, Fabric OneLake) — lock-in risk</td></tr>
+        <tr><td><strong>Marketplace Purchasing</strong></td><td class="check">✓ All three cloud marketplaces — apply against EDP, MACC, CUD commitments</td><td>Available on own marketplace only; cross-cloud commitments not applicable</td></tr>
+        <tr><td><strong>Multi-Cloud Data Access</strong></td><td class="check">✓ Lakehouse Federation — query Redshift, BigQuery, Synapse from Unity Catalog without data movement</td><td>Limited or no cross-cloud query capability without data copy</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GTM Implications for Accenture</div>
+    <ul class="trend-list">
+      <li><strong>No cloud argument to lose.</strong> When a client is "Azure-committed," Databricks works on Azure. When they're "AWS-first," Databricks works on AWS. The multi-cloud posture means the platform conversation is never blocked by the cloud alignment conversation — unlike Snowflake (multi-cloud managed service but proprietary format) or cloud-native alternatives.</li>
+      <li><strong>Marketplace purchasing accelerates deal closure.</strong> Enterprise clients with existing Azure MACC or AWS EDP commitments can purchase Databricks against those commitments — reducing procurement cycles from months to weeks. Accenture should qualify cloud marketplace eligibility early in every deal.</li>
+      <li><strong>AWS Transform is the mainframe modernization entry point.</strong> Databricks + AWS + Accenture's coalition targets $370M average annual technical debt per enterprise for mainframe migrations. This opens Databricks conversations with infrastructure and application teams that would not otherwise engage a data platform vendor.</li>
+      <li><strong>GCP + Gemini unlocks multimodal AI use cases.</strong> For GCP-committed clients building multimodal AI (document intelligence, image classification, video analytics), Gemini access via Databricks + Agent Bricks provides the governed enterprise layer that GCP's native tools lack — and Accenture's GCP practice can position Databricks as the bridge between GCP's AI models and the client's governed enterprise data.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#9 — Databricks on AWS — Platform Integration Overview</span>
+      <span class="chip">#17 — Databricks on Google Cloud — Partnership Capabilities</span>
+      <span class="chip">#25 — Azure Databricks Lakebase GA (Microsoft Tech Community)</span>
+      <span class="chip">#28 — Databricks & Google Cloud Expanded Partnership</span>
+      <span class="chip">#56 — Azure Databricks 2026 Partnership Expansion</span>
+      <span class="chip">#92 — GenAI Capabilities on GCP with Databricks</span>
+      <span class="chip">#107 — Databricks on AWS: 2026 Release Highlights</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

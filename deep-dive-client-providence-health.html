@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Providence Health — Client Use Case Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#0a2040 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .uc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .uc-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .uc-cat{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:.08em;margin-bottom:8px}
+    .uc-title{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .uc-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .metric{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;text-align:center}
+    .metric-val{font-size:28px;font-weight:700;color:var(--primary);line-height:1}
+    .metric-label{font-size:11px;color:var(--t3);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    .tech-stack{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .tech-chip{background:var(--black);color:#fff;font-size:11.5px;font-weight:600;padding:6px 16px;border-radius:6px}
+    .roadmap-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:12px}
+    .roadmap-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .roadmap-dot{flex-shrink:0;width:10px;height:10px;border-radius:50%;background:var(--primary);margin-top:6px}
+    .quote-box{background:var(--primary-pale);border-left:4px solid var(--primary);border-radius:0 10px 10px 0;padding:20px 24px;margin-top:16px}
+    .quote-text{font-size:15px;color:var(--t1);line-height:1.8;font-style:italic}
+    .quote-source{font-size:12px;color:var(--t3);margin-top:8px;font-weight:600}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.uc-grid,.metric-row{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Client Use Cases › Agentic Reinvention › Providence Health</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Client Use Cases · Agentic Reinvention</div>
+  <div class="hero-title">Providence Health × Databricks</div>
+  <div class="hero-sub">One of the largest non-profit health systems in the US leverages the Databricks Data Intelligence Platform to unify clinical, operational, and financial data — enabling population health analytics, HIPAA-compliant AI governance, and an agentic AI roadmap aimed at transforming clinical decision support and care coordination at scale.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Healthcare</span>
+    <span class="hero-badge">Clinical Analytics</span>
+    <span class="hero-badge">HIPAA Compliance</span>
+    <span class="hero-badge">Population Health</span>
+    <span class="hero-badge">Agentic AI</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Client Context</div>
+    <p class="body-text">Providence Health &amp; Services is one of the largest non-profit health systems in the United States, operating 51 hospitals, 1,000+ care sites, and serving more than 5 million patients annually across the Western US. As a mission-driven health system operating under strict HIPAA, HITECH, and state-level privacy regulations, Providence's data challenge combines the scale of a large enterprise with the governance requirements of the most regulated industry in the world: patient data cannot leave a compliant environment, models must be explainable and auditable, and access to sensitive clinical data must be controlled at the individual record level.</p>
+    <p class="body-text" style="margin-top:12px">Providence partnered with Databricks to replace fragmented, hospital-level data silos with a unified Lakehouse — consolidating EHR data (Epic), clinical lab results, claims data, and operational metrics onto a single governed platform governed by Unity Catalog. The result: data science teams can build population health models and clinical AI applications at system-wide scale, not just per-hospital analyses, while Unity Catalog enforces HIPAA-required access controls and generates the audit logs required for compliance documentation.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Use Cases</div>
+    <div class="uc-grid">
+      <div class="uc-card">
+        <div class="uc-cat">Clinical Intelligence</div>
+        <div class="uc-title">Population Health Analytics</div>
+        <div class="uc-text">Delta Lake consolidates patient records, lab results, and claims data from 51 hospitals into a unified Lakehouse. Medallion Architecture Gold tables power risk stratification models that identify high-risk patient cohorts for proactive outreach — flagging patients likely to be readmitted within 30 days or deteriorating from chronic conditions. Models are trained on system-wide data, not hospital-specific silos, enabling statistically robust predictions across small patient subpopulations.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Compliance & Governance</div>
+        <div class="uc-title">HIPAA-Compliant AI Governance</div>
+        <div class="uc-text">Unity Catalog enforces row-level security on patient data — ensuring that analysts can only access records within their care site or authorized scope, and that de-identification is enforced at query time via dynamic data masking. Column-level encryption protects PII fields. Unity Catalog's automated audit logs satisfy HIPAA's access logging requirements without manual intervention — every query against patient data generates a tamper-resistant audit trail.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Operational Intelligence</div>
+        <div class="uc-title">Clinical Operations Optimization</div>
+        <div class="uc-text">Databricks SQL and Genie enable clinical operations teams to query bed utilization, OR scheduling efficiency, and supply chain consumption in natural language — without requiring SQL expertise. Lakeflow pipelines process real-time ADT (Admit/Discharge/Transfer) events from Epic to maintain near-real-time bed availability dashboards, enabling capacity management decisions based on live data rather than yesterday's reports.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Precision Medicine</div>
+        <div class="uc-title">Patient Outcomes Data Platform</div>
+        <div class="uc-text">Providence's data science team uses Databricks' ML suite (AutoML, MLflow, Feature Store) to build patient outcome prediction models. Feature Store enforces point-in-time correct feature retrieval — preventing data leakage where future information would contaminate training datasets, a critical compliance requirement for clinical ML. MLflow tracks all model versions, training datasets, and evaluation results for audit-readiness.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Scale of the Data Challenge</div>
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val">51</div>
+        <div class="metric-label">Hospitals on Unified Lakehouse</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">5M+</div>
+        <div class="metric-label">Patients Served Annually</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">HIPAA</div>
+        <div class="metric-label">Compliance Enforced at Query Time</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Technology Stack</div>
+    <div class="tech-stack">
+      <span class="tech-chip">Delta Lake</span>
+      <span class="tech-chip">Medallion Architecture</span>
+      <span class="tech-chip">Unity Catalog</span>
+      <span class="tech-chip">Row-Level Security</span>
+      <span class="tech-chip">MLflow 3</span>
+      <span class="tech-chip">AutoML</span>
+      <span class="tech-chip">Feature Store</span>
+      <span class="tech-chip">Lakeflow Connect</span>
+      <span class="tech-chip">Databricks SQL</span>
+      <span class="tech-chip">Genie (NL Querying)</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Agentic AI Roadmap</div>
+    <ul class="roadmap-list">
+      <li><span class="roadmap-dot"></span><div><strong>Clinical Decision Support Agent</strong> — Agent Bricks is being evaluated to build an autonomous clinical decision support system that monitors incoming lab results, cross-references against established clinical protocols stored in Vector Search, and proactively surfaces actionable recommendations to care teams — with full audit logging of every agent action through Unity AI Gateway to satisfy clinical documentation requirements.</div></li>
+      <li><span class="roadmap-dot"></span><div><strong>Care Coordination Intelligence Agent</strong> — A multi-agent architecture is being designed to automate care coordination: an ingestion agent monitors discharge planning triggers from Epic, a recommendation agent identifies appropriate post-acute care settings based on patient risk profiles, and a communication agent drafts care transition documentation — compressing days of manual coordination to hours.</div></li>
+      <li><span class="roadmap-dot"></span><div><strong>Revenue Cycle Optimization Agent</strong> — Providence is exploring an agentic system that monitors claim denial patterns in near-real-time, identifies root causes (missing documentation, coding errors, payer-specific rules), and generates corrective action recommendations — targeting a measurable reduction in denial rates and days-in-AR without increasing coding staff headcount.</div></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Why Providence Matters for Accenture GTM</div>
+    <div class="quote-box">
+      <div class="quote-text">"Data context and organizational readiness are the true bottlenecks to AI adoption — not model cost or capability. Healthcare is where this is felt most acutely: the data is richest, the governance requirements are strictest, and the human consequences of model failure are highest."</div>
+      <div class="quote-source">Source #119 — 2026 State of AI Agents Report (Anthropic / BCG)</div>
+    </div>
+    <p class="body-text" style="margin-top:16px">Providence is the prototypical Databricks healthcare proof point because it demonstrates the platform's strength in the hardest possible compliance environment: HIPAA-regulated PHI (Protected Health Information) at enterprise scale. Unity Catalog's row-level security, column masking, and automated audit logging solve the healthcare governance problem that has historically prevented cloud data platforms from being adopted in clinical settings. For Accenture, Providence opens doors to any large health system, payer, or life sciences organization asking: "How do we build AI on patient data without violating HIPAA or creating compliance liability?" The answer is Unity Catalog + Databricks — and Providence is the live reference that proves it works in production.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#4 — 2026 State of AI Agents: Enterprise Insights (Databricks)</span>
+      <span class="chip">#12 — Accenture & Databricks Accelerate Enterprise AI (PR)</span>
+      <span class="chip">#63 — The Agentic Pivot: Strategic Roadmap (Accenture × Databricks)</span>
+      <span class="chip">#69 — Unity Catalog Governance — HIPAA/GDPR compliance (Prolifics)</span>
+      <span class="chip">#119 — 2026 State of AI Agents Report (Anthropic / BCG)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

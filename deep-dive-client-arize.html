@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Arize AI — Client Use Case Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .uc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .uc-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .uc-cat{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:.08em;margin-bottom:8px}
+    .uc-title{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .uc-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .tech-stack{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .tech-chip{background:var(--black);color:#fff;font-size:11.5px;font-weight:600;padding:6px 16px;border-radius:6px}
+    .arch-flow{display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap}
+    .arch-step{background:var(--primary-pale);border:1px solid #C2A3FF;border-radius:8px;padding:12px 16px;font-size:12.5px;font-weight:600;color:var(--primary);flex:1;min-width:120px;text-align:center}
+    .arch-arrow{color:var(--primary);font-size:20px;font-weight:700;flex-shrink:0}
+    .quote-box{background:var(--primary-pale);border-left:4px solid var(--primary);border-radius:0 10px 10px 0;padding:20px 24px;margin-top:16px}
+    .quote-text{font-size:15px;color:var(--t1);line-height:1.8;font-style:italic}
+    .quote-source{font-size:12px;color:var(--t3);margin-top:8px;font-weight:600}
+    .roadmap-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:12px}
+    .roadmap-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .roadmap-dot{flex-shrink:0;width:10px;height:10px;border-radius:50%;background:var(--primary);margin-top:6px}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.uc-grid{grid-template-columns:1fr}.arch-flow{flex-direction:column}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Client Use Cases › Agentic Reinvention › Arize AI</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Client Use Cases · Agentic Reinvention</div>
+  <div class="hero-title">Arize AI × Databricks</div>
+  <div class="hero-sub">Closing the LLMOps loop — Arize AI integrates with Databricks MLflow and Unity Catalog to provide enterprise-grade observability, evaluation, and drift detection for production AI models and autonomous agents.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">AI Observability</span>
+    <span class="hero-badge">LLMOps</span>
+    <span class="hero-badge">MLflow Integration</span>
+    <span class="hero-badge">Agent Monitoring</span>
+    <span class="hero-badge">Tech / SaaS</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Client Context</div>
+    <p class="body-text">Arize AI is a leading AI observability platform that enables ML and AI engineering teams to monitor, evaluate, and troubleshoot models and AI agents in production. As enterprises accelerate deployment of LLM-powered applications and autonomous agents, the challenge of understanding <em>why</em> a model is degrading, hallucinating, or producing unexpected outputs has become critical. Arize AI addresses this by integrating directly with Databricks' MLflow and Unity Catalog to create a closed-loop LLMOps cycle — where production signals feed back into the Lakehouse for retraining and continuous improvement.</p>
+    <p class="body-text" style="margin-top:12px">Arize participated in the Databricks ecosystem as part of the broader "Built-On Databricks" initiative, building native integrations with Agent Bricks and Managed MLflow to bring its observability capabilities directly into the Databricks workflow — eliminating the need for separate telemetry pipelines and fragmented monitoring stacks.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Use Cases</div>
+    <div class="uc-grid">
+      <div class="uc-card">
+        <div class="uc-cat">LLM Observability</div>
+        <div class="uc-title">Production LLM Monitoring with MLflow Tracing</div>
+        <div class="uc-text">Arize consumes MLflow traces generated by Databricks' Managed MLflow (Agent Bricks, LangChain, LlamaIndex) to monitor token usage, latency distributions, and response quality at scale. Detects drift in semantic similarity, hallucination rates, and retrieval quality without requiring manual sampling.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Agent Evaluation</div>
+        <div class="uc-title">Multi-Agent Trace Analysis</div>
+        <div class="uc-text">As multi-agent architectures surge 327% in adoption, Arize provides the observability layer that makes agentic systems trustworthy. Agent Bricks traces are exported via OpenTelemetry to Arize, where each reasoning step, tool call, and handoff between agents is analyzed for correctness, cost, and latency.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Data Quality</div>
+        <div class="uc-title">Training Data Monitoring via Unity Catalog</div>
+        <div class="uc-text">Arize integrates with Unity Catalog to monitor the statistical distribution of training and serving data simultaneously. When production input distributions drift from training distributions, Arize triggers alerts and feeds problematic examples back into Databricks Feature Store for targeted retraining.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Evaluation</div>
+        <div class="uc-title">LLM-as-a-Judge Evaluation Pipeline</div>
+        <div class="uc-text">Arize's evaluation framework, combined with MLflow 3's LLM-as-a-judge capabilities, creates an automated quality gate: every model update is evaluated against production golden datasets before promotion. Results are stored in Delta Lake and lineage-tracked through Unity Catalog.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Reference Architecture</div>
+    <div class="arch-flow">
+      <div class="arch-step">Agent Bricks / MLflow Tracing</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">OpenTelemetry Export (Unity AI Gateway)</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Arize Observability Platform</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Drift Alerts → Delta Lake</div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Retraining Pipeline (Lakeflow)</div>
+    </div>
+    <p class="body-text" style="margin-top:16px">This architecture creates a self-healing LLMOps loop: production inference signals (traces, evaluations, user feedback) are observed by Arize, problematic examples are written back to Delta Lake tables, and Lakeflow pipelines automatically trigger retraining runs on the updated dataset. Unity Catalog governs every step — ensuring that the data lineage from a user interaction to a retrained model version is fully auditable.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Technology Stack</div>
+    <div class="tech-stack">
+      <span class="tech-chip">Arize Phoenix</span>
+      <span class="tech-chip">Managed MLflow (Databricks)</span>
+      <span class="tech-chip">Agent Bricks</span>
+      <span class="tech-chip">Unity AI Gateway</span>
+      <span class="tech-chip">OpenTelemetry</span>
+      <span class="tech-chip">Delta Lake</span>
+      <span class="tech-chip">Unity Catalog</span>
+      <span class="tech-chip">Lakeflow Pipelines</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Agentic AI Monitoring Roadmap</div>
+    <ul class="roadmap-list">
+      <li><span class="roadmap-dot"></span><div><strong>Real-Time Agent Supervision</strong> — Arize is developing real-time monitoring for multi-agent Databricks deployments: detecting when an agent is in a reasoning loop, consuming excessive tokens, or producing outputs that fall outside safety guardrails — enabling human-in-the-loop intervention before errors propagate.</div></li>
+      <li><span class="roadmap-dot"></span><div><strong>Governance-Aware Evaluation Datasets</strong> — Integration with Unity Catalog's data classification to automatically tag evaluation datasets by sensitivity level, ensuring that PII-containing golden examples are only accessible to authorized evaluators — satisfying CISO requirements for AI evaluation at regulated enterprises.</div></li>
+      <li><span class="roadmap-dot"></span><div><strong>Cost Attribution per Agent Workflow</strong> — Arize and Unity AI Gateway are co-developing cost attribution at the agent workflow level: enabling CDOs to understand exactly which business process is consuming the most AI compute, and informing FinOps decisions about agentic AI investment.</div></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Context: The LLMOps Imperative</div>
+    <div class="quote-box">
+      <div class="quote-text">"Managed MLflow positions itself as the unified standard for tracing, evaluating, and monitoring GenAI agents, eliminating vendor lock-in via OpenTelemetry — and enabling third-party observability platforms like Arize to consume production traces without proprietary integrations."</div>
+      <div class="quote-source">Source #16 — Agent Tracing &amp; AI Observability Tools: Managed MLflow (Databricks)</div>
+    </div>
+    <p class="body-text" style="margin-top:16px">Arize exemplifies the "Agentic Reinvention" pattern from the demand side: enterprises that have successfully deployed Agent Bricks quickly discover that the critical gap is observability — understanding at scale what agents are doing, why they fail, and how to improve them. Arize fills this gap within the Databricks ecosystem, and is a strong ISV reference for any client building production agentic AI. For Accenture, it represents an opportunity to bundle observability as a managed service layer on top of Databricks implementations.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#15 — Agent Bricks: Governed Enterprise Agent Platform (Kasey Uhlenhuth)</span>
+      <span class="chip">#16 — Agent Tracing &amp; AI Observability — Managed MLflow (Databricks)</span>
+      <span class="chip">#57 — Open source vs. managed MLflow (Databricks)</span>
+      <span class="chip">#92 — Databricks generative AI capabilities (official docs)</span>
+      <span class="chip">#98 — Expanding Agent Governance with Unity AI Gateway</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

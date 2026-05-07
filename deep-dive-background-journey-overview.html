@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Databricks Company Journey — Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .timeline{display:flex;flex-direction:column;gap:0;margin-top:12px}
+    .tl-item{display:grid;grid-template-columns:90px 1fr;gap:20px;padding:16px 0;border-bottom:1px solid var(--border)}
+    .tl-item:last-child{border-bottom:none}
+    .tl-year{font-size:14px;font-weight:700;color:var(--primary);padding-top:2px}
+    .tl-title{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px}
+    .tl-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .metric{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;text-align:center}
+    .metric-val{font-size:28px;font-weight:700;color:var(--primary);line-height:1}
+    .metric-label{font-size:11px;color:var(--t3);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    .acq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .acq{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .acq-name{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px}
+    .acq-price{font-size:12px;font-weight:700;color:var(--primary);margin-bottom:8px}
+    .acq-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .quote-box{background:var(--primary-pale);border-left:4px solid var(--primary);border-radius:0 10px 10px 0;padding:20px 24px;margin-top:16px}
+    .quote-text{font-size:15px;color:var(--t1);line-height:1.8;font-style:italic}
+    .quote-source{font-size:12px;color:var(--t3);margin-top:8px;font-weight:600}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.acq-grid,.metric-row{grid-template-columns:1fr}.tl-item{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Background › Journey › Company Overview</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Background · Journey</div>
+  <div class="hero-title">Databricks: Company Journey & Strategic Context</div>
+  <div class="hero-sub">From a UC Berkeley Spark optimization project in 2013 to a $134B data intelligence platform serving 70% of the Fortune 500 — the story of how Databricks unified data, analytics, and AI into a single open platform and became the most valuable private software company in Silicon Valley history.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Company History</span>
+    <span class="hero-badge">$134B Valuation</span>
+    <span class="hero-badge">IPO 2026</span>
+    <span class="hero-badge">Acquisitions</span>
+    <span class="hero-badge">Lakehouse Architecture</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Founding & Origins</div>
+    <p class="body-text">Databricks was founded in 2013 by Ali Ghodsi, Matei Zaharia, and five fellow UC Berkeley researchers — the core team behind Apache Spark, the open-source distributed computing engine they built to address Hadoop's limitations. The founding insight was that data processing and analytics should be faster, simpler, and accessible across any cloud — a vision that would evolve from a Spark optimization layer into the world's leading Data Intelligence Platform.</p>
+    <p class="body-text" style="margin-top:12px">The company pioneered the <strong>Data Lakehouse</strong> architecture — the convergence of data warehouses (structured, reliable, expensive, closed) and data lakes (cheap, flexible, ungoverned) onto open cloud object storage. Delta Lake, released open-source in 2019, provided the ACID transaction layer that made this convergence production-ready. By 2021, Databricks had established the Lakehouse as the dominant enterprise data architecture pattern, displacing the two-system (warehouse + lake) approach that had defined enterprise data infrastructure since the 1990s.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Milestones</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">2013</div>
+        <div>
+          <div class="tl-title">Founded at UC Berkeley</div>
+          <div class="tl-text">Ali Ghodsi, Matei Zaharia, and five co-founders commercialize Apache Spark. First product: a managed Spark service eliminating the complexity of self-managed clusters.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2019</div>
+        <div>
+          <div class="tl-title">Delta Lake Open-Sourced</div>
+          <div class="tl-text">Databricks releases Delta Lake as open source, providing ACID transactions on cloud object storage. The Medallion Architecture (Bronze/Silver/Gold) becomes the reference data organization pattern for the industry.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2021</div>
+        <div>
+          <div class="tl-title">Lakehouse Vision Published & $1.6B Series H</div>
+          <div class="tl-text">Databricks reaches $1.6B ARR and codifies the Data Lakehouse paradigm in a landmark academic paper, establishing the architectural vocabulary adopted across the industry including by Snowflake and cloud providers.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2023</div>
+        <div>
+          <div class="tl-title">MosaicML Acquired — GenAI Pivot</div>
+          <div class="tl-text">$1.3B acquisition of MosaicML brings enterprise LLM training infrastructure into the platform. Databricks' generative AI capabilities (DBRX, Mosaic AI, Foundation Model APIs) launch within 12 months of the acquisition.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2024</div>
+        <div>
+          <div class="tl-title">Tabular Acquired — Open Table Format Dominance</div>
+          <div class="tl-text">$2B acquisition of Tabular (founded by the Apache Iceberg creators) consolidates open table format leadership. Delta UniForm enables Databricks Delta tables to be read as Iceberg — eliminating the only remaining table format fragmentation in the industry.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2025</div>
+        <div>
+          <div class="tl-title">Accenture JBG & Agent Bricks GA</div>
+          <div class="tl-text">The most significant SI partnership in Databricks' history launches with Accenture: 25,000 trained professionals, shared P&L, and joint go-to-market. Agent Bricks (GA) establishes Databricks as the enterprise agentic AI platform — not just the analytics layer. Unity Catalog open-sourced, setting the governance standard for the entire industry.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2026</div>
+        <div>
+          <div class="tl-title">$134B Valuation — IPO Preparation</div>
+          <div class="tl-text">Databricks surpasses $4.8B ARR at 55%+ YoY growth, achieves a $134B private valuation (one of the highest in Silicon Valley history), and completes the platform with Lakebase (PostgreSQL-compatible OLTP, GA). Analysts expect the 2026 IPO to be the largest tech listing of the year.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Scale in 2026</div>
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val">$134B</div>
+        <div class="metric-label">Private Valuation</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">$4.8B+</div>
+        <div class="metric-label">ARR at 55%+ YoY Growth</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">15K+</div>
+        <div class="metric-label">Enterprise Customers</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Strategic Acquisitions</div>
+    <div class="acq-grid">
+      <div class="acq">
+        <div class="acq-name">MosaicML (2023)</div>
+        <div class="acq-price">$1.3B</div>
+        <div class="acq-text">Brought enterprise LLM training infrastructure and the MPT model family. Became the foundation for Mosaic AI, Foundation Model APIs, DBRX, and the entire generative AI capability layer. The acquisition that pivoted Databricks from a data platform into an AI platform.</div>
+      </div>
+      <div class="acq">
+        <div class="acq-name">Tabular (2024)</div>
+        <div class="acq-price">$2B</div>
+        <div class="acq-text">Founded by the original Apache Iceberg creators. Consolidated open table format leadership and enabled Delta UniForm — allowing any Iceberg reader to read Databricks Delta tables. Eliminated the final table format fragmentation that had complicated multi-vendor enterprise data architectures.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Platform Evolution: From Spark Tool to Data Intelligence Platform</div>
+    <p class="body-text">Databricks has gone through three distinct product identity shifts. In its first phase (2013–2018), it was a managed Apache Spark service — simplifying distributed data processing for engineers who would otherwise manage their own clusters. In its second phase (2019–2022), it became the Lakehouse platform — Delta Lake + Photon + Unity Catalog transforming cloud object storage into a governed, ACID-compliant, analytics-ready foundation that made the traditional two-system architecture (warehouse + lake) obsolete.</p>
+    <p class="body-text" style="margin-top:12px">In its current third phase (2023–present), Databricks has become the Data Intelligence Platform — the full-stack enterprise platform that combines analytics, ML, agentic AI (Agent Bricks), operational databases (Lakebase), open-source governance (Unity Catalog), and AI-first data pipelines (Lakeflow) into a single billing relationship and governance model. The IPO narrative explicitly frames this as the disruption of five major categories simultaneously: enterprise analytics (Snowflake), ML platforms (Dataiku, SAS), operational databases (Oracle, PostgreSQL), data integration (Informatica), and AI agent infrastructure (no incumbent).</p>
+    <div class="quote-box">
+      <div class="quote-text">"Databricks is no longer competing in one market — it is redefining what a data platform is. The convergence of analytics, AI, and operational databases on open formats and a single governance layer represents a $100B+ market disruption."</div>
+      <div class="quote-source">Source #39 — Databricks IPO: The $134B Data Intelligence Bet (Allied VC)</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Why This Matters for Accenture GTM</div>
+    <p class="body-text">Understanding Databricks' company journey is essential context for every GTM conversation: the platform's trajectory — from Spark tool to Lakehouse to Data Intelligence Platform — explains why it is now strategically relevant to <em>every</em> enterprise technology buyer, not just data engineering teams. The $134B valuation and IPO preparation signal to C-suite buyers that Databricks is a durable enterprise platform choice, not a startup risk. The open-source posture (Delta Lake, Unity Catalog, Apache Iceberg) differentiates Databricks from Oracle and Snowflake as a vendor that does not lock customer data into proprietary formats. And the Accenture JBG — 25,000 professionals, shared P&L, three named launch clients — positions Accenture as the primary delivery partner for an IPO-stage platform company at the center of enterprise AI adoption.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#38 — Databricks announces $15.3B Series J round</span>
+      <span class="chip">#39 — Databricks IPO: The $134B Data Intelligence Bet (Allied VC)</span>
+      <span class="chip">#49 — Databricks raises $15.3B at record $62B valuation</span>
+      <span class="chip">#52 — Databricks valuation evolution and growth trajectory</span>
+      <span class="chip">#64 — The Architectural Supremacy and Strategic Evolution of Databricks</span>
+      <span class="chip">#65 — The Paradigmatic Shift in Enterprise Data Intelligence</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

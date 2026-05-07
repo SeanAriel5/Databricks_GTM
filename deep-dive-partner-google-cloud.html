@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Google Cloud Partnership — Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#003366 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .milestone-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:12px}
+    .milestone-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .milestone-dot{flex-shrink:0;width:10px;height:10px;border-radius:50%;background:var(--primary);margin-top:6px}
+    .int-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .int-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .int-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .int-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .quote-box{background:var(--primary-pale);border-left:4px solid var(--primary);border-radius:0 10px 10px 0;padding:20px 24px;margin-top:16px}
+    .quote-text{font-size:15px;color:var(--t1);line-height:1.8;font-style:italic}
+    .quote-source{font-size:12px;color:var(--t3);margin-top:8px;font-weight:600}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.int-grid{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Partnership Ecosystem › HyperScaler › Google Cloud Platform</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Partnership Ecosystem · HyperScaler / Multi-Cloud</div>
+  <div class="hero-title">Google Cloud Platform Partnership</div>
+  <div class="hero-sub">Databricks on GCP unlocks Google's AI frontier for enterprise data — Gemini models natively available within the Databricks Data Intelligence Platform, BigQuery federation without data movement, and agentic AI pipelines built on GCS-backed Delta Lake.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">GCP</span>
+    <span class="hero-badge">Google Cloud</span>
+    <span class="hero-badge">Gemini</span>
+    <span class="hero-badge">BigQuery</span>
+    <span class="hero-badge">Multi-Cloud</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Partnership Overview</div>
+    <p class="body-text">The Databricks–Google Cloud partnership is a strategic product integration designed to make the world's most advanced AI models natively consumable on enterprise data without requiring data duplication or cloud migration. Unlike the Azure partnership (co-engineered first-party service) or the AWS partnership (foundational infrastructure depth), the GCP partnership's defining feature is <strong>model access</strong>: Google's Gemini family of models is available directly within the Databricks Data Intelligence Platform — enabling enterprises to run Gemini's multimodal reasoning on their own governed Delta Lake data through Unity Catalog's access controls.</p>
+    <p class="body-text" style="margin-top:12px">For GCP-committed enterprises — particularly those in the technology, media, and consumer sectors where Google Cloud is the preferred cloud — Databricks on GCP provides the governed Lakehouse layer that Google's native analytics tools lack, while making the full breadth of GCP's AI ecosystem available through Mosaic AI and Agent Bricks.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2026 Key Milestones</div>
+    <ul class="milestone-list">
+      <li><span class="milestone-dot"></span><div><strong>Gemini Models Natively in Databricks</strong> — Google's Gemini 1.5 Pro and Gemini 2.0 models are now accessible directly through the Databricks Foundation Model APIs and AI Playground — no separate GCP credentials, no data copy, governed by Unity AI Gateway. Customers can use Gemini for document intelligence, multimodal analysis, and agent reasoning on data that never leaves their Databricks workspace.</div></li>
+      <li><span class="milestone-dot"></span><div><strong>Agent System Design Patterns on GCP</strong> — Databricks published official documentation for agentic AI architectures specifically on GCP: from deterministic chains to single-agent RAG systems to complex multi-agent orchestration. This GCP-specific guidance reflects the depth of the partnership's engineering alignment.</div></li>
+      <li><span class="milestone-dot"></span><div><strong>Databricks GenAI Capabilities on GCP</strong> — Full documentation for the LLMOps workflow (AI Playground → Foundation Models → Vector Search → Unity AI Gateway → MLflow evaluation) is now available for GCP deployments, confirming feature parity between cloud deployments.</div></li>
+      <li><span class="milestone-dot"></span><div><strong>BigQuery Federation via Lakehouse Federation</strong> — Customers can now query BigQuery tables directly through Unity Catalog's Lakehouse Federation without data movement — bringing GCP's native OLAP layer into the Databricks governed query surface alongside S3, ADLS, and other sources.</div></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key GCP-Specific Integrations</div>
+    <div class="int-grid">
+      <div class="int-card">
+        <div class="int-title">Gemini via Foundation Model APIs</div>
+        <div class="int-text">Gemini models available via Databricks' Foundation Model APIs — same interface as GPT-5.5, Claude, and Llama. Unity AI Gateway governs usage, tracks costs, and enforces rate limits. Gemini's multimodal capability (text + images + documents) is directly consumable in Agent Bricks pipelines.</div>
+      </div>
+      <div class="int-card">
+        <div class="int-title">Google Cloud Storage (GCS)</div>
+        <div class="int-text">Databricks tables stored natively on GCS in Delta Lake format. IAM bindings with Google service accounts govern cluster-level storage access. Unity Catalog layers fine-grained row/column security on top of GCS-backed Delta tables — without requiring GCS bucket policy changes.</div>
+      </div>
+      <div class="int-card">
+        <div class="int-title">BigQuery Lakehouse Federation</div>
+        <div class="int-text">Unity Catalog connects to BigQuery as an external catalog via Lakehouse Federation. SQL queries against BigQuery tables execute through Databricks' query engine with Unity Catalog's access controls enforced — enabling a single governed SQL surface across BigQuery and Delta Lake simultaneously.</div>
+      </div>
+      <div class="int-card">
+        <div class="int-title">Vertex AI Interoperability</div>
+        <div class="int-text">MLflow models registered in Unity Catalog can be exported to Vertex AI endpoints for serving, and Vertex AI training runs can log experiment metadata back to Managed MLflow. This bridges GCP's ML infrastructure with Databricks' unified governance and experiment tracking.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GCP vs. Azure vs. AWS: Partnership Positioning</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Dimension</th><th>Google Cloud (GCP)</th><th>Microsoft Azure</th><th>AWS</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Partnership Type</strong></td><td>Strategic product partnership (model access + storage)</td><td>First-party co-engineered service (joint product)</td><td>Foundational (highest customer volume + EDP commercial)</td></tr>
+        <tr><td><strong>Key Differentiator</strong></td><td>Gemini model access natively within Databricks</td><td>Azure AI Foundry, Power Platform, SAP BDC integrations</td><td>AWS Transform mainframe modernization coalition</td></tr>
+        <tr><td><strong>Commercial Vehicle</strong></td><td>GCP Marketplace listing</td><td>Azure Marketplace + MACC-eligible</td><td>AWS Marketplace + EDP-eligible</td></tr>
+        <tr><td><strong>Ideal Customer Profile</strong></td><td>Tech/media companies on GCP needing frontier AI models on governed data</td><td>Microsoft-centric enterprises (Office 365, Azure AD, SAP)</td><td>AWS-native enterprises; mainframe modernization candidates</td></tr>
+        <tr><td><strong>Accenture Motion</strong></td><td>Google Cloud + Databricks for AI-first transformation; Accenture Google Business Group co-sell</td><td>Avanade (Microsoft/Accenture JV) + Databricks co-sell via MACC</td><td>Accenture AWS Transform coalition + Databricks Lakehouse data foundation</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Thomas Kurian Quote — Partnership Vision</div>
+    <div class="quote-box">
+      <div class="quote-text">"This partnership leverages Gemini's advanced capabilities to empower enterprises — enabling customers to build sophisticated AI agents and automate complex data workflows directly on their data, eliminate data duplication, and contribute to the next generation of AI-powered enterprises."</div>
+      <div class="quote-source">Thomas Kurian, CEO of Google Cloud — on the Databricks × Google Cloud partnership</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GTM Angle for Accenture</div>
+    <p class="body-text">For clients already committed to Google Cloud, Databricks on GCP is the answer to a critical question: <em>"We want to use Gemini, but we don't want to copy all our data to Google's infrastructure and lose governance."</em> Databricks provides the governed Lakehouse foundation on GCS while making Gemini natively callable — no data egress, Unity Catalog access controls enforced on every Gemini inference. Accenture's Google Cloud Business Group creates a natural co-sell: pair GCP transformation engagements with a Databricks Data Intelligence Platform layer to add governed agentic AI capability without cloud lock-in. The multi-cloud story is also powerful: customers on both Azure and GCP can run a single Unity Catalog governance plane across both clouds simultaneously.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#9 — AWS vs Azure and GCP Executive Guide 2026</span>
+      <span class="chip">#17 — Agent System Design Patterns (Databricks on GCP)</span>
+      <span class="chip">#28 — Cloud Partners (Databricks)</span>
+      <span class="chip">#92 — Databricks GenAI Capabilities (GCP docs)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

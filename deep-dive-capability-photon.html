@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Photon — Core Capability Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#2d0050 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .feat{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .feat-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .feat-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .metric{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;text-align:center}
+    .metric-val{font-size:36px;font-weight:700;color:var(--primary);line-height:1}
+    .metric-label{font-size:11px;color:var(--t3);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .check{color:var(--primary);font-weight:700}
+    .no{color:var(--t3)}
+    .arch-flow{display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap}
+    .arch-step{background:var(--primary-pale);border:1px solid #C2A3FF;border-radius:8px;padding:12px 16px;font-size:12.5px;font-weight:600;color:var(--primary);flex:1;min-width:100px;text-align:center;line-height:1.4}
+    .arch-arrow{color:var(--primary);font-size:20px;font-weight:700;flex-shrink:0}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.feat-grid,.metric-row{grid-template-columns:1fr}.arch-flow{flex-direction:column}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Core Capabilities › Data Medallion Architecture › Photon</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Core Capabilities · Data Medallion Architecture</div>
+  <div class="hero-title">Photon Engine</div>
+  <div class="hero-sub">Databricks' native vectorized query engine written in C++ — delivering 2–4× faster SQL performance on Delta Lake with zero code changes, powering both interactive analytics and AI pipeline compute at enterprise scale.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Photon</span>
+    <span class="hero-badge">Vectorized Execution</span>
+    <span class="hero-badge">Performance</span>
+    <span class="hero-badge">Cost Reduction</span>
+    <span class="hero-badge">Delta Lake</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">What is Photon?</div>
+    <p class="body-text">Photon is Databricks' proprietary native query engine, built entirely in C++ and deeply integrated with Delta Lake. It replaces the JVM-based Apache Spark execution engine for SQL and DataFrame workloads, using modern CPU hardware features — SIMD vectorization, advanced branch prediction, and cache-friendly memory layouts — to dramatically accelerate query performance without any changes to user code or SQL queries.</p>
+    <p class="body-text" style="margin-top:12px">Photon operates transparently: the same SQL or PySpark code runs on Photon automatically when it is enabled on a cluster, with Spark serving as the fallback for operations Photon does not yet support. Because Photon is deeply co-designed with Delta Lake's columnar Parquet storage, it achieves optimal performance specifically on Delta tables — the format used throughout the Databricks Medallion Architecture. Photon is included in Databricks Premium and above at no additional charge, making it the default performance layer for all SQL and ETL workloads.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Performance Impact</div>
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val">2–4×</div>
+        <div class="metric-label">Faster SQL Queries vs. JVM Spark</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">~50%</div>
+        <div class="metric-label">Compute Cost Reduction (same workload)</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">C++</div>
+        <div class="metric-label">Native Engine (No JVM Overhead)</div>
+      </div>
+    </div>
+    <p class="body-text" style="margin-top:16px">The performance gains from Photon translate directly to reduced DBU (Databricks Unit) consumption for the same workload — meaning customers pay less for identical query results. In practice, a Gold layer aggregation that took 40 minutes on standard Spark can complete in under 15 minutes on Photon, and that same Gold layer query used to build a dashboard refreshes in seconds rather than minutes. This is the core FinOps and SLA argument: Photon is a free upgrade that pays for itself immediately in compute savings.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Technical Capabilities</div>
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="feat-title">SIMD Vectorized Execution</div>
+        <div class="feat-text">Photon processes columnar data in batches using CPU SIMD (Single Instruction, Multiple Data) instructions — operating on 512 bits of data per clock cycle vs. one row at a time in the JVM model. For aggregation-heavy analytical queries, this is the primary source of 3–4× speedup.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Delta Lake Native I/O</div>
+        <div class="feat-text">Photon reads Delta Lake Parquet files using its own optimized I/O path — bypassing the JVM deserialization pipeline and working directly with the columnar byte layout on disk. Combined with Predictive Optimization and Liquid Clustering, this eliminates nearly all unnecessary I/O.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Adaptive Query Execution Integration</div>
+        <div class="feat-text">Photon integrates with Spark's Adaptive Query Execution (AQE) to dynamically reoptimize query plans at runtime based on actual data statistics. This means Photon benefits from both static compile-time optimization and dynamic runtime adaptation — a combination unavailable in competing engines.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Transparent Compatibility</div>
+        <div class="feat-text">Zero code changes required. Photon accelerates SQL, DataFrame API (PySpark, Scala, Java), and Delta Live Tables automatically. Unsupported operations fall back to JVM Spark silently. New Photon capabilities are added with every release, expanding coverage of the Spark operation surface.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Serverless Compute Powered by Photon</div>
+        <div class="feat-text">Databricks Serverless compute (notebooks, workflows, DLT) runs on Photon by default. When customers adopt serverless — as Databricks strongly encourages for cost efficiency — they also automatically get Photon's performance benefits without managing instance types or cluster sizes.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Supported Operation Coverage</div>
+        <div class="feat-text">Photon accelerates: SELECT with filters and projections, GROUP BY aggregations, JOIN operations (hash, sort-merge, broadcast), ORDER BY with top-k optimization, window functions, and Delta Lake MERGE/UPDATE/DELETE. Coverage expands with each platform release.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">How Photon Fits in the Medallion Architecture</div>
+    <div class="arch-flow">
+      <div class="arch-step">Bronze Layer<br/><small>(Raw Ingest)</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Silver Layer<br/><small>(Cleaned/Joined)<br/>Photon accelerates</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Gold Layer<br/><small>(Aggregated)<br/>Photon maximizes impact</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">BI / ML<br/><small>(Serving)<br/>Photon powers queries</small></div>
+    </div>
+    <p class="body-text" style="margin-top:16px">Photon's impact increases at higher Medallion layers where transformations become more aggregation-heavy and JOIN-intensive. In the Bronze layer (raw ingestion), I/O and network are typically the bottleneck; Photon provides modest gains. In the Silver and Gold layers — where complex JOINs, window functions, and GROUP BY aggregations dominate — Photon's vectorized engine delivers its maximum 3–4× speedup. For Gold-layer pipelines that feed BI dashboards or ML feature stores, Photon's acceleration directly translates to fresher data and faster time-to-insight.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Photon vs. Competing Engines</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Capability</th><th>Databricks Photon</th><th>Snowflake Native Engine</th><th>BigQuery Dremel</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Language / Runtime</strong></td><td class="check">C++ (no JVM overhead)</td><td class="check">C++ (purpose-built)</td><td class="check">C++ (Dremel engine)</td></tr>
+        <tr><td><strong>Works with ML/Streaming</strong></td><td class="check">✓ Same engine handles SQL + Spark ML + DLT streaming</td><td class="no">✗ SQL-only; ML requires separate Snowpark Python</td><td class="no">✗ SQL-only; ML is separate Vertex AI service</td></tr>
+        <tr><td><strong>Open Format I/O</strong></td><td class="check">✓ Delta Lake Parquet — open format, no lock-in</td><td class="no">✗ Snowflake FDN proprietary format</td><td class="no">✗ Capacitor proprietary format</td></tr>
+        <tr><td><strong>FinOps Transparency</strong></td><td class="check">✓ Included in Premium DBUs; faster = fewer DBUs consumed</td><td>Credits model is fixed regardless of engine speedup</td><td>Slot reservations do not directly reflect query optimization gains</td></tr>
+        <tr><td><strong>Code Changes Required</strong></td><td class="check">✓ Zero — automatic fallback to Spark for unsupported ops</td><td class="check">✓ Zero — SQL is SQL</td><td class="check">✓ Zero</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GTM Positioning</div>
+    <p class="body-text">Photon is Databricks' answer to the "but isn't Snowflake faster for SQL?" objection. For SQL-centric BI workloads on well-structured data, Snowflake's engine is highly optimized. But the moment a customer needs to run ML alongside SQL — or stream data into the same tables that BI tools query — the single-engine advantage of Photon + Delta Lake becomes decisive. The GTM message is simple: <em>"Photon gives you Snowflake-grade SQL performance without giving up the ML and streaming capabilities that make the Databricks platform transformative. And it's included."</em></p>
+    <p class="body-text" style="margin-top:12px">For FinOps-focused clients (Intel IT cut compute costs 23% with Granulate on Databricks), Photon's compute reduction is a tangible, measurable ROI driver — typically surfaced in the first 30 days of a migration engagement.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#51 — Granulate Optimizes Intel IT Databricks Platform (23% compute reduction)</span>
+      <span class="chip">#55 — Lakehouse Storage — Photon + Liquid Clustering (Databricks)</span>
+      <span class="chip">#58 — IT@Intel: 65% ETL Reduction on Databricks</span>
+      <span class="chip">#64 — Architectural Supremacy &amp; Strategic Evolution of Databricks</span>
+      <span class="chip">#65 — Paradigmatic Shift in Enterprise Data Intelligence</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Databricks vs Competitors — Core Capabilities Comparison</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .win{color:var(--primary);font-weight:700}
+    .neu{color:var(--t2)}
+    .lose{color:var(--t3)}
+    .verdict-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+    .verdict{border-radius:10px;padding:20px;border:1px solid var(--border)}
+    .verdict.db{background:var(--primary-pale);border-color:#C2A3FF}
+    .verdict.sf{background:#f0f8ff;border-color:#93c5fd}
+    .verdict.bq{background:#f0fff4;border-color:#86efac}
+    .verdict-name{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .verdict-wins{font-size:12px;color:var(--t2);line-height:1.6}
+    .verdict-badge{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+    .badge-db{background:var(--primary);color:#fff}
+    .badge-sf{background:#3b82f6;color:#fff}
+    .badge-bq{background:#22c55e;color:#fff}
+    .angle-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .angle-list li{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .angle-icon{flex-shrink:0;font-size:18px;line-height:1}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.verdict-grid{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Background › Comparisons › Core Capabilities</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Background · Comparisons</div>
+  <div class="hero-title">Core Capabilities: Databricks vs. The Field</div>
+  <div class="hero-sub">How Databricks' architectural choices — the Lakehouse, open standards, and agentic AI — position it decisively ahead of Snowflake and BigQuery for unified enterprise data and AI workloads.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Competitive Intelligence</span>
+    <span class="hero-badge">vs. Snowflake</span>
+    <span class="hero-badge">vs. BigQuery</span>
+    <span class="hero-badge">Battlecard</span>
+    <span class="hero-badge">GTM Positioning</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Executive Summary</div>
+    <p class="body-text">The enterprise data platform market has consolidated around three major contenders: Databricks, Snowflake, and Google BigQuery. While all three offer capable analytics engines, the competitive differentiation in 2026 is decisively shaped by <strong>AI-native architecture</strong> and the ability to unify analytics, ML, and agentic AI on a single governed platform. Databricks leads on this dimension by design — its Lakehouse architecture was built for open-format, multi-workload data from the ground up, whereas Snowflake retrofitted AI onto a SQL warehouse and BigQuery remains deeply tied to the Google Cloud silo. For Accenture sellers, the core message is: <em>when clients need to run agents on their own data, only Databricks provides a governed, open-standards foundation to do so without lock-in.</em></p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Capability-by-Capability Comparison</div>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Capability Dimension</th>
+          <th>Databricks</th>
+          <th>Snowflake</th>
+          <th>Google BigQuery</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Storage Format</strong></td>
+          <td class="win">✓ Open (Delta Lake + Iceberg via UniForm). Customer owns their data in cloud object storage — no proprietary format lock-in.</td>
+          <td class="lose">✗ Proprietary FDN format. Iceberg support via Polaris Catalog, but data export required to use non-Snowflake tools natively.</td>
+          <td class="neu">~ BigLake supports open formats, but native BigQuery storage is proprietary Capacitor format.</td>
+        </tr>
+        <tr>
+          <td><strong>ML & Model Training</strong></td>
+          <td class="win">✓ Native Mosaic AI (distributed training on GPUs/CPUs), MLflow 3 for experiment tracking, Foundation Model APIs for inference. End-to-end on the same platform as data.</td>
+          <td class="lose">✗ Snowflake ML Functions are SQL-based; no native GPU clusters. Complex ML requires external tools (SageMaker, Vertex AI), breaking governance.</td>
+          <td class="neu">~ Vertex AI is powerful but separate from BigQuery. Requires data copy/egress and separate identity management.</td>
+        </tr>
+        <tr>
+          <td><strong>Agentic AI Platform</strong></td>
+          <td class="win">✓ Agent Bricks (GA): Document Intelligence, Knowledge Assistant, CLEARS evaluation, Unity AI Gateway governing MCP servers. 327% enterprise adoption surge (2026).</td>
+          <td class="lose">✗ Cortex Agents launched but limited to Snowflake-governed data only. No cross-cloud agent orchestration. No MCP governance.</td>
+          <td class="lose">✗ Gemini in BigQuery enables text-to-SQL; no enterprise agent framework for multi-step autonomous workflows.</td>
+        </tr>
+        <tr>
+          <td><strong>Streaming & Real-Time</strong></td>
+          <td class="win">✓ Native Structured Streaming on Delta Lake. Delta Live Tables for declarative pipelines. Sub-minute latency on the same table as batch queries.</td>
+          <td class="lose">✗ Snowpipe Streaming exists but Snowflake is fundamentally a batch-optimized warehouse. Streaming at scale requires Kafka connectors and external tooling.</td>
+          <td class="neu">~ BigQuery Streaming available but expensive at scale ($0.01/200MB). Dataflow (Apache Beam) required for complex pipelines, adding complexity.</td>
+        </tr>
+        <tr>
+          <td><strong>Governance</strong></td>
+          <td class="win">✓ Unity Catalog: unified governance across tables, files, ML models, and AI agents. Multi-cloud single pane of glass. Row/column security, automated lineage, Delta Sharing.</td>
+          <td class="neu">~ Snowflake governance is strong within Snowflake but cannot govern data or models outside its perimeter. Horizon governance limited to Snowflake objects.</td>
+          <td class="lose">✗ Dataplex provides catalog and lineage but is operationally separate from BigQuery. Policy enforcement is IAM-based, not data-attribute-based.</td>
+        </tr>
+        <tr>
+          <td><strong>OLTP / Operational DB</strong></td>
+          <td class="win">✓ Lakebase (GA): serverless PostgreSQL-compatible OLTP running natively in the Lakehouse. Eliminates the analytics-vs-transactional silo.</td>
+          <td class="lose">✗ No OLTP capability. Snowflake is exclusively OLAP. Operational apps require separate databases (Postgres, Aurora), creating silos.</td>
+          <td class="lose">✗ BigQuery is OLAP-only. AlloyDB serves OLTP but is an entirely separate product with separate billing and governance.</td>
+        </tr>
+        <tr>
+          <td><strong>Cost Model</strong></td>
+          <td class="win">✓ Serverless compute for notebooks, workflows, DLT. Photon acceleration reduces compute costs 2–4×. Liquid Clustering eliminates partition management overhead.</td>
+          <td class="neu">~ Credits-based model is predictable but expensive for ML and streaming. Large customers negotiate discounts aggressively.</td>
+          <td class="neu">~ Slot reservations vs. on-demand pricing creates complexity. BigQuery ML compute is additional cost.</td>
+        </tr>
+        <tr>
+          <td><strong>Ecosystem Openness</strong></td>
+          <td class="win">✓ Open source at every layer: Delta Lake, MLflow, Unity Catalog. Tabular acquisition adds Iceberg. No forced data egress. Works on AWS, Azure, and GCP.</td>
+          <td class="lose">✗ Proprietary at core. Snowpark and Cortex are Snowflake-only APIs. Partner integrations require data to live in Snowflake.</td>
+          <td class="lose">✗ Google Cloud-centric. Multi-cloud is possible but adds significant integration overhead. Gemini models only available inside GCP ecosystem.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Platform Verdict by Workload</div>
+    <div class="verdict-grid">
+      <div class="verdict db">
+        <div class="verdict-badge badge-db">Databricks Wins</div>
+        <div class="verdict-name">Databricks is the Clear Choice When:</div>
+        <div class="verdict-wins">
+          • Running ML training and production inference alongside analytics<br/>
+          • Building governed, multi-agent agentic AI on enterprise data<br/>
+          • Unifying streaming + batch on the same open Delta tables<br/>
+          • Multi-cloud deployments (AWS + Azure + GCP simultaneously)<br/>
+          • Replacing legacy RDBMS with Lakebase for operational AI apps<br/>
+          • Regulated industries needing automated data lineage + compliance
+        </div>
+      </div>
+      <div class="verdict sf">
+        <div class="verdict-badge badge-sf">Snowflake Preferred When:</div>
+        <div class="verdict-name">Snowflake Has an Edge When:</div>
+        <div class="verdict-wins">
+          • The use case is pure SQL analytics with no ML requirements<br/>
+          • Teams want minimal infrastructure management and SQL simplicity<br/>
+          • Existing Snowflake contracts create commercial lock-in<br/>
+          • BI tools (Tableau, Power BI) are the primary consumers<br/>
+          • Data sharing with external partners (Data Cloud) is the priority
+        </div>
+      </div>
+      <div class="verdict bq">
+        <div class="verdict-badge badge-bq">BigQuery Preferred When:</div>
+        <div class="verdict-name">BigQuery Has an Edge When:</div>
+        <div class="verdict-wins">
+          • The client is fully committed to Google Cloud only<br/>
+          • Gemini models with native GCP data access are required<br/>
+          • Ad-hoc petabyte queries with serverless billing is the priority<br/>
+          • Google Workspace integration (Sheets, Looker) is critical<br/>
+          • No ML training or real-time streaming is required
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Accenture Seller Conversation Starters</div>
+    <ul class="angle-list">
+      <li>
+        <span class="angle-icon">⚡</span>
+        <div><strong>Against Snowflake:</strong> "You've built a great SQL warehouse, but when your data scientists try to train models on that data, they have to copy it to SageMaker or Vertex AI, breaking governance and creating silos. Databricks lets you run ML, SQL, and streaming on the same governed Delta table — no data movement, no separate governance policies."</div>
+      </li>
+      <li>
+        <span class="angle-icon">🤖</span>
+        <div><strong>Agentic AI Urgency:</strong> "Enterprise agentic AI use surged 327% in 2026. Snowflake's Cortex agents only work on Snowflake-resident data. If your roadmap includes autonomous agents that need to access documents, external APIs, and structured data simultaneously, you need a platform with MCP governance — that's Unity AI Gateway on Databricks."</div>
+      </li>
+      <li>
+        <span class="angle-icon">🔓</span>
+        <div><strong>Open Standards Lock-In:</strong> "Snowflake stores your data in FDN format — a proprietary format you can't read without Snowflake. Delta Lake is an Apache project. Your data stays in S3 or ADLS in a format any tool can read. When the contract comes up for renewal, you have negotiating power."</div>
+      </li>
+      <li>
+        <span class="angle-icon">💰</span>
+        <div><strong>Against BigQuery:</strong> "BigQuery is excellent for ad-hoc queries. But when you need to train a model on the query results, or run an agent on the output, you're paying for data egress to Vertex AI, managing two IAM systems, and reconciling two audit logs. Databricks does this in one platform, one governance layer, one bill."</div>
+      </li>
+      <li>
+        <span class="angle-icon">📊</span>
+        <div><strong>Proven Displacement:</strong> "In 2026, enterprises are actively migrating from Snowflake to Databricks specifically to handle SQL analytics alongside streaming and ML on a single platform. LatentView Analytics — a major Snowflake SI — now recommends Databricks for clients with complex workloads. The market is moving."</div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#47 — Databricks vs Snowflake: Ultimate 2025 Comparison (GEM Corp)</span>
+      <span class="chip">#64 — Architectural Supremacy &amp; Strategic Evolution of Databricks</span>
+      <span class="chip">#65 — Paradigmatic Shift in Enterprise Data Intelligence</span>
+      <span class="chip">#94 — Databricks vs Snowflake (2026): Key Features (LatentView)</span>
+      <span class="chip">#116 — Snowflake and Databricks: AI Visions Compared (CIO.inc)</span>
+      <span class="chip">#123 — Decision Framework: Snowflake vs. Databricks vs. BigQuery (DataCouch)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

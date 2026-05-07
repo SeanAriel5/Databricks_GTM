@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Medallion Architecture — Core Capability Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#2d0050 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .layer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+    .layer{border-radius:12px;padding:24px 20px}
+    .layer-bronze{background:#FFF8F0;border:2px solid #CD7F32}
+    .layer-silver{background:#F5F5F8;border:2px solid #A8A9AD}
+    .layer-gold{background:#FFFBF0;border:2px solid #C9A84C}
+    .layer-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+    .bronze-label{color:#CD7F32}
+    .silver-label{color:#70737A}
+    .gold-label{color:#C9A84C}
+    .layer-name{font-size:17px;font-weight:700;color:var(--t1);margin-bottom:10px}
+    .layer-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .arch-flow{display:flex;align-items:center;gap:10px;margin-top:16px;flex-wrap:wrap}
+    .arch-step{background:var(--primary-pale);border:1px solid #C2A3FF;border-radius:8px;padding:12px 16px;font-size:12.5px;font-weight:600;color:var(--primary);flex:1;min-width:120px;text-align:center;line-height:1.4}
+    .arch-arrow{color:var(--primary);font-size:20px;font-weight:700;flex-shrink:0}
+    .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .feat{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .feat-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .feat-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.layer-grid,.feat-grid{grid-template-columns:1fr}.arch-flow{flex-direction:column}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Core Capabilities › Data Medallion Architecture › Overview</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Core Capabilities · Data Medallion Architecture</div>
+  <div class="hero-title">Medallion Architecture: The Lakehouse Foundation</div>
+  <div class="hero-sub">The Databricks-pioneered data organization pattern that transformed enterprise data infrastructure — structuring data into three progressive quality layers (Bronze, Silver, Gold) on open Delta Lake storage, unifying analytics, ML, and agentic AI on a single governed foundation that replaces the legacy two-platform (warehouse + lake) architecture.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Medallion Architecture</span>
+    <span class="hero-badge">Bronze / Silver / Gold</span>
+    <span class="hero-badge">Delta Lake</span>
+    <span class="hero-badge">Lakehouse</span>
+    <span class="hero-badge">Data Quality</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">What is the Medallion Architecture?</div>
+    <p class="body-text">The Medallion Architecture is Databricks' recommended pattern for organizing data within a Lakehouse — structuring it into three progressive quality layers, each built on Delta Lake's ACID transaction foundation. Unlike traditional data architecture patterns that required separate physical systems for raw storage and analytics, the Medallion Architecture runs all three layers on the same cloud object storage (S3, ADLS, GCS) — governed by Unity Catalog, processed by Spark and Photon, and accessible to analytics, ML, and AI workloads simultaneously.</p>
+    <p class="body-text" style="margin-top:12px">Each Medallion layer transition is an incremental, idempotent pipeline step — enabling efficient reprocessing when upstream data changes, full audit trails (Delta time travel), and regulatory compliance (GDPR deletion via Deletion Vectors propagates through all layers). The architecture has become the dominant enterprise data organization standard, adopted by 15,000+ Databricks customers and referenced by Snowflake, Microsoft, and Google as the benchmark data layer pattern.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Three Layers</div>
+    <div class="layer-grid">
+      <div class="layer layer-bronze">
+        <div class="layer-label bronze-label">Layer 1</div>
+        <div class="layer-name">Bronze — Raw Ingestion</div>
+        <div class="layer-text">Exact copy of source data — preserving source fidelity for reprocessing and audits. Lakeflow Connect manages ingestion from 50+ connectors with automatic CDC and schema drift handling. No transformation applied: if source data is wrong, Bronze captures the error so upstream systems can be diagnosed. Delta Lake transaction log provides complete ingestion history. Retention policy governed by Unity Catalog.</div>
+      </div>
+      <div class="layer layer-silver">
+        <div class="layer-label silver-label">Layer 2</div>
+        <div class="layer-name">Silver — Validated & Integrated</div>
+        <div class="layer-text">Cleaned, deduplicated, joined, and conformed data — the enterprise-wide single source of truth. Lakeflow Pipelines enforce data quality via EXPECT clauses (reject or quarantine records failing business rules). Cross-domain joins happen here: customer records merged with transaction data, product catalog aligned with inventory. The Silver layer is the foundation for all ML feature engineering and the input for downstream Gold aggregations.</div>
+      </div>
+      <div class="layer layer-gold">
+        <div class="layer-label gold-label">Layer 3</div>
+        <div class="layer-name">Gold — Business-Ready</div>
+        <div class="layer-text">Aggregated, domain-specific tables consumed directly by BI tools, ML Feature Store, and AI agents. Gold tables are optimized for query performance via Photon's vectorized engine and Liquid Clustering. Genie enables natural language querying of Gold tables by business users. Agent Bricks agents read Gold layer data for decision-making and write results back to Lakebase for operational consumption. Unity Catalog lineage traces every Gold metric to its Bronze source automatically.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">The Lakehouse vs. Legacy Two-Platform Architecture</div>
+    <p class="body-text">The traditional enterprise data architecture required two separate systems: a data lake (cheap, flexible, ungoverned — Hadoop or S3) for raw storage and a data warehouse (structured, reliable, expensive — Teradata, Redshift, Snowflake) for analytics. This created three chronic problems: (1) data duplication — the same data lived in both systems with ETL pipelines synchronizing them; (2) governance fragmentation — different access controls, lineage tools, and compliance processes for each system; (3) ML exclusion — data scientists needed to extract data from the warehouse into a separate ML environment, creating a third copy with its own staleness and governance risks.</p>
+    <p class="body-text" style="margin-top:12px">The Databricks Lakehouse collapses all three systems into one: Delta Lake provides warehouse-grade ACID reliability directly on cloud object storage (eliminating the need for a separate data warehouse), and Unity Catalog governs the entire stack — tables, ML models, AI agents, and files — with one access control plane. The result: no data duplication, no ETL pipelines between analytics and ML, and a single governance layer satisfying HIPAA, GDPR, SOX, and EU CSRD simultaneously.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">How the Full Stack Flows Through the Medallion</div>
+    <div class="arch-flow">
+      <div class="arch-step">Source Systems<br/><small>(Databases, SaaS, Streams)</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Bronze<br/><small>(Lakeflow Connect ingestion)</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Silver<br/><small>(Lakeflow Pipelines + DLT quality)</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Gold<br/><small>(Photon SQL + Feature Store)</small></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-step">Consumption<br/><small>(BI, ML, Agent Bricks, Lakebase)</small></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2026 Extension: Beyond Tables</div>
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="feat-title">ML Models as Medallion Objects</div>
+        <div class="feat-text">Unity Catalog Model Registry extends the Medallion governance pattern to ML models: Bronze (experimental runs in MLflow), Silver (validated challenger models), Gold (production champion models serving inference). Every model version is a Unity Catalog object with lineage tracing back to the training dataset's Silver table — enabling model audits required for regulated industries.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Agent Bricks State in Lakebase</div>
+        <div class="feat-text">Agent Bricks agents persist operational state, logs, and decisions to Lakebase (PostgreSQL-compatible OLTP) — which bidirectionally syncs to Delta Lake Gold tables. This means every agent action is captured as a structured, queryable Gold-layer record: full operational AI auditability without a separate logging infrastructure.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">AI-First Silver Transformations</div>
+        <div class="feat-text">Lakeflow's AI-first ETL functions (ai_classify(), ai_extract(), ai_summarize()) run directly in Silver-layer DLT pipelines — enabling document parsing, entity extraction, and sentiment tagging as native pipeline steps. Unstructured data (PDFs, emails, support tickets) becomes structured Silver-layer records without separate ML microservices.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Unity Catalog Lineage Across All Layers</div>
+        <div class="feat-text">Unity Catalog automatically tracks column-level lineage across all three Medallion layers — zero manual annotation required. A compliance audit requiring evidence of where a patient record flowed from Bronze ingestion to Gold dashboard can be answered in a Unity Catalog UI query, not a multi-week manual investigation.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#55 — Delta Lake Documentation (Databricks)</span>
+      <span class="chip">#64 — The Architectural Supremacy and Strategic Evolution of Databricks</span>
+      <span class="chip">#65 — The Paradigmatic Shift in Enterprise Data Intelligence</span>
+      <span class="chip">#73 — Delta Lake: Key Capabilities and Architecture</span>
+      <span class="chip">#128 — Delta Lake: The Definitive Guide</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

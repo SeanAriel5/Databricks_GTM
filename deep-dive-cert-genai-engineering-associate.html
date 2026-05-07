@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Generative AI Engineering Associate — Certification Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .domain-list{display:flex;flex-direction:column;gap:14px;margin-top:12px}
+    .domain{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px;display:grid;grid-template-columns:80px 1fr auto;gap:16px;align-items:center}
+    .domain-pct{font-size:22px;font-weight:700;color:var(--primary);text-align:center}
+    .domain-name{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:4px}
+    .domain-topics{font-size:12.5px;color:var(--t2);line-height:1.6}
+    .domain-badge{background:var(--primary-pale);color:var(--primary);font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap;align-self:flex-start}
+    .path-flow{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+    .path-step{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px 18px;flex:1;min-width:140px}
+    .path-step-label{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:.08em;margin-bottom:6px}
+    .path-step-name{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:4px}
+    .path-step-desc{font-size:12px;color:var(--t2);line-height:1.4}
+    .path-arrow{color:var(--primary);font-size:24px;font-weight:700;flex-shrink:0}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1);vertical-align:top;line-height:1.5}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .trend-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .trend-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .trend-list li::before{content:'↗';color:var(--primary);font-weight:700;flex-shrink:0;font-size:16px}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.domain{grid-template-columns:1fr}.path-flow{flex-direction:column}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Certifications › Generative AI Engineering Associate</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Certifications · Machine Learning Track</div>
+  <div class="hero-title">Generative AI Engineering Associate</div>
+  <div class="hero-sub">The most strategically important Databricks certification of 2026 — validating hands-on competency with Foundation Model APIs, Vector Search RAG pipelines, Agent Bricks agent development, MLflow GenAI evaluation, and Unity AI Gateway governance. The credential that proves an engineer can build and govern production AI agents — not just run chatbots.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Certification</span>
+    <span class="hero-badge">GenAI</span>
+    <span class="hero-badge">Agent Bricks</span>
+    <span class="hero-badge">Vector Search</span>
+    <span class="hero-badge">LLMOps</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Certification Overview</div>
+    <p class="body-text">The Databricks Certified Generative AI Engineering Associate is the newest and most in-demand certification in the Databricks ecosystem — launched in response to the 327% surge in enterprise agentic AI adoption reported in Databricks' 2026 State of AI Agents. It validates that a practitioner can move beyond "prompt engineering" and basic chatbot deployment to build governed, production-quality GenAI applications and autonomous agents on the Databricks Lakehouse. Unlike cloud provider GenAI certifications that focus on a single model provider (OpenAI on Azure, Bedrock on AWS, Vertex AI on GCP), this certification is provider-agnostic: it tests competency across the full Databricks GenAI stack regardless of which foundation model the application uses.</p>
+    <p class="body-text" style="margin-top:12px"><strong>Format:</strong> 90 minutes · ~45 questions · Multiple-choice and scenario-based · Recertification required every 2 years · Machine Learning Associate recommended as prerequisite. Aimed at data scientists, ML engineers, and Accenture AI consultants building production AI applications on Databricks.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Exam Domains &amp; Weighting</div>
+    <div class="domain-list">
+      <div class="domain">
+        <div class="domain-pct">25%</div>
+        <div class="domain-info">
+          <div class="domain-name">Foundation Model APIs &amp; AI Playground</div>
+          <div class="domain-topics">Calling pay-per-token Foundation Model APIs (GPT-5.5, Claude, Llama, Gemini) from Databricks notebooks and pipelines. AI Playground for prompt exploration and model comparison. Provisioned throughput vs. pay-per-token tradeoffs. Model selection criteria for different task types (reasoning, summarization, embedding, multimodal). Prompt engineering patterns and chain-of-thought prompting.</div>
+        </div>
+        <div class="domain-badge">Foundational</div>
+      </div>
+      <div class="domain">
+        <div class="domain-pct">25%</div>
+        <div class="domain-info">
+          <div class="domain-name">Vector Search &amp; RAG Pipelines</div>
+          <div class="domain-topics">Databricks Vector Search (managed and direct access modes), embedding model selection and indexing strategies, building Retrieval-Augmented Generation (RAG) pipelines that ground LLM responses in Delta Lake data. Chunking strategies, similarity search (cosine vs. dot product), hybrid search (keyword + semantic). Preventing hallucinations via retrieval quality evaluation with MLflow.</div>
+        </div>
+        <div class="domain-badge">Core</div>
+      </div>
+      <div class="domain">
+        <div class="domain-pct">25%</div>
+        <div class="domain-info">
+          <div class="domain-name">Agent Bricks &amp; Agent SDK</div>
+          <div class="domain-topics">Building agents with Agent Bricks (Document Intelligence, Knowledge Assistant, custom agents). Mosaic AI Agent Framework: tools, tool calling, agent loops, multi-agent orchestration with the Supervisor Agent pattern. Agent SDK for Python: defining agent functions, tool specifications, state management. Deploying agents to Databricks Apps for business user consumption. Synthetic data generation for agent evaluation.</div>
+        </div>
+        <div class="domain-badge">Core</div>
+      </div>
+      <div class="domain">
+        <div class="domain-pct">25%</div>
+        <div class="domain-info">
+          <div class="domain-name">MLflow GenAI Evaluation &amp; Unity AI Gateway</div>
+          <div class="domain-topics">MLflow 3 GenAI evaluation: LLM-as-a-judge evaluation metrics (correctness, relevance, safety, groundedness), human feedback loops, automated quality gates before model promotion. Unity AI Gateway: governing Foundation Model API usage (rate limits, cost attribution, access policies, MCP server governance), audit logging of all LLM inference calls into Unity Catalog. Responsible AI principles in agent deployment.</div>
+        </div>
+        <div class="domain-badge">Governance</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Recommended Learning Path</div>
+    <div class="path-flow">
+      <div class="path-step">
+        <div class="path-step-label">Start Here</div>
+        <div class="path-step-name">Lakehouse Platform Fundamentals</div>
+        <div class="path-step-desc">Free accreditation. Platform orientation. ~2 hours.</div>
+      </div>
+      <div class="path-arrow">→</div>
+      <div class="path-step">
+        <div class="path-step-label">Recommended</div>
+        <div class="path-step-name">Machine Learning Associate</div>
+        <div class="path-step-desc">MLflow, AutoML, Feature Store, Model Registry. Prerequisite knowledge for GenAI cert.</div>
+      </div>
+      <div class="path-arrow">→</div>
+      <div class="path-step">
+        <div class="path-step-label">Target</div>
+        <div class="path-step-name">GenAI Engineering Associate</div>
+        <div class="path-step-desc">Foundation Models, RAG, Agent Bricks, MLflow GenAI eval, Unity AI Gateway.</div>
+      </div>
+      <div class="path-arrow">→</div>
+      <div class="path-step">
+        <div class="path-step-label">Future</div>
+        <div class="path-step-name">Agentic AI Specialist (roadmap)</div>
+        <div class="path-step-desc">Advanced multi-agent architectures, agentic safety, production agent operations.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GenAI Engineering Associate vs. ML Associate</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Dimension</th><th>GenAI Engineering Associate</th><th>ML Associate</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Primary Focus</strong></td><td>GenAI application and agent development — building AI products that reason, retrieve, and act</td><td>ML lifecycle — training, tracking, deploying, and serving predictive models</td></tr>
+        <tr><td><strong>Core Products Tested</strong></td><td>Foundation Model APIs, Vector Search, Agent Bricks/SDK, Unity AI Gateway</td><td>AutoML, MLflow experiment tracking, Feature Store, Model Registry, serverless serving</td></tr>
+        <tr><td><strong>Model Type</strong></td><td>Large language models, embedding models, multimodal models — prompt-based paradigm</td><td>Traditional ML models (classifiers, regressors, forecasters) — training data paradigm</td></tr>
+        <tr><td><strong>Evaluation Approach</strong></td><td>LLM-as-a-judge, human feedback loops, CLEARS framework (Correctness, Latency, Efficiency, Accuracy, Relevance, Safety)</td><td>MLflow metrics (RMSE, AUC, F1), A/B testing, inference table monitoring</td></tr>
+        <tr><td><strong>Governance Focus</strong></td><td>Unity AI Gateway (MCP governance, cost attribution, rate limits), responsible AI agent deployment</td><td>Unity Catalog Model Registry, feature governance, training-serving skew prevention</td></tr>
+        <tr><td><strong>2026 Strategic Value</strong></td><td>Highest — aligns directly with 327% agentic AI surge; most client-asked-for credential in new engagements</td><td>High — foundational for all ML delivery; recommended precursor to GenAI cert</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Why This Matters for Accenture GTM</div>
+    <p class="body-text">As enterprise clients accelerate AI agent deployments — with agentic AI system usage up 327% in 2026 (Source #4) — they are increasingly asking "who on the Accenture team is certified to build production AI agents on Databricks?" The GenAI Engineering Associate is the direct answer. It is the most visible certification signal in the emerging LLMOps and agentic AI space: holding it tells a CDO or Chief AI Officer that the assigned consultant has validated, hands-on competency with Agent Bricks, RAG pipelines, Unity AI Gateway governance, and MLflow evaluation — the exact stack being deployed in flagship client engagements like Albertsons, BASF, and Kyowa Kirin.</p>
+    <p class="body-text" style="margin-top:12px">For Accenture's 25,000-professional Databricks training commitment, the GenAI Engineering Associate is the highest-priority credential in the 2026 training plan. As Accenture co-sells with Databricks on agentic AI engagements — where the joint value proposition centers on governed, production-quality AI agents — fielding certified GenAI engineers is both a credibility requirement and a commercial differentiator. In competitive RFPs against non-certified SIs, a team with multiple GenAI Engineering Associate holders can demonstrate platform mastery that is verifiable, not just claimed.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2026 Exam Focus Areas</div>
+    <ul class="trend-list">
+      <li><strong>Model Context Protocol (MCP) Governance</strong> — Unity AI Gateway now governs MCP server access for autonomous agents. Exam questions test understanding of how MCP tools are registered, permissioned, and audited through Unity AI Gateway — a governance pattern unique to Databricks in the agent framework space.</li>
+      <li><strong>Multi-Agent Supervisor Pattern</strong> — Agent Bricks Supervisor Agent achieves 20%+ improvement over state-of-the-art on complex enterprise reasoning tasks by routing queries dynamically. Exam tests multi-agent orchestration design: when to use supervisor pattern vs. sequential chains vs. parallel execution.</li>
+      <li><strong>CLEARS Framework Evaluation</strong> — Databricks' proprietary evaluation framework (Correctness, Latency, Efficiency, Accuracy, Relevance, Safety) using MLflow 3's LLM-as-a-judge. Candidates must understand how to configure automated quality gates and set pass/fail thresholds before agent promotion to production.</li>
+      <li><strong>Synthetic Data for Agent Training</strong> — Agent Bricks' auto-generation of synthetic evaluation datasets from production traces. Exam includes scenarios on bootstrapping agent evaluation when labeled data doesn't yet exist — a critical skill for early-stage agent deployments.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#4 — 2026 State of AI Agents: Enterprise Insights (Databricks)</span>
+      <span class="chip">#6 — Data Engineer Associate Cert Guide — cert ecosystem context</span>
+      <span class="chip">#15 — Agent Bricks: Governed Enterprise Agent Platform (Databricks)</span>
+      <span class="chip">#67 — Ultimate Guide to Databricks Certifications 2026</span>
+      <span class="chip">#83 — Certifications & Badges Worth Knowing (Dumpsgate)</span>
+      <span class="chip">#92 — Databricks GenAI Capabilities (GCP docs)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

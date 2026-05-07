@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Databricks Roadmap — Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+    .pillar{background:var(--primary-pale);border:1px solid #D5CAEC;border-radius:10px;padding:20px}
+    .pillar-num{font-size:28px;font-weight:700;color:var(--primary);line-height:1}
+    .pillar-title{font-size:13px;font-weight:700;color:var(--t1);margin:8px 0 6px}
+    .pillar-text{font-size:12.5px;color:var(--t2);line-height:1.6}
+    .milestone-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .milestone-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .milestone-list li::before{content:'';flex-shrink:0;width:8px;height:8px;border-radius:50%;background:var(--primary);margin-top:7px}
+    .metric-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:12px}
+    .metric{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:18px 20px}
+    .metric-val{font-size:28px;font-weight:700;color:var(--primary);line-height:1}
+    .metric-label{font-size:11px;color:var(--t3);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.pillar-grid,.metric-row{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Background › Roadmap</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Background · Roadmap</div>
+  <div class="hero-title">Databricks Strategic Roadmap 2026</div>
+  <div class="hero-sub">From Data Intelligence Platform to Agentic AI leadership — the three pillars shaping Databricks' trajectory toward IPO and beyond.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Strategy</span>
+    <span class="hero-badge">IPO</span>
+    <span class="hero-badge">Lakebase</span>
+    <span class="hero-badge">Agent Bricks</span>
+    <span class="hero-badge">Open Source</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Executive Summary</div>
+    <p class="body-text">Databricks' roadmap is a three-pronged offense: expanding the Data Intelligence Platform into operational workloads, owning the enterprise agentic AI stack, and scaling financially toward a landmark IPO. Open standards — Delta Lake, Apache Iceberg, and an open-sourced Unity Catalog — form the competitive moat that prevents vendor lock-in and differentiates Databricks from Snowflake's closed ecosystem.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Three Strategic Pillars</div>
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <div class="pillar-title">Full-Stack Data Intelligence</div>
+        <div class="pillar-text">Lakebase (PostgreSQL-compatible OLTP, now GA) brings transactional workloads into the Lakehouse. Lakeflow unifies data ingestion, transformation, and orchestration in a single, AI-native pipeline platform.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <div class="pillar-title">Agentic AI Leadership</div>
+        <div class="pillar-text">Agent Bricks (GA) delivers governed, multi-model enterprise agents. MLflow 3 provides LLM-as-a-judge evaluation. Unity AI Gateway governs MCP servers end-to-end. Enterprise use of agentic AI surged 327% in 2026.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <div class="pillar-title">Financial Scaling → IPO</div>
+        <div class="pillar-text">$4.8B ARR growing at 55%+ YoY, $134B private valuation, $1.8B debt raise pre-IPO. Databricks Ventures' "Lakehouse Fund" is expanding the ecosystem with strategic investments in 100+ partners.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key 2026 Milestones</div>
+    <ul class="milestone-list">
+      <li><strong>Lakebase GA</strong> — PostgreSQL-compatible OLTP database running natively in the Databricks Lakehouse, disrupting Oracle and traditional RDBMS for operational AI applications.</li>
+      <li><strong>Agent Bricks GA</strong> — Enterprise agent platform with Document Intelligence, Knowledge Assistant, CLEARS evaluation framework via MLflow, and native MCP integrations.</li>
+      <li><strong>$2B Tabular Acquisition</strong> — Brings Apache Iceberg natively into the Lakehouse via Delta UniForm, ensuring open format compatibility and direct competition with Snowflake's Polaris.</li>
+      <li><strong>Unity Catalog Open-Sourced</strong> — Governance layer now available as open source, dramatically expanding adoption and cementing it as the industry standard for multi-cloud data governance.</li>
+      <li><strong>MLflow 3 for GenAI</strong> — Unifies ML tracking, LLM evaluation, and human feedback into a single governed experimentation platform; integrated natively with Azure Databricks.</li>
+      <li><strong>Accenture Joint Business Group</strong> — Expanded alliance creating a dedicated business unit with 25,000 Databricks-trained professionals and landmark wins at Albertsons, BASF, and Kyowa Kirin.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Financial Momentum</div>
+    <div class="metric-row">
+      <div class="metric">
+        <div class="metric-val">$4.8B</div>
+        <div class="metric-label">Annual Run Rate</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">55%+</div>
+        <div class="metric-label">YoY Revenue Growth</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val">$134B</div>
+        <div class="metric-label">Private Valuation</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Open Standards Moat</div>
+    <p class="body-text">Unlike Snowflake's proprietary formats, Databricks champions open standards as its key differentiator. Delta Lake is the world's most widely adopted open table format. The Tabular acquisition added Apache Iceberg compatibility. Unity Catalog's open-source release makes governance a community asset rather than a vendor lock-in mechanism. This positions Databricks as the "safe" enterprise choice: customers own their data, not Databricks.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#10 — About Databricks</span>
+      <span class="chip">#38 — Grows 55% YoY, $4.8B Run-Rate</span>
+      <span class="chip">#39 — IPO 2026 Guide</span>
+      <span class="chip">#46 — What is Databricks (Dtyped)</span>
+      <span class="chip">#49 — Data Warehousing to Data Intelligence</span>
+      <span class="chip">#52 — Inside Databricks' $5.4B Plan</span>
+      <span class="chip">#64 — Architectural Supremacy & Strategic Evolution</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

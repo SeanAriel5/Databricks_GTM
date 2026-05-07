@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Delta Lake — Core Capability Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .feat{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .feat-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .feat-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .compare-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+    .compare-table th{background:var(--black);color:#fff;padding:10px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase}
+    .compare-table td{padding:10px 16px;border-bottom:1px solid var(--border);color:var(--t1)}
+    .compare-table tr:hover td{background:var(--primary-pale)}
+    .check{color:var(--primary);font-weight:700}
+    .no{color:var(--t3)}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.feat-grid{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Core Capabilities › Data Medallion Architecture › Delta Lake</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Core Capabilities · Data Medallion Architecture</div>
+  <div class="hero-title">Delta Lake</div>
+  <div class="hero-sub">The open-source ACID storage layer that transforms cloud object storage into a reliable, intelligent, and high-performance data foundation for the Lakehouse.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Delta Lake</span>
+    <span class="hero-badge">ACID Transactions</span>
+    <span class="hero-badge">Open Source</span>
+    <span class="hero-badge">Streaming + Batch</span>
+    <span class="hero-badge">Lakehouse</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">What is Delta Lake?</div>
+    <p class="body-text">Delta Lake is the open-source storage framework invented by Databricks that brings database-grade reliability to data lakes. It sits on top of cloud object storage (Amazon S3, Azure Data Lake Storage, Google Cloud Storage) and adds a transaction log that enables ACID guarantees, concurrent reads and writes, schema enforcement, and time travel — all without moving data to a proprietary system. Delta Lake is the foundational engine of the Databricks Medallion Architecture (Bronze → Silver → Gold) and is used by thousands of enterprises worldwide.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Capabilities</div>
+    <div class="feat-grid">
+      <div class="feat">
+        <div class="feat-title">ACID Transactions</div>
+        <div class="feat-text">Full atomicity, consistency, isolation, and durability on cloud object storage. Concurrent reads never see partial writes. Failed jobs don't corrupt tables — the transaction log rolls back cleanly.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Time Travel</div>
+        <div class="feat-text">Query any historical version of a table using <code>VERSION AS OF</code> or <code>TIMESTAMP AS OF</code>. Essential for auditing, debugging, and reproducing ML experiments. Retention configurable up to 30 days by default.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Upserts & Merges (MERGE INTO)</div>
+        <div class="feat-text">Native MERGE statement enables efficient CDC (Change Data Capture) patterns, slowly changing dimensions, and real-time streaming updates without full table rewrites — a major operational efficiency win.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Schema Enforcement & Evolution</div>
+        <div class="feat-text">Delta Lake rejects data that doesn't match the schema by default, preventing silent data corruption. Schema evolution allows controlled column additions without breaking downstream consumers.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Liquid Clustering (2026)</div>
+        <div class="feat-text">Replaces manual partitioning with automatic, adaptive file layout optimization. Eliminates partition over-engineering — one of the biggest sources of Delta Lake performance problems for enterprise teams.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-title">Delta UniForm & Iceberg Compat</div>
+        <div class="feat-text">Delta UniForm writes metadata compatible with Apache Iceberg and Apache Hudi readers. Following the $2B Tabular acquisition, Iceberg and Delta converge — customers choose neither and get both.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Delta Lake vs. Traditional Alternatives</div>
+    <table class="compare-table">
+      <thead>
+        <tr><th>Capability</th><th>Delta Lake</th><th>Plain Parquet / S3</th><th>Traditional RDBMS</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>ACID Transactions</td><td class="check">✓ Full ACID</td><td class="no">✗ None</td><td class="check">✓ Full ACID</td></tr>
+        <tr><td>Streaming + Batch (same table)</td><td class="check">✓ Unified</td><td class="no">✗ Separate pipelines</td><td class="no">✗ Limited streaming</td></tr>
+        <tr><td>Time Travel / Audit</td><td class="check">✓ Native</td><td class="no">✗ Manual snapshots</td><td class="no">✗ Expensive audit logs</td></tr>
+        <tr><td>Schema Evolution</td><td class="check">✓ Controlled</td><td class="no">✗ Silent corruption</td><td class="check">✓ DDL migrations</td></tr>
+        <tr><td>Petabyte Scale</td><td class="check">✓ Cloud-native</td><td class="check">✓ Cloud-native</td><td class="no">✗ Expensive at scale</td></tr>
+        <tr><td>Open Format</td><td class="check">✓ Apache project</td><td class="check">✓ Open</td><td class="no">✗ Proprietary</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GTM Positioning</div>
+    <p class="body-text">Delta Lake is the reason enterprises trust Databricks as their single platform. It eliminates the "data swamp" problem — where data lakes become unreliable, unaudited, and unusable — and replaces it with a governed, high-performance foundation. For Accenture sellers, Delta Lake is the conversation opener for data estate modernization: "<em>Are you paying for three separate tools to do what Delta Lake does in one open-source layer?</em>" The Liquid Clustering and UniForm announcements in 2026 are the ideal updates to reopen conversations with existing Databricks accounts.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#55 — Lakehouse Storage (Databricks)</span>
+      <span class="chip">#64 — Architectural Supremacy & Evolution</span>
+      <span class="chip">#65 — Paradigmatic Shift in Data Intelligence</span>
+      <span class="chip">#73 — What is Unity Catalog (AWS docs)</span>
+      <span class="chip">#125 — Unity Catalog Product Page</span>
+      <span class="chip">#128 — What is Delta Lake (Databricks)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

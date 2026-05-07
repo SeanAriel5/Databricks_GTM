@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Adidas — Client Use Case Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .uc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .uc-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .uc-cat{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--primary);letter-spacing:.08em;margin-bottom:8px}
+    .uc-title{font-size:13.5px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .uc-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .tech-stack{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .tech-chip{background:var(--black);color:#fff;font-size:11.5px;font-weight:600;padding:6px 16px;border-radius:6px}
+    .roadmap-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:12px}
+    .roadmap-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .roadmap-dot{flex-shrink:0;width:10px;height:10px;border-radius:50%;background:var(--primary);margin-top:6px}
+    .quote-box{background:var(--primary-pale);border-left:4px solid var(--primary);border-radius:0 10px 10px 0;padding:20px 24px;margin-top:16px}
+    .quote-text{font-size:15px;color:var(--t1);line-height:1.8;font-style:italic}
+    .quote-source{font-size:12px;color:var(--t3);margin-top:8px;font-weight:600}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.uc-grid{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Client Use Cases › Agentic Reinvention › Adidas</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Client Use Cases · Agentic Reinvention</div>
+  <div class="hero-title">Adidas × Databricks</div>
+  <div class="hero-sub">Unifying 160+ markets' worth of retail, supply chain, and digital data on a single Lakehouse — powering demand forecasting, personalization, and AI-driven merchandising at global scale.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Retail</span>
+    <span class="hero-badge">Demand Forecasting</span>
+    <span class="hero-badge">Personalization</span>
+    <span class="hero-badge">Mosaic AI</span>
+    <span class="hero-badge">Agent Bricks</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Client Context</div>
+    <p class="body-text">Adidas is one of the world's largest sportswear companies, operating across 160+ countries with thousands of direct retail touchpoints, digital commerce channels, and third-party wholesale partners. The complexity of managing product lifecycles, inventory positions, and consumer demand signals across this footprint creates a massive data integration and intelligence challenge. Adidas partnered with Databricks to consolidate its fragmented data landscape onto a unified Lakehouse, enabling data science teams to operate at the pace and scale that global retail demands.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Use Cases</div>
+    <div class="uc-grid">
+      <div class="uc-card">
+        <div class="uc-cat">Supply Chain</div>
+        <div class="uc-title">Demand Forecasting at Scale</div>
+        <div class="uc-text">Adidas uses Delta Lake to ingest and unify point-of-sale, e-commerce, and wholesale order data into a single Bronze-to-Gold Medallion pipeline. ML models trained on this unified estate generate SKU-level demand forecasts across seasons, geographies, and channels — replacing fragmented regional forecasting systems.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Digital Commerce</div>
+        <div class="uc-title">Personalization Engine</div>
+        <div class="uc-text">Mosaic AI's Vector Search and Foundation Model APIs power the real-time product recommendation engine on adidas.com and the Adidas app. User embeddings are computed on Databricks and served at low latency, enabling hyper-personalized product discovery across 30+ million active digital members.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Governance</div>
+        <div class="uc-title">Multi-Cloud Data Governance</div>
+        <div class="uc-text">Unity Catalog governs data access across Adidas' AWS and Azure deployments, ensuring GDPR compliance for European consumer data, enforcing row-level security by regional data ownership, and providing automated lineage from source systems to business dashboards.</div>
+      </div>
+      <div class="uc-card">
+        <div class="uc-cat">Sustainability</div>
+        <div class="uc-title">ESG & Carbon Reporting</div>
+        <div class="uc-text">Adidas consolidates sustainability metrics (carbon footprint by product, supply chain emissions, material sourcing) on the Lakehouse. Unity Catalog's lineage tracking ensures audit-ready reporting for ESG disclosures, eliminating manual spreadsheet consolidation across 200+ supplier data feeds.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Technology Stack</div>
+    <div class="tech-stack">
+      <span class="tech-chip">Delta Lake</span>
+      <span class="tech-chip">Medallion Architecture</span>
+      <span class="tech-chip">Unity Catalog</span>
+      <span class="tech-chip">Mosaic AI</span>
+      <span class="tech-chip">Vector Search</span>
+      <span class="tech-chip">Lakeflow</span>
+      <span class="tech-chip">MLflow 3</span>
+      <span class="tech-chip">Agent Bricks (Evaluating)</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Agentic AI Roadmap</div>
+    <ul class="roadmap-list">
+      <li><span class="roadmap-dot"></span><div><strong>Autonomous Merchandising Agent (Evaluating)</strong> — Agent Bricks is being piloted to build an autonomous merchandising agent that ingests real-time sell-through data, identifies underperforming SKUs, and proactively recommends markdown, reallocation, or promotional actions to merchandising teams — reducing manual intervention and improving margin.</div></li>
+      <li><span class="roadmap-dot"></span><div><strong>Real-Time Stock Optimization</strong> — A multi-agent pipeline is being designed to monitor inventory imbalances across distribution centers and trigger automated reorder signals using Databricks Workflows + Agent Bricks, reducing out-of-stock events during peak trading periods.</div></li>
+      <li><span class="roadmap-dot"></span><div><strong>Supplier Intelligence Agent</strong> — Planned agent to monitor supplier delivery performance, quality metrics, and sustainability scores in real time, surfacing compliance risks before they impact production timelines.</div></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Context: Agentic AI in Retail</div>
+    <div class="quote-box">
+      <div class="quote-text">"Enterprise use of agentic AI systems surged 327% as companies move from basic chatbots to multi-agent architectures — and retail is one of the fastest-adopting verticals, driven by the complexity of demand signals and the value of autonomous inventory decisions."</div>
+      <div class="quote-source">Source #4 — 2026 State of AI Agents: Enterprise Insights on Building AI (Databricks)</div>
+    </div>
+    <p class="body-text" style="margin-top:16px">Adidas exemplifies the "Agentic Reinvention" pattern: starting with a unified data foundation (Lakehouse), then layering ML-powered insights, and now progressing toward autonomous agents that can take governed actions on that data. This is the Accenture + Databricks joint GTM thesis in action — and Adidas is a referenceable proof point for any retail or consumer goods prospect.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#4 — 2026 State of AI Agents (Databricks)</span>
+      <span class="chip">#14 — Agent Bricks Product Page</span>
+      <span class="chip">#15 — Agent Bricks: Governed Enterprise Agent Platform</span>
+      <span class="chip">#45 — Databricks Launches Agent Bricks (PR)</span>
+      <span class="chip">#63 — The Agentic Pivot: Strategic Roadmap (Accenture)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

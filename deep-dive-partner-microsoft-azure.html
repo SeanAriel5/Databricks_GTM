@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Microsoft Azure Partnership — Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#001a40 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .milestone-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-top:12px}
+    .milestone-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .milestone-dot{flex-shrink:0;width:10px;height:10px;border-radius:50%;background:var(--primary);margin-top:6px}
+    .alert-box{background:#FFF8E7;border:1px solid #F5A623;border-radius:10px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start;margin-top:16px}
+    .alert-icon{font-size:20px;flex-shrink:0;line-height:1}
+    .alert-text{font-size:13.5px;color:#5C3D00;line-height:1.6}
+    .alert-text strong{color:#3D2800}
+    .int-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px}
+    .int-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:20px;border-left:4px solid var(--primary)}
+    .int-title{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px}
+    .int-text{font-size:13px;color:var(--t2);line-height:1.6}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.int-grid{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Partnership Ecosystem › HyperScaler › Microsoft Azure</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Partnership Ecosystem · HyperScaler / Multi-Cloud</div>
+  <div class="hero-title">Microsoft Azure Partnership</div>
+  <div class="hero-sub">Azure Databricks is the deepest first-party hyperscaler integration — a jointly engineered, fully managed service on Azure with native connections to AI Foundry, Power Platform, and SAP.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Azure</span>
+    <span class="hero-badge">Microsoft</span>
+    <span class="hero-badge">HyperScaler</span>
+    <span class="hero-badge">Lakebase on Azure</span>
+    <span class="hero-badge">MLflow 3</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Partnership Overview</div>
+    <p class="body-text">Azure Databricks is not just Databricks running on Azure — it is a co-engineered, first-party Microsoft service, jointly sold, jointly supported, and deeply integrated across the Microsoft stack. The multi-year partnership extension in 2026 expanded the integration footprint from the core data platform to the full AI and productivity ecosystem: Azure AI Foundry, Power Platform, Microsoft Fabric, and SAP. For Microsoft-centric enterprise accounts, Azure Databricks is the recommended path for Lakehouse adoption — combining Databricks' technical superiority with Azure's enterprise commercial relationships.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2026 Key Milestones</div>
+    <ul class="milestone-list">
+      <li><span class="milestone-dot"></span><div><strong>Lakebase GA on Azure</strong> — Serverless PostgreSQL-compatible OLTP database is now generally available on Azure Databricks, enabling operational applications to run directly in the Lakehouse without infrastructure management.</div></li>
+      <li><span class="milestone-dot"></span><div><strong>MLflow 3 for GenAI</strong> — Microsoft co-published documentation for MLflow 3, enabling LLM-as-a-judge evaluation, human feedback loops, and prompt optimization directly on Azure. Validates the joint commitment to GenAI LLMOps tooling.</div></li>
+      <li><span class="milestone-dot"></span><div><strong>Azure AI Foundry Integration</strong> — Databricks models and agent outputs are now consumable directly from Azure AI Foundry, enabling Power Platform users and non-technical business users to access Databricks-powered intelligence.</div></li>
+      <li><span class="milestone-dot"></span><div><strong>SAP Business Data Cloud</strong> — Automatic semantic metadata syncing from SAP to Unity Catalog, plus Governed Tags GA in April 2026 release notes. Critical for SAP-heavy enterprise accounts on Azure.</div></li>
+    </ul>
+    <div class="alert-box">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-text"><strong>Urgent Account Action:</strong> Microsoft announced the retirement of the Azure Databricks Standard tier by <strong>October 2026</strong>. All remaining Standard workspaces will be automatically upgraded to Premium. This creates an immediate conversation opportunity: proactively contact Standard-tier customers to plan the transition and upsell Premium governance features (Unity Catalog, row/column security, audit logging).</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Azure-Specific Integrations</div>
+    <div class="int-grid">
+      <div class="int-card">
+        <div class="int-title">Azure AI Foundry</div>
+        <div class="int-text">Databricks models deployed via MLflow can be consumed natively in Azure AI Foundry — bridging the gap between Databricks data scientists and Azure-native application developers.</div>
+      </div>
+      <div class="int-card">
+        <div class="int-title">Microsoft Fabric & OneLake</div>
+        <div class="int-text">Delta Lake UniForm enables Fabric workloads to query Databricks-managed Delta tables without data copying, through OneLake's Lakehouse Federation capability.</div>
+      </div>
+      <div class="int-card">
+        <div class="int-title">Azure Monitor & OpenTelemetry</div>
+        <div class="int-text">Lakebase now exports OpenTelemetry traces to Azure Monitor (April 2026). Full observability of OLTP workloads alongside Databricks analytics in a single monitoring plane.</div>
+      </div>
+      <div class="int-card">
+        <div class="int-title">SAP on Azure</div>
+        <div class="int-text">SAP Business Data Cloud syncs semantic metadata automatically to Unity Catalog on Azure Databricks, enabling governed access to SAP data without duplication or manual cataloging.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GTM Angle for Accenture</div>
+    <p class="body-text">For Microsoft-centric enterprise accounts (approximately 70% of the Fortune 500 runs on Azure), Azure Databricks is the path of least resistance: it appears on Azure's native marketplace, can be purchased via existing Microsoft Azure Consumption Commitments (MACC), and is supported jointly by Microsoft and Databricks account teams. Accenture's Avanade relationship (Microsoft's primary partner) creates a natural co-selling motion — pair an Azure transformation engagement with Databricks' Data Intelligence Platform to capture the full data + AI opportunity in a single commercial vehicle.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#25 — Azure Databricks Lakebase GA</span>
+      <span class="chip">#56 — MLflow 3 for GenAI (Azure)</span>
+      <span class="chip">#80 — Azure Databricks Blog (Microsoft)</span>
+      <span class="chip">#81 — Azure Standard Tier Retirement</span>
+      <span class="chip">#106 — MLflow 3 GenAI (Microsoft docs)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

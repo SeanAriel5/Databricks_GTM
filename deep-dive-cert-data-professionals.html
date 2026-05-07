@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Data Professionals Certifications — Deep Dive</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--primary:#A100FF;--primary-dark:#7500C0;--primary-pale:#F0E8FF;--black:#080810;--white:#fff;--surf:#F6F3FB;--border:#EDE7F5;--t1:#0D0D14;--t2:#524F6A;--t3:#9894B0;--font:'Graphik','Helvetica Neue',Arial,sans-serif}
+    body{font-family:var(--font);background:var(--surf);color:var(--t1);min-height:100vh}
+    .nav{background:#fff;border-bottom:1px solid var(--border);height:64px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+    .nav-left{display:flex;align-items:center;gap:16px}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;padding:7px 16px;border:1.5px solid var(--primary);border-radius:50px;transition:all .2s}
+    .nav-back:hover{background:var(--primary);color:#fff}
+    .nav-title{font-size:15px;font-weight:700;color:var(--t1)}
+    .nav-sub{font-size:11px;color:var(--t3)}
+    .hero{background:linear-gradient(135deg,var(--black) 0%,#1a0030 100%);padding:56px 40px;color:#fff}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+    .hero-title{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+    .hero-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:680px;line-height:1.7}
+    .hero-meta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .hero-badge{background:rgba(161,0,255,.2);border:1px solid rgba(161,0,255,.4);color:#C2A3FF;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px}
+    .main{max-width:900px;margin:0 auto;padding:40px 40px 80px}
+    .section{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px 32px;margin-bottom:24px}
+    .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--t3);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .body-text{font-size:15px;color:var(--t1);line-height:1.8}
+    .cert-track{display:flex;flex-direction:column;gap:16px;margin-top:16px}
+    .cert-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:22px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center}
+    .cert-level{width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;text-align:center;line-height:1.2}
+    .cert-info{flex:1}
+    .cert-name{font-size:14px;font-weight:700;color:var(--t1);margin-bottom:4px}
+    .cert-meta{font-size:12px;color:var(--t3)}
+    .cert-domains{font-size:12.5px;color:var(--t2);margin-top:8px;line-height:1.6}
+    .cert-badge{background:var(--primary-pale);color:var(--primary);font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;white-space:nowrap}
+    .trend-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:12px}
+    .trend-list li{display:flex;gap:14px;align-items:flex-start;font-size:14px;color:var(--t1);line-height:1.6}
+    .trend-list li::before{content:'↗';color:var(--primary);font-weight:700;flex-shrink:0;font-size:16px}
+    .source-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .chip{background:var(--primary-pale);color:var(--primary);font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;border:1px solid #C2A3FF}
+    @media(max-width:700px){.cert-card{grid-template-columns:1fr}.hero-title{font-size:26px}.main{padding:24px 16px 60px}}
+  </style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-left">
+    <a href="index.html" class="nav-back">← Back to Dashboard</a>
+    <div>
+      <div class="nav-title">Databricks GTM — Accenture</div>
+      <div class="nav-sub">Certifications › Data Professionals</div>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--t3)">Updated 5/7/2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Certifications · Data Professionals Track</div>
+  <div class="hero-title">Data Professionals Certification Path</div>
+  <div class="hero-sub">From Data Analyst Associate through Data Engineer Professional — the complete certification pathway for practitioners building enterprise Lakehouses on Databricks.</div>
+  <div class="hero-meta">
+    <span class="hero-badge">Certification</span>
+    <span class="hero-badge">Data Engineering</span>
+    <span class="hero-badge">Data Analyst</span>
+    <span class="hero-badge">Spark</span>
+    <span class="hero-badge">Unity Catalog</span>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="section">
+    <div class="section-title">Overview</div>
+    <p class="body-text">The Databricks Data Professionals certification track provides a structured path for practitioners who work with data on the Lakehouse platform — from business-facing analysts running SQL to senior data engineers architecting production-grade pipelines. Unlike cloud provider certifications, these exams are deeply platform-specific: they test real Databricks product knowledge (Delta Live Tables, Auto Loader, Unity Catalog, Databricks SQL) rather than generic cloud concepts. As of 2026, exam difficulty has increased markedly, with heavier emphasis on governance, DLT, and GenAI integration.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Certification Pathway</div>
+    <div class="cert-track">
+      <div class="cert-card">
+        <div class="cert-level">DA<br/>Assoc</div>
+        <div class="cert-info">
+          <div class="cert-name">Data Analyst Associate</div>
+          <div class="cert-meta">Duration: 90 min · ~45 questions · Recertification: 2 years</div>
+          <div class="cert-domains">Domains: Databricks SQL, data visualization, dashboard creation, query optimization, data management with Delta Lake. Ideal for business analysts and SQL-first practitioners transitioning to the Lakehouse.</div>
+        </div>
+        <div class="cert-badge">Associate</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-level">DE<br/>Assoc</div>
+        <div class="cert-info">
+          <div class="cert-name">Data Engineer Associate</div>
+          <div class="cert-meta">Duration: 120 min · ~60 questions · Recertification: 2 years</div>
+          <div class="cert-domains">Domains: Apache Spark (Python/SQL), Delta Lake (MERGE, time travel, schema evolution), Delta Live Tables (declarative pipelines), Auto Loader (streaming ingestion), Unity Catalog, Databricks Workflows. The most popular Databricks exam globally.</div>
+        </div>
+        <div class="cert-badge">Associate</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-level">DE<br/>Pro</div>
+        <div class="cert-info">
+          <div class="cert-name">Data Engineer Professional</div>
+          <div class="cert-meta">Duration: 120 min · ~60 questions · Recertification: 2 years · Prerequisite: Associate recommended</div>
+          <div class="cert-domains">Domains: Advanced Spark optimization (AQE, query plans, shuffle tuning), Structured Streaming (watermarks, triggers, output modes), Delta Lake internals (transaction log, compaction, Z-ordering vs Liquid Clustering), advanced DLT (expectations, change feeds), production monitoring. This is the credential that signals senior delivery leadership capability.</div>
+        </div>
+        <div class="cert-badge">Professional</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2026 Exam Trends</div>
+    <ul class="trend-list">
+      <li><strong>Unity Catalog is now central</strong> — Every exam now includes Unity Catalog access control (ACLs, row/column security, audit logs, data lineage). Previously optional knowledge is now mandatory.</li>
+      <li><strong>DLT declarative pipelines replacing JDBC ETL</strong> — Delta Live Tables is now the preferred ETL pattern tested. Legacy Spark batch scripts are being deprecated in favor of DLT's quality controls and expectations.</li>
+      <li><strong>GenAI awareness required at Professional level</strong> — The DE Professional exam now includes questions on AI Functions in SQL, Vector Search integration, and Lakeflow's AI-native pipeline features.</li>
+      <li><strong>Liquid Clustering replaces partitioning questions</strong> — Manual partitioning questions (PARTITION BY) are being replaced by Liquid Clustering optimization scenarios, reflecting the 2026 GA release.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Why This Matters for Accenture GTM</div>
+    <p class="body-text">Databricks certifications are a direct signal of delivery credibility to enterprise buyers. Procurement teams and CIOs increasingly ask for certified headcount as a contract requirement. Accenture's goal of 25,000 Databricks-trained professionals (announced via the Joint Business Group) creates a massive certification drive opportunity. The Data Engineer Associate is the highest-ROI cert for project staffing; the Data Engineer Professional differentiates Accenture's senior architects and enables access to complex, higher-margin engagements. Dave Mathew (Source #6, #83) is the ecosystem's most cited certification guide author — a potential content partnership candidate.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Key Sources</div>
+    <div class="source-chips">
+      <span class="chip">#6 — Data Engineer Associate Cert Guide (Dave Mathew)</span>
+      <span class="chip">#67 — Ultimate Guide to Databricks Certifications 2026</span>
+      <span class="chip">#83 — Certifications & Badges Worth Knowing (Dumpsgate)</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
